@@ -1,0 +1,22 @@
+﻿using ERPProject.Entity.Base;
+using System;
+using System.Collections.Generic;
+
+namespace ERPProject.Entity.Poco;
+
+public partial class Offer : BaseEntity
+{
+    public long Id { get; set; }
+
+    public string SupplierName { get; set; } = null!;
+
+    public string Description { get; set; } = null!;
+
+    public decimal Price { get; set; }
+
+    public string PriceStatus { get; set; } = null!;
+
+    public string Status { get; set; } = null!;
+
+    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+}
