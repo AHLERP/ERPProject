@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ERPProject.Business.Concrete
 {
-    internal class BrandManager : IBrandService
+    public class BrandManager : IBrandService
     {
         private readonly IUnitOfWork _uow;
 
