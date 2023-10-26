@@ -25,14 +25,14 @@ namespace ERPProject.Business.Concrete
             return Entity;
         }
 
-        public Task<IEnumerable<Department>> GetAllAsync(Expression<Func<Department, bool>> Filter = null, params string[] IncludeProperties)
+        public async Task<IEnumerable<Department>> GetAllAsync(Expression<Func<Department, bool>> Filter = null, params string[] IncludeProperties)
         {
-            return _uow.DepartmentRepository.GetAllAsync(Filter, IncludeProperties);
+            return await _uow.DepartmentRepository.GetAllAsync(Filter, IncludeProperties);
         }
 
-        public Task<Department> GetAsync(Expression<Func<Department, bool>> Filter, params string[] IncludeProperties)
+        public async Task<Department> GetAsync(Expression<Func<Department, bool>> Filter, params string[] IncludeProperties)
         {
-            return _uow.DepartmentRepository.GetAsync(Filter, IncludeProperties);
+            return await _uow.DepartmentRepository.GetAsync(Filter, IncludeProperties);
         }
 
         public void Remove(Department Entity)
