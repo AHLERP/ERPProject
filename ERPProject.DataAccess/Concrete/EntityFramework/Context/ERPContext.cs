@@ -54,6 +54,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
             => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Brand>(entity =>
