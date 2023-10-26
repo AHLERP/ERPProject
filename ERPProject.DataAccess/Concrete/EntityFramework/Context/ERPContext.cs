@@ -57,6 +57,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
         {
             modelBuilder.Entity<Brand>(entity =>
             {
+
                 entity.ToTable("Brand");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
