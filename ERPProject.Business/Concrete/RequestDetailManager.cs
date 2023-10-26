@@ -27,14 +27,14 @@ namespace ERPProject.Business.Concrete
             return Entity;
         }
 
-        public Task<IEnumerable<RequestDetail>> GetAllAsync(Expression<Func<RequestDetail, bool>> Filter = null, params string[] IncludeProperties)
+        public async Task<IEnumerable<RequestDetail>> GetAllAsync(Expression<Func<RequestDetail, bool>> Filter = null, params string[] IncludeProperties)
         {
-            return _uow.RequestDetailRepository.GetAllAsync(Filter, IncludeProperties);
+            return await _uow.RequestDetailRepository.GetAllAsync(Filter, IncludeProperties);
         }
 
-        public Task<RequestDetail> GetAsync(Expression<Func<RequestDetail, bool>> Filter, params string[] IncludeProperties)
+        public async Task<RequestDetail> GetAsync(Expression<Func<RequestDetail, bool>> Filter, params string[] IncludeProperties)
         {
-            return _uow.RequestDetailRepository.GetAsync(Filter, IncludeProperties);
+            return await _uow.RequestDetailRepository.GetAsync(Filter, IncludeProperties);
         }
 
         public void Remove(RequestDetail Entity)
