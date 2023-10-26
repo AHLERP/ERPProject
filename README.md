@@ -1,3 +1,3 @@
 # ERPProject
 
-süperim
+26 Ekim Perşembe: Projeye başlanıldı.
