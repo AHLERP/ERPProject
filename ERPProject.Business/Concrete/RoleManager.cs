@@ -39,6 +39,8 @@ namespace ERPProject.Business.Concrete
         {
             _uow.RoleRepository.Remove(Entity);
             _uow.SaveChangeAsync();
+
+
         }
 
         public Role Update(Role Entity)
