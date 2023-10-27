@@ -141,6 +141,8 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Department_Company");
+
+                entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_User_Department");
             });
 
             modelBuilder.Entity<Invoice>(entity =>
