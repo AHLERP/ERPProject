@@ -14,7 +14,7 @@ namespace ERPProject.UI.Areas
             _httpClientFactory = httpClientFactory;
 
         }
-        protected async Task<bool> Update<T>(T p, string url) where T : class
+        protected async Task<bool> UpdateAsync<T>(T p, string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
@@ -29,7 +29,7 @@ namespace ERPProject.UI.Areas
 
             return false;
         }
-        protected async Task<bool> Add<T>(T p, string url) where T : class
+        protected async Task<bool> AddAsync<T>(T p, string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
@@ -44,7 +44,7 @@ namespace ERPProject.UI.Areas
 
             return false;
         }
-        protected async Task<bool> Delete(string url)
+        protected async Task<bool> DeleteAsync(string url)
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
@@ -57,7 +57,7 @@ namespace ERPProject.UI.Areas
 
             return false;
         }
-        protected async Task<Sonuc<List<T>>> GetAll<T>(string url) where T : class
+        protected async Task<Sonuc<List<T>>> GetAllAsync<T>(string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
@@ -71,7 +71,7 @@ namespace ERPProject.UI.Areas
             }
             return null;
         }
-        protected async Task<Sonuc<List<T>>> Get<T>(string url) where T : class
+        protected async Task<Sonuc<List<T>>> GetAsync<T>(string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
