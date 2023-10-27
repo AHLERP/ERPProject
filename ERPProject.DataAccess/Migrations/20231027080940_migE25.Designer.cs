@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    [Migration("20231027054618_migE")]
-    partial class migE
+    [Migration("20231027080940_migE25")]
+    partial class migE25
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -742,6 +742,9 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<int>("RolId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)
                         .IsUnicode(false)
@@ -756,6 +759,10 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("User", (string)null);
                 });
@@ -906,6 +913,25 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Reciever");
 
                     b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
+                {
+                    b.HasOne("ERPProject.Entity.Poco.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERPProject.Entity.Poco.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.UserRole", b =>
