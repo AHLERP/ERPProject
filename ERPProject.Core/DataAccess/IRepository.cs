@@ -13,8 +13,8 @@ namespace ERPProject.Core.DataAccess
     {
         Task<T> GetAsync(Expression<Func<T, bool>> Filter, params string[] IncludeProperties);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> Filter = null, params string[] IncludeProperties);
-        EntityEntry<T> Add(T Entity);
-        EntityEntry<T> Update(T Entity);
-        void Remove(T Entity);
+        Task<EntityEntry<T>> AddAsync(T Entity);
+        Task UpdateAsync(T Entity);
+        Task RemoveAsync(T Entity);
     }
 }

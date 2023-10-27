@@ -13,8 +13,10 @@ namespace ERPProject.Business.Abstract.DataManagement
         Task<T> GetAsync(Expression<Func<T, bool>> Filter, params string[] IncludeProperties);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> Filter = null, params string[] IncludeProperties);
 
-        T Add(T Entity);
-        T Update(T Entity);
-        void Remove(T Entity);
+        Task<T> AddAsync(T Entity);
+
+        Task UpdateAsync(T Entity);
+
+        Task RemoveAsync(T Entity);
     }
 }

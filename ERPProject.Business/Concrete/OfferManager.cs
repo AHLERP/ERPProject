@@ -19,10 +19,10 @@ namespace ERPProject.Business.Concrete
             _uow = uow;
         }
 
-        public Offer Add(Offer Entity)
+        public async Task<Offer> AddAsync(Offer Entity)
         {
-            _uow.OfferRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.OfferRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
@@ -36,17 +36,16 @@ namespace ERPProject.Business.Concrete
             return await _uow.OfferRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(Offer Entity)
+        public async Task RemoveAsync(Offer Entity)
         {
-            _uow.OfferRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.OfferRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public Offer Update(Offer Entity)
+        public async Task UpdateAsync(Offer Entity)
         {
-            _uow.OfferRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.OfferRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }
