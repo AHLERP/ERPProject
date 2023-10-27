@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPProject.Business", "ERPP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPProject.API", "ERPProject.API\ERPProject.API.csproj", "{DFDC3784-2734-432E-B328-09ECE52BD992}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPProject.UI", "AhlERP.UI\ERPProject.UI.csproj", "{073C5490-8631-4372-9FC7-55AFFCC6D5CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DFDC3784-2734-432E-B328-09ECE52BD992}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFDC3784-2734-432E-B328-09ECE52BD992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFDC3784-2734-432E-B328-09ECE52BD992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{073C5490-8631-4372-9FC7-55AFFCC6D5CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{073C5490-8631-4372-9FC7-55AFFCC6D5CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{073C5490-8631-4372-9FC7-55AFFCC6D5CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{073C5490-8631-4372-9FC7-55AFFCC6D5CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
