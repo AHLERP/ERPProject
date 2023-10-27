@@ -21,25 +21,30 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddCompany")]
+
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
             await _companyService.AddAsync(company);
 
+
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-        [HttpPost("/RemoveCompany/{companyId}")]
-        public async Task<IActionResult> RemoveCompany(int companyId)
+
+        [HttpPost("/RemoveCompany/{id}")]
+        public async Task<IActionResult> RemoveCompany(int id)
         {
-            Company company = await _companyService.GetAsync(x=>x.Id == companyId);
+            Company company = await _companyService.GetAsync(x=>x.Id == id);
+
             if (company == null)
             {
                 return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
             }
 
             await _companyService.RemoveAsync(company);
+
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
 
@@ -53,16 +58,18 @@ namespace ERPProject.API.Controllers
             }
 
             company = _mapper.Map(companyDTORequest, company);
+
             await _companyService.UpdateAsync(company);
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-        [HttpGet("/GetCompany/{companyId}")]
-        public async Task<IActionResult> GetCompany(int companyId)
+
+        [HttpGet("/GetCompany/{id}")]
+        public async Task<IActionResult> GetCompany(int id)
         {
-            Company company = await _companyService.GetAsync(x=>x.Id == companyId);
+            Company company = await _companyService.GetAsync(x=>x.Id == id);
             if (company==null)
             {
                 return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());

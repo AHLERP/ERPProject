@@ -21,26 +21,31 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddDepartment")]
+
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = _mapper.Map<Department>(departmentDTORequest);
             await _departmentService.AddAsync(department);
+
 
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
 
-        [HttpPost("/RemoveDepartment/{departmentId}")]
-        public async Task<IActionResult> RemoveDepartment(int departmentId)
+
+        [HttpPost("/RemoveDepartment/{id}")]
+        public async Task<IActionResult> RemoveDepartment(int id)
         {
-            Department department = await _departmentService.GetAsync(x=>x.Id == departmentId);
+            Department department = await _departmentService.GetAsync(x=>x.Id == id);
+
             if (department == null)
             {
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());
             }
-
+            
             await _departmentService.RemoveAsync(department);
+
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithoutData());
         }
 
@@ -53,16 +58,20 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());
             }
             _mapper.Map(departmentDTORequest,department);
+
             await _departmentService.UpdateAsync(department);
+
 
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
 
-        [HttpGet("/GetDepartment/{departmentId}")]
-        public async Task<IActionResult> GetDepartment(int departmentId)
+
+        [HttpGet("/GetDepartment/{id}")]
+        public async Task<IActionResult> GetDepartment(int id)
         {
-            Department department = await _departmentService.GetAsync(x => x.Id == departmentId, "Company");
+            Department department = await _departmentService.GetAsync(x => x.Id == id,"Company");
+
             if (department == null)
             {
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());
@@ -88,10 +97,12 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<DepartmentDTOResponse>>.SuccessWithData(departmentDTOResponseList));
         }
 
-        [HttpGet("/GetDepartmentsByCompany/{companyId}")]
-        public async Task<IActionResult> GetDepartments(int companyId)
+
+        [HttpGet("/GetDepartmentsByCompany/{id}")]
+        public async Task<IActionResult> GetDepartments(int id)
         {
-            var departments = await _departmentService.GetAllAsync(x => x.IsActive == true && x.CompanyId == companyId, "Company");
+            var departments = await _departmentService.GetAllAsync(x => x.IsActive == true && x.CompanyId == id , "Company");
+
             if (departments == null)
             {
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());

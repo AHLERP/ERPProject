@@ -23,8 +23,7 @@ namespace ERPProject.Business.Concrete
         {
             await _uow.StockDetailRepository.AddAsync(Entity);
             await _uow.SaveChangeAsync();
-            return Entity;
-        }
+
 
         public async Task<IEnumerable<StockDetail>> GetAllAsync(Expression<Func<StockDetail, bool>> Filter = null, params string[] IncludeProperties)
         {
@@ -46,6 +45,7 @@ namespace ERPProject.Business.Concrete
         {
             await _uow.StockDetailRepository.UpdateAsync(Entity);
             await _uow.SaveChangeAsync();
+
         }
     }
 }
