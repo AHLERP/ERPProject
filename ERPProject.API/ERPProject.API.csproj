@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -24,7 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\ERPProject.Business\ERPProject.Business.csproj" />
+    <ProjectReference Include="..\ERPProject.Core\ERPProject.Core.csproj" />
+    <ProjectReference Include="..\ERPProject.DataAccess\ERPProject.DataAccess.csproj" />
+    <ProjectReference Include="..\ERPProject.Entity\ERPProject.Entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
