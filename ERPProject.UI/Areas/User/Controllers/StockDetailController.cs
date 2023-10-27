@@ -1,7 +1,7 @@
 ﻿using ERPProject.Entity.DTO.StockDetailDTO;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ERPProject.UI.Areas.Admin.Controllers
+namespace ERPProject.UI.Areas.User.Controllers
 {
     [Area("Admin")]
     public class StockDetailController : BaseController

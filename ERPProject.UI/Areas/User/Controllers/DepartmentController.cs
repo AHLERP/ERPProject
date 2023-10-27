@@ -1,7 +1,7 @@
 ﻿using ERPProject.Entity.DTO.DepartmentDTO;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ERPProject.UI.Areas.Admin.Controllers
+namespace ERPProject.UI.Areas.User.Controllers
 {
     [Area("Admin")]
     public class DepartmentController : BaseController

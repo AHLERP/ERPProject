@@ -33,7 +33,7 @@ namespace ERPProject.API.Controllers
         }
 
 
-        [HttpPost("/RemoveCompany/{id}")]
+        [HttpDelete("/RemoveCompany/{id}")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
             Company company = await _companyService.GetAsync(x=>x.Id == id);
