@@ -70,5 +70,21 @@ namespace ERPProject.API.Controllers
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
+
+        [HttpGet("/GetCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var categories = await _categoryService.GetAllAsync(x=>x.IsActive==true);
+            if (categories == null)
+            {
+                return NotFound(Sonuc<CategoryDTOResponse>.SuccessNoDataFound());
+            }
+            List<CategoryDTOResponse> categoryDTOResponseList = new();
+            foreach (var category in categories)
+            {
+                categoryDTOResponseList.Add(_mapper.Map<CategoryDTOResponse>(category));
+            }
+            return Ok(Sonuc<List<CategoryDTOResponse>>.SuccessWithData(categoryDTOResponseList));
+        }
     }
 }
