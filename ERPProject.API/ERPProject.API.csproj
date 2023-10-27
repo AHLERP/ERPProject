@@ -30,11 +30,4 @@
     <ProjectReference Include="..\ERPProject.Entity\ERPProject.Entity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ERPProject.Business\ERPProject.Business.csproj" />
-    <ProjectReference Include="..\ERPProject.Core\ERPProject.Core.csproj" />
-    <ProjectReference Include="..\ERPProject.DataAccess\ERPProject.DataAccess.csproj" />
-    <ProjectReference Include="..\ERPProject.Entity\ERPProject.Entity.csproj" />
-  </ItemGroup>
-
 </Project>
