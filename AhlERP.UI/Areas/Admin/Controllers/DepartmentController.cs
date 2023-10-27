@@ -12,7 +12,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
         }
 
-        [HttpGet("/Sirketler")]
+        [HttpGet("/Departmanlar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<DepartmentDTOResponse>(url);
@@ -22,7 +22,12 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(DepartmentDTORequest p)
         {
             var val = await AddAsync(p, url);
-            return View(val);
+            if (val)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+
         }
         [HttpPost]
         public async Task<IActionResult> Update(DepartmentDTORequest p)
