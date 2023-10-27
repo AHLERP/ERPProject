@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    [Migration("20231026101348_mbilal")]
-    partial class mbilal
+    [Migration("20231026131529_migE")]
+    partial class migE
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Brand", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -72,7 +75,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -116,7 +122,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Company", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -160,7 +169,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Department", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -209,7 +221,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Invoice", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -263,7 +278,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -329,7 +347,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Product", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -387,7 +408,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Request", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long?>("AcceptedId")
                         .HasColumnType("bigint");
@@ -443,7 +467,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.RequestDetail", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -495,7 +522,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Role", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -539,7 +569,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Stock", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -595,7 +628,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.StockDetail", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -652,7 +688,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)

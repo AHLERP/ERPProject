@@ -19,10 +19,10 @@ namespace ERPProject.Business.Concrete
             _uow = uow;
         }
 
-        public Role Add(Role Entity)
+        public async Task<Role> AddAsync(Role Entity)
         {
-            _uow.RoleRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.RoleRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
@@ -36,17 +36,16 @@ namespace ERPProject.Business.Concrete
             return await _uow.RoleRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(Role Entity)
+        public async Task RemoveAsync(Role Entity)
         {
-            _uow.RoleRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.RoleRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public Role Update(Role Entity)
+        public async Task UpdateAsync(Role Entity)
         {
-            _uow.RoleRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.RoleRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }

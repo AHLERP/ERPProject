@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ERPProject.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class m0b : Migration
+    public partial class migE : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,14 +15,16 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Brand",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,14 +35,16 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,14 +55,16 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Company",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,18 +75,20 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Offer",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SupplierName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PriceStatus = table.Column<string>(type: "char(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
                     Status = table.Column<string>(type: "char(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,14 +99,16 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -109,7 +119,8 @@ namespace ERPProject.DataAccess.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     RolId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -117,12 +128,13 @@ namespace ERPProject.DataAccess.Migrations
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "char(10)", unicode: false, fixedLength: true, maxLength: 10, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -133,17 +145,19 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -164,15 +178,17 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Department",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,17 +204,19 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Request",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     AcceptedId = table.Column<long>(type: "bigint", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: true),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,13 +233,7 @@ namespace ERPProject.DataAccess.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AddedIPV4Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedIPV4Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,16 +253,18 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Invoice",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OfferId = table.Column<long>(type: "bigint", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -276,17 +290,19 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Stock",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -307,16 +323,18 @@ namespace ERPProject.DataAccess.Migrations
                 name: "RequestDetail",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RequestId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -337,17 +355,19 @@ namespace ERPProject.DataAccess.Migrations
                 name: "StockDetail",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     StockId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     RecieverId = table.Column<long>(type: "bigint", nullable: false),
                     DelivererId = table.Column<long>(type: "bigint", nullable: false),
-                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
-                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: false),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
                     UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
-                    AddedUser = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true)
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
