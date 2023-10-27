@@ -19,12 +19,11 @@ namespace ERPProject.Business.Concrete
             _uow = uow;
         }
 
-        public StockDetail Add(StockDetail Entity)
+        public async Task<StockDetail> AddAsync(StockDetail Entity)
         {
-            _uow.StockDetailRepository.Add(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
-        }
+            await _uow.StockDetailRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
+
 
         public async Task<IEnumerable<StockDetail>> GetAllAsync(Expression<Func<StockDetail, bool>> Filter = null, params string[] IncludeProperties)
         {
@@ -36,18 +35,17 @@ namespace ERPProject.Business.Concrete
             return await _uow.StockDetailRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public async void Remove(StockDetail Entity)
+        public async Task RemoveAsync(StockDetail Entity)
         {
-            _uow.StockDetailRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
-
+            await _uow.StockDetailRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public StockDetail Update(StockDetail Entity)
+        public async Task UpdateAsync(StockDetail Entity)
         {
-            _uow.StockDetailRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.StockDetailRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
+
         }
     }
 }

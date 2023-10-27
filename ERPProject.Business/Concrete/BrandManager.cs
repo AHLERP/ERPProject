@@ -19,10 +19,10 @@ namespace ERPProject.Business.Concrete
             _uow = uow;
         }
 
-        public Brand Add(Brand Entity)
+        public async Task<Brand> AddAsync(Brand Entity)
         {
-            _uow.BrandRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.BrandRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
@@ -36,17 +36,16 @@ namespace ERPProject.Business.Concrete
             return await _uow.BrandRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(Brand Entity)
+        public async Task RemoveAsync(Brand Entity)
         {
-            _uow.BrandRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.BrandRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public Brand Update(Brand Entity)
+        public async Task UpdateAsync(Brand Entity)
         {
-            _uow.BrandRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.BrandRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }

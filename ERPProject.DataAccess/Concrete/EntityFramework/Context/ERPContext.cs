@@ -52,7 +52,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
 
             //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
-            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
+            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
                 entity.ToTable("Brand");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -82,7 +82,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Category");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -102,7 +102,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Company");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -122,7 +122,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Department");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -147,7 +147,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Invoice");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -181,7 +181,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Offer");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -211,7 +211,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Product");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -242,7 +242,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Request");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -268,7 +268,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("RequestDetail");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -297,7 +297,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Role");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -317,7 +317,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("Stock");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -347,7 +347,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("StockDetail");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -381,7 +381,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.AddedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)

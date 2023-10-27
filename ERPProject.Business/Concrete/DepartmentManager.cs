@@ -18,10 +18,11 @@ namespace ERPProject.Business.Concrete
         {
             _uow = uow;
         }
-        public Department Add(Department Entity)
+
+        public async Task<Department> AddAsync(Department Entity)
         {
-            _uow.DepartmentRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.DepartmentRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
@@ -35,17 +36,16 @@ namespace ERPProject.Business.Concrete
             return await _uow.DepartmentRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(Department Entity)
+        public async Task RemoveAsync(Department Entity)
         {
-            _uow.DepartmentRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.DepartmentRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public Department Update(Department Entity)
+        public async Task UpdateAsync(Department Entity)
         {
-            _uow.DepartmentRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.DepartmentRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }

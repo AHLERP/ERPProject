@@ -21,25 +21,30 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddCompany")]
-        public ActionResult AddCompany(CompanyDTORequest companyDTORequest)
+
+        public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
-            _companyService.Add(company);
+            await _companyService.AddAsync(company);
+
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
+
         [HttpPost("/RemoveCompany/{id}")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
             Company company = await _companyService.GetAsync(x=>x.Id == id);
+
             if (company == null)
             {
                 return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
             }
 
-            _companyService.Remove(company);
+            await _companyService.RemoveAsync(company);
+
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
 
@@ -53,11 +58,13 @@ namespace ERPProject.API.Controllers
             }
 
             company = _mapper.Map(companyDTORequest, company);
-            _companyService.Update(company);
+
+            await _companyService.UpdateAsync(company);
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
+
 
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
