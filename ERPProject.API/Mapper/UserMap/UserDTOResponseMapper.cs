@@ -12,10 +12,6 @@ namespace ERPProject.API.Mapper.UserMap
                 ForMember(dest => dest.DepartmentName, opt =>
                 {
                     opt.MapFrom(src => src.Department.Name);
-                }).
-                ForMember(dest => dest.RoleName, opt =>
-                {
-                    opt.MapFrom(src => src.Role.Name);
                 }).ReverseMap();
         }
     }
