@@ -14,5 +14,6 @@ namespace ERPProject.UI.Areas.Admin.Models
         public virtual ICollection<DepartmentDTOResponse> Departments { get; set; } = new List<DepartmentDTOResponse>();
         public virtual ICollection<RoleDTOResponse> Roles { get; set; } = new List<RoleDTOResponse>();
 
+
     }
 }
