@@ -31,6 +31,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpDelete("/RemoveUser/{userId}")]
+
         public async Task<IActionResult> RemoveUser(long id)
         {
             User user = await _userService.GetAsync(x=>x.Id == id);

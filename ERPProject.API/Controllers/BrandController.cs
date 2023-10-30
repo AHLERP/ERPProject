@@ -70,5 +70,21 @@ namespace ERPProject.API.Controllers
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
+
+        [HttpGet("/GetBrands")]
+        public async Task<IActionResult> GetBrands()
+        {
+            var brands = await _brandService.GetAllAsync(x=>x.IsActive==true);
+            if (brands == null)
+            {
+                return NotFound(Sonuc<BrandDTOResponse>.SuccessNoDataFound());
+            }
+            List<BrandDTOResponse> brandDTOResponseList = new();
+            foreach (var brand in brands)
+            {
+                brandDTOResponseList.Add(_mapper.Map<BrandDTOResponse>(brand));
+            }
+            return Ok(Sonuc<List<BrandDTOResponse>>.SuccessWithData(brandDTOResponseList));
+        }
     }
 }
