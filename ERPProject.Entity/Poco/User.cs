@@ -9,6 +9,7 @@ public partial class User : BaseEntity
     public long Id { get; set; }
 
     public int DepartmentId { get; set; }
+    public virtual Department Department { get; set; } = null!;
 
     public int RolId { get; set; }
 

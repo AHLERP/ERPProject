@@ -14,39 +14,36 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
 {
     public class EfRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private readonly DbContext _dbContext;
+        private readonly DbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public EfRepository( DbContext dbContext)
+        public EfRepository(DbContext context)/* Constructor Injection */
         {
-            _dbContext = dbContext;
-            _dbSet = _dbContext.Set<T>();
-            
+            _context = context;
+            _dbSet = _context.Set<T>();
         }
 
-        public  EntityEntry<T> Add(T Entity)
+        public async Task<EntityEntry<T>> AddAsync(T Entity)
         {
-            return  _dbContext.Set<T>().Add(Entity);
-            
+            return await _dbSet.AddAsync(Entity);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> Filter = null, params string[] IncludeProperties)
         {
-            IQueryable<T> query;
-            query = _dbSet;
+            IQueryable<T> query = _dbSet;/*select * from user */
+
+            /* _dbset.Where(q=>q.id>5) */
             if (Filter != null)
             {
-                query = query.Where(Filter);/* select * from product where id>5 */
+                query = query.Where(Filter);/*select * from User Where id >5 */
             }
-
             if (IncludeProperties.Length > 0)
             {
-                foreach (var item in IncludeProperties)
+                foreach (string includeProperty in IncludeProperties)/*"User.Orders.OrderDetails.Product.Category"*/
                 {
-                    query = query.Include(item);
+                    query = query.Include(includeProperty);
                 }
             }
-
             return await Task.Run(() => query);
 
         }
@@ -54,26 +51,28 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
         public async Task<T> GetAsync(Expression<Func<T, bool>> Filter, params string[] IncludeProperties)
         {
             IQueryable<T> query = _dbSet;
-            query = query.Where(Filter);
+
             if (IncludeProperties.Length > 0)
             {
-                foreach (var item in IncludeProperties)
+                foreach (string includeProperty in IncludeProperties)/*"User.Orders.OrderDetails.Product.Category"*/
                 {
-                    query = query.Include(item);
+                    query = query.Include(includeProperty);
                 }
             }
 
-            return await query.SingleOrDefaultAsync();
+            /* select * from User where TCNO=12345678901 */
+
+            return await query.SingleOrDefaultAsync(Filter);
         }
 
-        public void Remove(T Entity)
+        public async Task RemoveAsync(T Entity)
         {
-            _dbSet.Remove(Entity);
+            await Task.Run(() => _dbSet.Remove(Entity));
         }
 
-        public EntityEntry<T> Update(T Entity)
+        public async Task UpdateAsync(T Entity)
         {
-            return _dbSet.Update(Entity);
+            await Task.Run(() => _dbSet.Update(Entity));
         }
     }
 }

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPProject.Business", "ERPP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPProject.API", "ERPProject.API\ERPProject.API.csproj", "{DFDC3784-2734-432E-B328-09ECE52BD992}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPProject.UI", "ERPProject.UI\ERPProject.UI.csproj", "{3B337924-D16B-4245-B56C-B092FCE7AD1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DFDC3784-2734-432E-B328-09ECE52BD992}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFDC3784-2734-432E-B328-09ECE52BD992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFDC3784-2734-432E-B328-09ECE52BD992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B337924-D16B-4245-B56C-B092FCE7AD1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B337924-D16B-4245-B56C-B092FCE7AD1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B337924-D16B-4245-B56C-B092FCE7AD1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B337924-D16B-4245-B56C-B092FCE7AD1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

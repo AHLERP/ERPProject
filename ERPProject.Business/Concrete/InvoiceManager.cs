@@ -19,10 +19,10 @@ namespace ERPProject.Business.Concrete
             _uow = uow;
         }
 
-        public Invoice Add(Invoice Entity)
+        public async Task<Invoice> AddAsync(Invoice Entity)
         {
-            _uow.InvoiceRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.InvoiceRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
@@ -33,20 +33,19 @@ namespace ERPProject.Business.Concrete
 
         public async Task<Invoice> GetAsync(Expression<Func<Invoice, bool>> Filter, params string[] IncludeProperties)
         {
-            return await _uow.InvoiceRepository.GetAsync(Filter,IncludeProperties);
+            return await _uow.InvoiceRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(Invoice Entity)
+        public async Task RemoveAsync(Invoice Entity)
         {
-            _uow.InvoiceRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.InvoiceRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public Invoice Update(Invoice Entity)
+        public async Task UpdateAsync(Invoice Entity)
         {
-            _uow.InvoiceRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.InvoiceRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }

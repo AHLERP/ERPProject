@@ -30,7 +30,7 @@ namespace ERPProject.API.Controllers
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
-        [HttpPost("/RemoveCategory/{categoryId}")]
+        [HttpDelete("/RemoveCategory/{categoryId}")]
         public async Task<IActionResult> RemoveCategory(int categoryId)
         {
             Category category = await _categoryService.GetAsync(x => x.Id == categoryId);
@@ -69,6 +69,22 @@ namespace ERPProject.API.Controllers
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
+        }
+
+        [HttpGet("/GetCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var categories = await _categoryService.GetAllAsync(x=>x.IsActive==true);
+            if (categories == null)
+            {
+                return NotFound(Sonuc<CategoryDTOResponse>.SuccessNoDataFound());
+            }
+            List<CategoryDTOResponse> categoryDTOResponseList = new();
+            foreach (var category in categories)
+            {
+                categoryDTOResponseList.Add(_mapper.Map<CategoryDTOResponse>(category));
+            }
+            return Ok(Sonuc<List<CategoryDTOResponse>>.SuccessWithData(categoryDTOResponseList));
         }
     }
 }

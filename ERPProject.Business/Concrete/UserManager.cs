@@ -19,10 +19,10 @@ namespace ERPProject.Business.Concrete
             _uow = uow;
         }
 
-        public User Add(User Entity)
+        public async Task<User> AddAsync(User Entity)
         {
-            _uow.UserRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.UserRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
@@ -36,17 +36,16 @@ namespace ERPProject.Business.Concrete
             return await _uow.UserRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(User Entity)
+        public async Task RemoveAsync(User Entity)
         {
-            _uow.UserRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.UserRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public User Update(User Entity)
+        public async Task UpdateAsync(User Entity)
         {
-            _uow.UserRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.UserRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }
