@@ -3,6 +3,7 @@ using ERPProject.Business.Concrete;
 using ERPProject.DataAccess.Abstract.DataManagement;
 using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using ERPProject.DataAccess.Concrete.EntityFramework.DataManagement;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 

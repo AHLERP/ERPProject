@@ -22,6 +22,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddBrand")]
+        [ValidationFilter(typeof(BrandValidator))]
         public async Task<IActionResult> AddBrand(BrandDTORequest brandDTORequest)
         {
             Brand brand = _mapper.Map<Brand>(brandDTORequest);
