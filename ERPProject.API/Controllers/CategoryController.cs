@@ -30,7 +30,7 @@ namespace ERPProject.API.Controllers
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
-        [HttpPost("/RemoveCategory/{categoryId}")]
+        [HttpDelete("/RemoveCategory/{categoryId}")]
         public async Task<IActionResult> RemoveCategory(int categoryId)
         {
             Category category = await _categoryService.GetAsync(x => x.Id == categoryId);

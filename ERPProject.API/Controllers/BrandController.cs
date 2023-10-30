@@ -30,7 +30,7 @@ namespace ERPProject.API.Controllers
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
-        [HttpPost("/RemoveBrand/{brandId}")]
+        [HttpDelete("/RemoveBrand/{brandId}")]
         public async Task<IActionResult> RemoveBrand(int brandId)
         {
             Brand brand = await _brandService.GetAsync(x => x.Id == brandId);

@@ -34,8 +34,8 @@ namespace ERPProject.API.Controllers
         }
 
 
-        [HttpPost("/RemoveDepartment/{id}")]
-        public async Task<IActionResult> RemoveDepartment(int id)
+        [HttpPost("/RemoveDepartment/{departmentId}")]
+        public async Task<IActionResult> RemoveDepartment(int departmentId)
         {
             Department department = await _departmentService.GetAsync(x=>x.Id == id);
 
