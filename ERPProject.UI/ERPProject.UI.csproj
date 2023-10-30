@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Areas\User\Models\" />
     <Folder Include="Areas\User\Views\" />
   </ItemGroup>

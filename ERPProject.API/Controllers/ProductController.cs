@@ -30,7 +30,7 @@ namespace ERPProject.API.Controllers
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
-        [HttpPost("/RemoveProduct/{productId}")]
+        [HttpDelete("/RemoveProduct/{productId}")]
         public async Task<IActionResult> RemoveProduct(int productId)
         {
             Product product = await _productService.GetAsync(x=>x.Id == productId);

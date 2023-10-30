@@ -55,7 +55,7 @@ namespace ERPProject.API.Controllers
 
         }
 
-        [HttpPost("/RemoveRequest/{requestId}")]
+        [HttpDelete("/RemoveRequest/{requestId}")]
         public async Task<IActionResult> RemoveRequest(int requestId)
         {
             var request = await _requestService.GetAsync(e => e.Id == requestId);

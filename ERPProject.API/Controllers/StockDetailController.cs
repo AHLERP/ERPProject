@@ -30,7 +30,9 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
 
-        [HttpPost("/RemoveStockDetail/{stockDetailId}")]
+
+        [HttpDelete("/RemoveStockDetail/{stockDetailId}")]
+
         public async Task<IActionResult> RemoveStockDetail(long stockDetailId)
         {
             StockDetail stockDetail = await _stockDetailService.GetAsync(x=>x.Id == stockDetailId);
