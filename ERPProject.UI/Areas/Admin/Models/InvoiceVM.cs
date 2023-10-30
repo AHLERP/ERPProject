@@ -3,17 +3,10 @@ using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.DTO.ProductDTO;
 
-namespace ERPProject.UI.Areas.Admin.Models.Invoice
+namespace ERPProject.UI.Areas.Admin.Models
 {
     public class InvoiceVM
     {
-        public int Id { get; set; }
-        public long OfferId { get; set; }
-        public int CompanyId { get; set; }
-        public int ProductId { get; set; }
-        public string SupplierName { get; set; }
-        public string CompanyName { get; set; }
-        public string ProductName { get; set; }
 
         public virtual ICollection<InvoiceDTOResponse> Invoices { get; set; } = new List<InvoiceDTOResponse>();
         public virtual ICollection<ProductDTOResponse> Products { get; set; } = new List<ProductDTOResponse>();
