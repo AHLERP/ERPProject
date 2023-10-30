@@ -30,7 +30,7 @@ namespace ERPProject.API.Controllers
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
-        [HttpPost("/RemoveOffer/{offerId}")]
+        [HttpDelete("/RemoveOffer/{offerId}")]
         public async Task<IActionResult> RemoveOffer(int offerId)
         {
             Offer offer = await _offerService.GetAsync(x => x.Id == offerId);
