@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
-        [HttpGet("/Admin/KullanıcıRolleri")]
+        [HttpGet("/Admin/KullaniciRolleri")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<UserRoleDTOResponse>(url + "GetUserRoles");
             return View(val);
         }
-        [HttpGet("/Admin/KullanıcıRol")]
+        [HttpGet("/Admin/KullaniciRol")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserRoleDTOResponse>(url + "GetUserRole/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/KullanıcıRolEkle")]
+        [HttpPost("/Admin/KullaniciRolEkle")]
         public async Task<IActionResult> Add(UserRoleDTORequest p)
         {
             var response = await AddAsync(p, url + "AddUserRole");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/KullanıcıRolGuncelle")]
+        [HttpPost("/Admin/KullaniciRolGuncelle")]
         public async Task<IActionResult> Update(UserRoleDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateUserRole");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/KullanıcıRolSil")]
+        [HttpPost("/Admin/KullaniciRolSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveUserRole/" + id);

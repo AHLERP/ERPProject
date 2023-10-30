@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class BrandController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -14,19 +14,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/Markalar")]
+        [HttpGet("/User/Markalar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
             return View(val);
         }
-        [HttpGet("/Admin/Marka")]
+        [HttpGet("/User/Marka")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<BrandDTOResponse>(url + "GetBrand/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/MarkaEkle")]
+        [HttpPost("/User/MarkaEkle")]
         public async Task<IActionResult> Add(BrandDTORequest p)
         {
             var response = await AddAsync(p, url + "AddBrand");
@@ -38,7 +38,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/MarkaGuncelle")]
+        [HttpPost("/User/MarkaGuncelle")]
         public async Task<IActionResult> Update(BrandDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateBrand");
@@ -50,7 +50,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/MarkaSil")]
+        [HttpPost("/User/MarkaSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveBrand/" + id);

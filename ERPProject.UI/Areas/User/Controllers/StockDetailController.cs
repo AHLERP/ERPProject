@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class StockDetailController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/Stokdetayları")]
+        [HttpGet("/User/Stokdetayları")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<StockDetailDTOResponse>(url + "GetStockDetails");
             return View(val);
         }
-        [HttpGet("/Admin/StokDetay")]
+        [HttpGet("/User/StokDetay")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<StockDetailDTOResponse>(url + "GetStockDetail/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/StokDetayEkle")]
+        [HttpPost("/User/StokDetayEkle")]
         public async Task<IActionResult> Add(StockDetailDTORequest p)
         {
             var response = await AddAsync(p, url + "AddStockDetail");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/StokDetayGuncelle")]
+        [HttpPost("/User/StokDetayGuncelle")]
         public async Task<IActionResult> Update(StockDetailDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateStockDetail");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/StokDetaySil")]
+        [HttpPost("/User/StokDetaySil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveStockDetail/" + id);

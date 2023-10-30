@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class RequestDetailController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/TalepDetaylar")]
+        [HttpGet("/User/TalepDetaylar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<RequestDetailDTOResponse>(url + "GetRequestDetails");
             return View(val);
         }
-        [HttpGet("/Admin/TalepDetay")]
+        [HttpGet("/User/TalepDetay")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<RequestDetailDTOResponse>(url + "GetRequestDetail/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/TalepDetayEkle")]
+        [HttpPost("/User/TalepDetayEkle")]
         public async Task<IActionResult> Add(RequestDetailDTORequest p)
         {
             var response = await AddAsync(p, url + "AddRequestDetail");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/TalepDetayGuncelle")]
+        [HttpPost("/User/TalepDetayGuncelle")]
         public async Task<IActionResult> Update(RequestDetailDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateRequestDetail");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/TalepDetaySil")]
+        [HttpPost("/User/TalepDetaySil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveRequestDetail/" + id);

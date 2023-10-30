@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class OfferController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/Teklifler")]
+        [HttpGet("/User/Teklifler")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
             return View(val);
         }
-        [HttpGet("/Admin/Sirket")]
+        [HttpGet("/User/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/SirketEkle")]
+        [HttpPost("/User/SirketEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
             var response = await AddAsync(p, url + "AddOffer");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketGuncelle")]
+        [HttpPost("/User/SirketGuncelle")]
         public async Task<IActionResult> Update(OfferDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateOffer");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketSil")]
+        [HttpPost("/User/SirketSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveOffer/" + id);

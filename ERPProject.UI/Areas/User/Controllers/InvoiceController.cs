@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class InvoiceController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/Faturalar")]
+        [HttpGet("/User/Faturalar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
             return View(val);
         }
-        [HttpGet("/Admin/Fatura")]
+        [HttpGet("/User/Fatura")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<InvoiceDTOResponse>(url + "GetInvoice/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/FaturaEkle")]
+        [HttpPost("/User/FaturaEkle")]
         public async Task<IActionResult> Add(InvoiceDTORequest p)
         {
             var response = await AddAsync(p, url + "AddInvoice");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/FaturaGuncelle")]
+        [HttpPost("/User/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateInvoice");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/FaturaSil")]
+        [HttpPost("/User/FaturaSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveInvoice/" + id);
