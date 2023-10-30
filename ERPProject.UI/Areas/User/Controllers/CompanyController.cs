@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class CompanyController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/Sirketler")]
+        [HttpGet("/User/Sirketler")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             return View(val);
         }
-        [HttpGet("/Admin/Sirket")]
+        [HttpGet("/User/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/SirketEkle")]
+        [HttpPost("/User/SirketEkle")]
         public async Task<IActionResult> AddCompany(CompanyDTORequest p)
         {
             var response = await AddAsync(p, url + "AddCompany");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketGuncelle")]
+        [HttpPost("/User/SirketGuncelle")]
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
             p.Id = 1;
@@ -48,7 +48,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketSil")]
+        [HttpPost("/User/SirketSil")]
         public async Task<IActionResult> Delete(long id)
         {
             id = 3;

@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
-        [HttpGet("/Admin/Kullanıcılar")]
+        [HttpGet("/Admin/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             return View(val);
         }
-        [HttpGet("/Admin/Kullanıcı")]
+        [HttpGet("/Admin/Kullanici")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/KullanıcıEkle")]
+        [HttpPost("/Admin/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)
         {
             var response = await AddAsync(p, url + "AddUser");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/KullanıcıGuncelle")]
+        [HttpPost("/Admin/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateUser");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/KullanıcıSil")]
+        [HttpPost("/Admin/KullaniciSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveUser/" + id);

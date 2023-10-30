@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
-    [Area("Admin")]
+    [Area("User")]
     public class DepartmentController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
@@ -11,19 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/Admin/Departmanlar")]
+        [HttpGet("/User/Departmanlar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             return View(val);
         }
-        [HttpGet("/Admin/Departman")]
+        [HttpGet("/User/Departman")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<DepartmentDTOResponse>(url + "GetDepartment/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/DepartmanEkle")]
+        [HttpPost("/User/DepartmanEkle")]
         public async Task<IActionResult> Add(DepartmentDTORequest p)
         {
             var response = await AddAsync(p, url + "AddDepartment");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/DepartmanGuncelle")]
+        [HttpPost("/User/DepartmanGuncelle")]
         public async Task<IActionResult> Update(DepartmentDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateDepartment");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/DepartmanSil")]
+        [HttpPost("/User/DepartmanSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveDepartment/" + id);
