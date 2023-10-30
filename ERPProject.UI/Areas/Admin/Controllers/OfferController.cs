@@ -3,29 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class OfferController : BaseController
     {
-        private readonly string url = "";
+        private readonly string url = "https://localhost:7075/";
         public OfferController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
         {
 
         }
-        [HttpGet]
+        [HttpGet("/Admin/Teklifler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<OfferDTOResponse>(url);
+            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
             return View(val);
         }
-        [HttpGet]
+        [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<OfferDTOResponse>(url + id);
+            var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
             return View(val);
         }
-        [HttpPost]
+        [HttpPost("/Admin/SirketEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
-            var response = await AddAsync(p, url);
+            var response = await AddAsync(p, url + "AddOffer");
             if (response)
             {
                 return RedirectToAction("Index", "Offer");
@@ -34,10 +35,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(OfferDTORequest p)
         {
-            var response = await UpdateAsync(p, url);
+            var response = await UpdateAsync(p, url + "UpdateOffer");
             if (response)
             {
                 return RedirectToAction("Index", "Offer");
@@ -46,10 +47,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/Admin/SirketSil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + id);
+            var response = await DeleteAsync(url + "RemoveOffer/" + id);
             if (response)
             {
                 return RedirectToAction("Index", "Offer");
