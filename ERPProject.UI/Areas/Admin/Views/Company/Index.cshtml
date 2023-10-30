@@ -1,23 +1,48 @@
-﻿@model List<ERPProject.Entity.DTO.CompanyDTO.CompanyDTOResponse>
+
+﻿@model List<ERPProject.Entity.DTO.CompanyDTO.CompanyDTOResponse> 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Şirketler";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.Id</td>
-                <td></td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2 style="text-align:center;">Şirketler</h2>
+<div class="container" style="width: 80%;">
+    <div class="input-group input-group-lg">
+        <button class="btn btn-primary" onclick="alert('Şirket Eklenecek')">Şirket Ekle</button>
+        <input type="text" class="form-control" placeholder="Arama Yap...">
+        <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @for (var index = 0; index < Model.Count; index++)
+    {
+        <div>
+            <div class="card">
+                <div class="card-front">
+                    <div class="col " style="position: absolute;top: 0;left: 0;">
+                        <div class="btn-group">
+                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                ...
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Düzenle</a></li>
+                                <li><a class="dropdown-item" href="#">Departman Ekle</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Sil</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <img src="~/Admin/img/ahlatci.jpg" class="card-img-top" alt="ahlatcilogo" style="height:350px!important;">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model[index].Name</h5>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h1>Departmanlar</h1>
+                </div>
+            </div>
+            <button class="flip-button col col-md-6" style="width:100%;" onclick="flipCard(@index)">Departmanlar</button>
+        </div>
+    }
+</div>
+
