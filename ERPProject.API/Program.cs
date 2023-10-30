@@ -17,6 +17,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 //builder.Services.AddHttpContextAccessor();
 //builder.Services.AddDbContext<ERPContext>();
 //builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
@@ -30,6 +31,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 //builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 //builder.Services.AddScoped<IBrandService, BrandManager>();
+
 
 var app = builder.Build();
 

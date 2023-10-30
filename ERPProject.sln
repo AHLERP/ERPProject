@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPProject.Business", "ERPP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPProject.API", "ERPProject.API\ERPProject.API.csproj", "{DFDC3784-2734-432E-B328-09ECE52BD992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPProject.UI", "ERPProject.UI\ERPProject.UI.csproj", "{3B337924-D16B-4245-B56C-B092FCE7AD1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPProject.UI", "ERPProject.UI\ERPProject.UI.csproj", "{3B337924-D16B-4245-B56C-B092FCE7AD1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -30,7 +30,8 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
-        [HttpPost("/RemoveUser/{userId}")]
+        [HttpDelete("/RemoveUser/{userId}")]
+
         public async Task<IActionResult> RemoveUser(long id)
         {
             User user = await _userService.GetAsync(x=>x.Id == id);
