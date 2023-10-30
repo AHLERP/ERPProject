@@ -3,29 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class DepartmentController : BaseController
     {
-        private readonly string url = "";
+        private readonly string url = "https://localhost:7075/";
         public DepartmentController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
         {
 
         }
-        [HttpGet]
+        [HttpGet("/Admin/Departmanlar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<DepartmentDTOResponse>(url);
+            var val = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             return View(val);
         }
-        [HttpGet]
+        [HttpGet("/Admin/Departman")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<DepartmentDTOResponse>(url + id);
+            var val = await GetAsync<DepartmentDTOResponse>(url + "GetDepartment/" + id);
             return View(val);
         }
-        [HttpPost]
+        [HttpPost("/Admin/DepartmanEkle")]
         public async Task<IActionResult> Add(DepartmentDTORequest p)
         {
-            var response = await AddAsync(p, url);
+            var response = await AddAsync(p, url + "AddDepartment");
             if (response)
             {
                 return RedirectToAction("Index", "Department");
@@ -34,10 +35,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/Admin/DepartmanGuncelle")]
         public async Task<IActionResult> Update(DepartmentDTORequest p)
         {
-            var response = await UpdateAsync(p, url);
+            var response = await UpdateAsync(p, url + "UpdateDepartment");
             if (response)
             {
                 return RedirectToAction("Index", "Department");
@@ -46,10 +47,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/Admin/DepartmanSil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + id);
+            var response = await DeleteAsync(url + "RemoveDepartment/" + id);
             if (response)
             {
                 return RedirectToAction("Index", "Department");
