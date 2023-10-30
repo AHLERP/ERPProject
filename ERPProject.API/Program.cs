@@ -19,6 +19,14 @@ builder.Services.AddDbContext<ERPContext>();
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 builder.Services.AddScoped<ICompanyService,CompanyManager>();
 builder.Services.AddScoped<IDepartmentService,DepartmentManager>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
+builder.Services.AddScoped<IStockDetailService, StockDetailManager>();
+builder.Services.AddScoped<IOfferService, OfferManager>();
+builder.Services.AddScoped<IUserRoleService, UserRoleManager>();
+builder.Services.AddScoped<IUserService, UserManager>();
+builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
+builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
+builder.Services.AddScoped<IBrandService, BrandManager>();
 
 var app = builder.Build();
 

@@ -3,29 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
+    [Area("Admin")]
     public class CompanyController : BaseController
     {
-        private readonly string url = "";
+        private readonly string url = "https://localhost:7075/";
         public CompanyController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
         {
 
         }
-        [HttpGet]
+        [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<CompanyDTOResponse>(url);
+            var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             return View(val);
         }
-        [HttpGet]
+        [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<CompanyDTOResponse>(url + id);
+            var val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
             return View(val);
         }
-        [HttpPost]
-        public async Task<IActionResult> Add(CompanyDTORequest p)
+        [HttpPost("/Admin/SirketEkle")]
+        public async Task<IActionResult> AddCompany(CompanyDTORequest p)
         {
-            var response = await AddAsync(p, url);
+            var response = await AddAsync(p, url + "AddCompany");
             if (response)
             {
                 return RedirectToAction("Index", "Company");
@@ -34,10 +35,11 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
-            var response = await UpdateAsync(p, url);
+            p.Id = 1;
+            var response = await UpdateAsync(p, url + "UpdateCompany");
             if (response)
             {
                 return RedirectToAction("Index", "Company");
@@ -46,10 +48,11 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/Admin/SirketSil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url+id);
+            id = 3;
+            var response = await DeleteAsync(url + "RemoveCompany/" + id);
             if (response)
             {
                 return RedirectToAction("Index", "Company");
