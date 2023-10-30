@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -22,7 +24,9 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddBrand")]
+
         [ValidationFilter(typeof(BrandValidator))]
+
         public async Task<IActionResult> AddBrand(BrandDTORequest brandDTORequest)
         {
             Brand brand = _mapper.Map<Brand>(brandDTORequest);

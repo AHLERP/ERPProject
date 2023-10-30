@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    [Migration("20231027143926_migE25")]
-    partial class migE25
+    [Migration("20231030142523_m252")]
+    partial class m252
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -918,10 +918,10 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
                 {
                     b.HasOne("ERPProject.Entity.Poco.Department", "Department")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_User_Department");
 
                     b.HasOne("ERPProject.Entity.Poco.Role", "Role")
                         .WithMany()
@@ -970,6 +970,11 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Invoices");
 
                     b.Navigation("Stocks");
+                });
+
+            modelBuilder.Entity("ERPProject.Entity.Poco.Department", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>

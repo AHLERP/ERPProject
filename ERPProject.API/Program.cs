@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.Concrete;
 using ERPProject.DataAccess.Abstract.DataManagement;
@@ -15,11 +17,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ERPContext>();
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-builder.Services.AddScoped<ICompanyService,CompanyManager>();
-builder.Services.AddScoped<IDepartmentService,DepartmentManager>();
+builder.Services.AddScoped<ICompanyService, CompanyManager>();
+builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddScoped<IStockDetailService, StockDetailManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
@@ -30,7 +33,13 @@ builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
 builder.Services.AddFluentValidationAutoValidation();
 
+
 var app = builder.Build();
+
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
