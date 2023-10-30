@@ -3,29 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
+    [Area("User")]
     public class CategoryController : BaseController
     {
-        private readonly string url = "";
+        private readonly string url = "https://localhost:7075/";
         public CategoryController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
         {
 
         }
-        [HttpGet]
+        [HttpGet("/User/Kategoriler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<CategoryDTOResponse>(url);
+            var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
             return View(val);
         }
-        [HttpGet]
+        [HttpGet("/User/Kategori")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<CategoryDTOResponse>(url + id);
+            var val = await GetAsync<CategoryDTOResponse>(url + "GetCategory/" + id);
             return View(val);
         }
-        [HttpPost]
+        [HttpPost("/User/KategoriEkle")]
         public async Task<IActionResult> Add(CategoryDTORequest p)
         {
-            var response = await AddAsync(p, url);
+            var response = await AddAsync(p, url + "AddCategory");
             if (response)
             {
                 return RedirectToAction("Index", "Category");
@@ -34,10 +35,10 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/User/KategoriGuncelle")]
         public async Task<IActionResult> Update(CategoryDTORequest p)
         {
-            var response = await UpdateAsync(p, url);
+            var response = await UpdateAsync(p, url + "UpdateCategory");
             if (response)
             {
                 return RedirectToAction("Index", "Category");
@@ -46,10 +47,10 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
+        [HttpPost("/User/KategoriSil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + id);
+            var response = await DeleteAsync(url + "RemoveCategory/" + id);
             if (response)
             {
                 return RedirectToAction("Index", "Category");

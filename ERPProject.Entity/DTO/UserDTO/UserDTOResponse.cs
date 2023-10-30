@@ -9,7 +9,5 @@ namespace ERPProject.Entity.DTO.UserDTO
     public class UserDTOResponse:UserDTOBase
     {
         public string DepartmentName { get; set; }
-
-        public string RoleName { get; set; }
     }
 }

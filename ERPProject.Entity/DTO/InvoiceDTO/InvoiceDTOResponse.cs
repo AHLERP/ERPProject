@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ERPProject.Entity.DTO.InvoiceDTO
+{
+    public class InvoiceDTOResponse : InvoiceDTOBase
+    {
+        public string SupplierName { get; set; }
+        public string CompanyName { get; set; }
+        public string ProductName { get; set; }
+    }
+}

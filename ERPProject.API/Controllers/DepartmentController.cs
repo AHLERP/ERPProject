@@ -34,10 +34,10 @@ namespace ERPProject.API.Controllers
         }
 
 
-        [HttpPost("/RemoveDepartment/{id}")]
-        public async Task<IActionResult> RemoveDepartment(int id)
+        [HttpPost("/RemoveDepartment/{departmentId}")]
+        public async Task<IActionResult> RemoveDepartment(int departmentId)
         {
-            Department department = await _departmentService.GetAsync(x=>x.Id == id);
+            Department department = await _departmentService.GetAsync(x=>x.Id == departmentId);
 
             if (department == null)
             {
@@ -67,10 +67,10 @@ namespace ERPProject.API.Controllers
         }
 
 
-        [HttpGet("/GetDepartment/{id}")]
-        public async Task<IActionResult> GetDepartment(int id)
+        [HttpGet("/GetDepartment/{departmentId}")]
+        public async Task<IActionResult> GetDepartment(int departmentId)
         {
-            Department department = await _departmentService.GetAsync(x => x.Id == id,"Company");
+            Department department = await _departmentService.GetAsync(x => x.Id == departmentId, "Company");
 
             if (department == null)
             {
@@ -98,10 +98,10 @@ namespace ERPProject.API.Controllers
         }
 
 
-        [HttpGet("/GetDepartmentsByCompany/{id}")]
-        public async Task<IActionResult> GetDepartments(int id)
+        [HttpGet("/GetDepartmentsByCompany/{companyId}")]
+        public async Task<IActionResult> GetDepartments(int companyId)
         {
-            var departments = await _departmentService.GetAllAsync(x => x.IsActive == true && x.CompanyId == id , "Company");
+            var departments = await _departmentService.GetAllAsync(x => x.IsActive == true && x.CompanyId == companyId, "Company");
 
             if (departments == null)
             {

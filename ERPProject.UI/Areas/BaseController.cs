@@ -17,7 +17,7 @@ namespace ERPProject.UI.Areas
         protected async Task<bool> UpdateAsync<T>(T p, string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
+            client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PutAsync(url, stringContent);
@@ -32,7 +32,7 @@ namespace ERPProject.UI.Areas
         protected async Task<bool> AddAsync<T>(T p, string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
+            client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PostAsync(url, stringContent);
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas
         protected async Task<bool> DeleteAsync(string url)
         {
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
+            client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
             var responserMessage = await client.DeleteAsync(url);
 
             if (responserMessage.IsSuccessStatusCode)
@@ -60,7 +60,7 @@ namespace ERPProject.UI.Areas
         protected async Task<Sonuc<List<T>>> GetAllAsync<T>(string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
+            client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
             var responserMessage = await client.GetAsync(url);
             if (responserMessage.IsSuccessStatusCode)
             {
@@ -74,7 +74,7 @@ namespace ERPProject.UI.Areas
         protected async Task<Sonuc<List<T>>> GetAsync<T>(string url) where T : class
         {
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Header", "Bearer" + HttpContext.Session.GetString("Token"));
+            client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
             var responserMessage = await client.GetAsync(url);
             if (responserMessage.IsSuccessStatusCode)
             {
