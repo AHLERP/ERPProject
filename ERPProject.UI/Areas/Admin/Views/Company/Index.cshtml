@@ -1,0 +1,23 @@
+﻿@model List<ERPProject.Entity.DTO.CompanyDTO.CompanyDTOResponse>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Id</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
