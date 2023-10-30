@@ -1,5 +1,6 @@
 ﻿using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 
 namespace ERPProject.UI.Areas.Admin.Models.User
@@ -16,9 +17,10 @@ namespace ERPProject.UI.Areas.Admin.Models.User
         public string Phone { get; set; } = null!;
         public string Password { get; set; } = null!;
 
-        public virtual ICollection<RequestDTOResponse> Request { get; set; } = new List<RequestDTOResponse>();
-        public virtual ICollection<DepartmentDTOResponse> Department { get; set; } = new List<DepartmentDTOResponse>();
-        public virtual ICollection<Role> Role { get; set; } = new List<Role>();//DTO Response ile değiştir
+        public virtual ICollection<UserDTOResponse> Users { get; set; } = new List<UserDTOResponse>();
+        public virtual ICollection<RequestDTOResponse> Requests { get; set; } = new List<RequestDTOResponse>();
+        public virtual ICollection<DepartmentDTOResponse> Departments { get; set; } = new List<DepartmentDTOResponse>();
+        public virtual ICollection<Role> Roles { get; set; } = new List<Role>();//DTO Response ile değiştir
 
     }
 }
