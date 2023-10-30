@@ -11,7 +11,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
-        [HttpGet("/Admin/Stokdetayları")]
+        [HttpGet("/Admin/StokDetaylar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<StockDetailDTOResponse>(url + "GetStockDetails");

@@ -11,7 +11,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
-        [HttpGet("/Admin/KullaniciRolleri")]
+        [HttpGet("/Admin/KullaniciRoller")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<UserRoleDTOResponse>(url + "GetUserRoles");
