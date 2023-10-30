@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Aspects\" />
     <Folder Include="UI\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>
