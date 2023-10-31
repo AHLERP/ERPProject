@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< Updated upstream
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\" />
+=======
+    <Folder Include="Areas\Account\Models\" />
+>>>>>>> Stashed changes
     <Folder Include="Areas\User\Models\" />
     <Folder Include="Areas\User\Views\" />
   </ItemGroup>
