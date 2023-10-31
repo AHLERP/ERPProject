@@ -1,27 +1,20 @@
-@using ERPProject.UI.Areas.Admin.Models;
-@* @model List<ERPProject.Entity.DTO.CompanyDTO.CompanyDTOResponse>  *@
-@model CompanyVM
+@model List<ERPProject.Entity.DTO.CompanyDTO.CompanyDTOResponse> 
 @{
     ViewData["Title"] = "Şirketler";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
 <h2 style="text-align:center;">Şirketler</h2>
-<div class="container mb-2" style="width: 80%;">
+<div class="container" style="width: 80%;">
     <div class="input-group input-group-lg">
-        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Şirket Ekle
-        </button>
+        <button class="btn btn-primary" onclick="alert('Şirket Eklenecek')">Şirket Ekle</button>
         <input type="text" class="form-control" placeholder="Arama Yap...">
         <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
     </div>
 </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    @{
-        int i = 0;
-    }
-    @foreach (var item in Model.Companies)
+    @for (var index = 0; index < Model.Count; index++)
     {
-        
         <div>
             <div class="card">
                 <div class="card-front">
@@ -32,126 +25,23 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Düzenle</a></li>
-                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id">Departman Ekle</a></li>
+                                <li><a class="dropdown-item" href="#">Departman Ekle</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" onclick="confirmDelete(@item.Id)">Sil</a></li>
-
+                                <li><a class="dropdown-item text-danger" href="#">Sil</a></li>
                             </ul>
                         </div>
                     </div>
+                    <img src="~/Admin/img/ahlatci.jpg" class="card-img-top" alt="ahlatcilogo" style="height:350px!important;">
                     <div class="card-body">
-                        <img src="~/Admin/img/ahlatci.jpg" class="card-img-top" alt="ahlatcilogo" style="height:350px!important;">
-                        <h5 class="card-title">@item.Name</h5>
+                        <h5 class="card-title">@Model[index].Name</h5>
                     </div>
-                    
                 </div>
-                <div class="card-back" style="max-height: 395px; overflow-y: auto;">
-
-                    <table class="table table-hover table-success table-striped" style="min-width:375px; min-height:375px;">
-                        <thead>
-                            <tr>
-                                <th scope="col">Departmanlar</th>
-                                <th scope="col">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var dd in Model.Departments)
-                            {
-                                if (dd.CompanyId==item.Id)
-                                {
-                                    <tr>
-                                        <td>@dd.Name</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    İşlemler
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                    <li><hr class="dropdown-divider text-danger"></li>
-                                                    <li><a class="dropdown-item text-danger" onclick="confirmDepartmentDelete(@dd.Id)">Sil</a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
+                <div class="card-back">
+                    <h1>Departmanlar</h1>
                 </div>
             </div>
-            <button class="flip-button col col-md-6" style="width:100%;" onclick="flipCard(@i)">Departmanlar</button>
+            <button class="flip-button col col-md-6" style="width:100%;" onclick="flipCard(@index)">Departmanlar</button>
         </div>
-        i++;
     }
 </div>
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Şirket Ekle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="/Admin/SirketEkle" method="post">
-                <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Şirket İsmi</span>
-                        <input type="text" class="form-control" placeholder="Şirket İsmi..." id="inputSirketAd" name="Name" aria-describedby="basic-addon1">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                    <button type="submit" class="btn btn-primary">Kaydet</button>
 
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static1" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Departman Ekle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="/Admin/DepartmanEkle" method="post">
-                <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <input type="hidden" class="form-control" id="inputSirketId" name="CompanyId" value="" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Departman İsmi</span>
-                        <input type="text" class="form-control" placeholder="Departman İsmi..." id="inputDepartmanAd" name="Name" aria-describedby="basic-addon1">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                    <button type="submit" class="btn btn-primary">Kaydet</button>
-
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<script>
-    function confirmDelete(id) {
-        var result = confirm("Bu şirketi silmek istediğinizden emin misiniz?");
-        if (result) {
-            window.location.href = '/Admin/SirketSil/' + id;
-        }
-    }
-    function confirmDepartmentDelete(id) {
-        var result = confirm("Bu departmanı silmek istediğinizden emin misiniz?");
-        if (result) {
-            window.location.href = '/Admin/DepartmanSil/' + id;
-        }
-    }
-    $('#staticBackdrop1').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var CompanyId = button.data('id');
-        $("#inputSirketId").val(CompanyId);
-    });
-</script>
