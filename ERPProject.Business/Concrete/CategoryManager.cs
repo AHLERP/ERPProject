@@ -18,16 +18,17 @@ namespace ERPProject.Business.Concrete
         {
             _uow = uow;
         }
-        public Category Add(Category Entity)
+
+        public async Task<Category> AddAsync(Category Entity)
         {
-            _uow.CategoryRepository.Add(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.CategoryRepository.AddAsync(Entity);
+            await _uow.SaveChangeAsync();
             return Entity;
         }
 
         public async Task<IEnumerable<Category>> GetAllAsync(Expression<Func<Category, bool>> Filter = null, params string[] IncludeProperties)
         {
-            return await _uow.CategoryRepository.GetAllAsync(Filter, IncludeProperties);
+           return await _uow.CategoryRepository.GetAllAsync(Filter, IncludeProperties);
         }
 
         public async Task<Category> GetAsync(Expression<Func<Category, bool>> Filter, params string[] IncludeProperties)
@@ -35,17 +36,16 @@ namespace ERPProject.Business.Concrete
             return await _uow.CategoryRepository.GetAsync(Filter, IncludeProperties);
         }
 
-        public void Remove(Category Entity)
+        public async Task RemoveAsync(Category Entity)
         {
-            _uow.CategoryRepository.Remove(Entity);
-            _uow.SaveChangeAsync();
+            await _uow.CategoryRepository.RemoveAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
 
-        public Category Update(Category Entity)
+        public async Task UpdateAsync(Category Entity)
         {
-            _uow.CategoryRepository.Update(Entity);
-            _uow.SaveChangeAsync();
-            return Entity;
+            await _uow.CategoryRepository.UpdateAsync(Entity);
+            await _uow.SaveChangeAsync();
         }
     }
 }

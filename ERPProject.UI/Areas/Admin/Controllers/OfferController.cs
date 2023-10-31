@@ -17,13 +17,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
             return View(val);
         }
-        //[HttpGet("/Admin/Sirket")]
+        [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
             return View(val);
         }
-        //[HttpPost("/Admin/SirketEkle")]
+        [HttpPost("/Admin/SirketEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
             var response = await AddAsync(p, url + "AddOffer");
@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        //[HttpPost("/Admin/SirketGuncelle")]
+        [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(OfferDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateOffer");
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        //[HttpPost("/Admin/SirketSil")]
+        [HttpPost("/Admin/SirketSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveOffer/" + id);
