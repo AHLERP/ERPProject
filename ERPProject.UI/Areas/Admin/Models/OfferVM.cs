@@ -1,14 +1,12 @@
 ﻿using ERPProject.Entity.DTO.CompanyDTO;
-using ERPProject.Entity.DTO.DepartmentDTO;
-
+using ERPProject.Entity.DTO.OfferDTO;
 
 namespace ERPProject.UI.Areas.Admin.Models
 {
-    public class CompanyVM
+    public class OfferVM
     {
         public virtual ICollection<CompanyDTOResponse> Companies { get; set; } = new List<CompanyDTOResponse>();
-
-        public virtual ICollection<DepartmentDTOResponse> Departments { get; set; } = new List<DepartmentDTOResponse>();
+        public virtual ICollection<OfferDTOResponse> Offers { get; set; } = new List<OfferDTOResponse>();
 
     }
 }
