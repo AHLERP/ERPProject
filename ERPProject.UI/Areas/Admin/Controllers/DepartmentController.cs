@@ -29,7 +29,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var response = await AddAsync(p, url + "AddDepartment");
             if (response)
             {
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
             return RedirectToAction("Index", "Home");
@@ -47,14 +47,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/DepartmanSil")]
+        [HttpGet("/Admin/DepartmanSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveDepartment/" + id);
             if (response)
             {
-                return RedirectToAction("Index", "Department");
-
+                return RedirectToAction("Index", "Company");
             }
             return RedirectToAction("Index", "Home");
 
