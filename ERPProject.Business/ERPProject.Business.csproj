@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ERPProject.Core\ERPProject.Core.csproj" />
     <ProjectReference Include="..\ERPProject.DataAccess\ERPProject.DataAccess.csproj" />
+    <ProjectReference Include="..\ERPProject.Entity\ERPProject.Entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
