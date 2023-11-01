@@ -13,6 +13,7 @@ public partial class User : BaseEntity
 
     public int RolId { get; set; }
 
+    public virtual Role Role { get; set; } = null!;
     public string Name { get; set; } = null!;
 
     public string LastName { get; set; } = null!;

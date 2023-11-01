@@ -2,9 +2,8 @@
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.UserDTO;
-using ERPProject.Entity.Poco;
 
-namespace ERPProject.UI.Areas.Admin.Models
+namespace ERPProject.UI.Areas.User.Models
 {
     public class UserVM
     {
