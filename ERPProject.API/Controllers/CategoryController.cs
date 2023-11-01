@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CategoryDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -22,6 +24,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddCategory")]
+        [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> AddCategory(CategoryDTORequest categoryDTORequest)
         {
             Category category = _mapper.Map<Category>(categoryDTORequest);
@@ -44,6 +47,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateCategory")]
+        [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> UpdateCategory(CategoryDTORequest categoryDTORequest)
         {
             Category category = await _categoryService.GetAsync(x => x.Id == categoryDTORequest.Id);

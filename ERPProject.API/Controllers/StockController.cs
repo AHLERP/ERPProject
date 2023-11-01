@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ERPProject.API.Controllers
 {
@@ -52,6 +55,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddStock")]
+        [ValidationFilter(typeof(StockValidator))]
         public async Task<IActionResult> AddStock(StockDTORequest stockDTORequest)
         {
             var stock = _mapper.Map<Stock>(stockDTORequest);
@@ -61,6 +65,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateStock")]
+        [ValidationFilter(typeof(StockValidator))]
         public async Task<IActionResult> UpdateStock(StockDTORequest stockDTORequest)
         {
             var stock = await _stockService.GetAsync(e=>e.Id== stockDTORequest.Id);

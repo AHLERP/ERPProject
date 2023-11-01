@@ -24,9 +24,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddBrand")]
-
         [ValidationFilter(typeof(BrandValidator))]
-
         public async Task<IActionResult> AddBrand(BrandDTORequest brandDTORequest)
         {
             Brand brand = _mapper.Map<Brand>(brandDTORequest);
@@ -49,6 +47,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateBrand")]
+        [ValidationFilter(typeof(BrandValidator))]
         public async Task<IActionResult> UpdateBrand(BrandDTORequest brandDTORequest)
         {
             Brand brand = await _brandService.GetAsync(x => x.Id == brandDTORequest.Id);
