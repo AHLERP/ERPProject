@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -22,6 +24,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddOffer")]
+        [ValidationFilter(typeof(OfferValidator))]
         public async Task<IActionResult> AddOffer(OfferDTORequest offerDTORequest)
         {
             Offer offer = _mapper.Map<Offer>(offerDTORequest);
@@ -44,6 +47,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateOffer")]
+        [ValidationFilter(typeof(OfferValidator))]
         public async Task<IActionResult> UpdateOffer(OfferDTORequest offerDTORequest)
         {
             Offer offer = await _offerService.GetAsync(x => x.Id == offerDTORequest.Id);

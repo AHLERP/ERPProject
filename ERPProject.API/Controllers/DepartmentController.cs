@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -21,7 +23,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddDepartment")]
-
+        [ValidationFilter(typeof(DepartmentValidator))]
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = _mapper.Map<Department>(departmentDTORequest);
@@ -50,6 +52,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateDepartment")]
+        [ValidationFilter(typeof(DepartmentValidator))]
         public async Task<IActionResult> UpdateDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = await _departmentService.GetAsync(x=>x.Id == departmentDTORequest.Id);

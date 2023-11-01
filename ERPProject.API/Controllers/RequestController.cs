@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -39,6 +41,7 @@ namespace ERPProject.API.Controllers
             
         }
         [HttpPost("/UpdateRequest")]
+        [ValidationFilter(typeof(RequestValidator))]
         public async Task<IActionResult> UpdateRequest(RequestDTORequest requestDTORequest)
         {
             var request = await _requestService.GetAsync(e => e.Id == requestDTORequest.Id);
@@ -71,6 +74,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddRequest")]
+        [ValidationFilter(typeof(RequestValidator))]
         public async Task<IActionResult> AddRequest(RequestDTORequest requestDTORequest)
         {
             var request = _mapper.Map<Request>(requestDTORequest);

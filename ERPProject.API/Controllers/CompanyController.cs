@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -21,7 +23,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddCompany")]
-
+        [ValidationFilter(typeof(CompanyValidator))]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
@@ -49,6 +51,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateCompany")]
+        [ValidationFilter(typeof(CompanyValidator))]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = await _companyService.GetAsync(x=>x.Id == companyDTORequest.Id);

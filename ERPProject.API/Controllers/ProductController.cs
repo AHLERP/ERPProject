@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.ProductDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -22,6 +24,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddProduct")]
+        [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> AddProduct(ProductDTORequest productDTORequest)
         {
             Product product = _mapper.Map<Product>(productDTORequest);
@@ -44,6 +47,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateProduct")]
+        [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> UpdateProduct(ProductDTORequest productDTORequest)
         {
             Product product = await _productService.GetAsync(x=>x.Id == productDTORequest.Id);
