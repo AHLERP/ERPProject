@@ -2,10 +2,12 @@
 using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -32,6 +34,8 @@ namespace ERPProject.API.Controllers
 
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
 
+            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponse);
+
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
 
@@ -47,6 +51,8 @@ namespace ERPProject.API.Controllers
             }
             
             await _departmentService.RemoveAsync(department);
+
+            Log.Information("Departments => {@department}", department);
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithoutData());
         }
@@ -66,6 +72,9 @@ namespace ERPProject.API.Controllers
 
 
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
+
+            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponse);
+
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
 
@@ -80,6 +89,9 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());
             }
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
+
+            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponse);
+
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
 
@@ -97,6 +109,9 @@ namespace ERPProject.API.Controllers
             {
                 departmentDTOResponseList.Add(_mapper.Map<DepartmentDTOResponse>(department));
             }
+
+            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponseList);
+
             return Ok(Sonuc<List<DepartmentDTOResponse>>.SuccessWithData(departmentDTOResponseList));
         }
 
@@ -116,6 +131,9 @@ namespace ERPProject.API.Controllers
             {
                 departmentDTOResponseList.Add(_mapper.Map<DepartmentDTOResponse>(department));
             }
+
+            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponseList);
+
             return Ok(Sonuc<List<DepartmentDTOResponse>>.SuccessWithData(departmentDTOResponseList));
         }
     }

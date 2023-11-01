@@ -6,6 +6,7 @@ using ERPProject.DataAccess.Abstract.DataManagement;
 using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using ERPProject.DataAccess.Concrete.EntityFramework.DataManagement;
 using FluentValidation.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("logs/myLog-.txt",rollingInterval:RollingInterval.Day)
+    .CreateLogger();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ERPContext>();
