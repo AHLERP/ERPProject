@@ -36,7 +36,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
             StockRepository = new EfStockRepository(_context);
             StockDetailRepository = new EfStockDetailRepository(_context);
             UserRepository = new EfUserRepository(_context);
-            UserRoleRepository = new EfUserRoleRepository(_context);
         }
 
         public IBrandRepository BrandRepository { get; }
@@ -65,7 +64,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
 
         public IUserRepository UserRepository { get; }
 
-        public IUserRoleRepository UserRoleRepository { get; }
+
 
 
         

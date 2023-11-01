@@ -89,7 +89,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
-        [HttpGet("GetUsers")]
+        [HttpGet("/GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userService.GetAllAsync(x=>x.IsActive==true,"Department","Role");
