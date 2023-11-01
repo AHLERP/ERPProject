@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.DTO.UserRoleDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -27,6 +29,9 @@ namespace ERPProject.API.Controllers
             await _userRoleService.AddAsync(userRole);
 
             UserRoleDTOResponse userRoleDTOResponse = _mapper.Map<UserRoleDTOResponse>(userRole);
+
+            Log.Information("UserRoles => {@userRoleDTOResponse}", userRoleDTOResponse);
+
             return Ok(Sonuc<UserRoleDTOResponse>.SuccessWithData(userRoleDTOResponse));
         }
 
@@ -44,6 +49,8 @@ namespace ERPProject.API.Controllers
             {
                 userRoleDTOResponseList.Add(_mapper.Map<UserRoleDTOResponse>(userRole));
             }
+
+            Log.Information("UserRoles => {@userRoleDTOResponse}", userRoleDTOResponseList);
 
             return Ok(Sonuc<List<UserRoleDTOResponse>>.SuccessWithData(userRoleDTOResponseList));
         }
@@ -63,6 +70,8 @@ namespace ERPProject.API.Controllers
                 userRoleDTOResponseList.Add(_mapper.Map<UserRoleDTOResponse>(userRole));
             }
 
+            Log.Information("UserRoles => {@userRoleDTOResponse}", userRoleDTOResponseList);
+
             return Ok(Sonuc<List<UserRoleDTOResponse>>.SuccessWithData(userRoleDTOResponseList));
         }
 
@@ -80,6 +89,8 @@ namespace ERPProject.API.Controllers
             {
                 userRoleDTOResponseList.Add(_mapper.Map<UserRoleDTOResponse>(userRole));
             }
+
+            Log.Information("UserRoles => {@userRoleDTOResponse}", userRoleDTOResponseList);
 
             return Ok(Sonuc<List<UserRoleDTOResponse>>.SuccessWithData(userRoleDTOResponseList));
         }

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ERPProject.API.Controllers
@@ -29,6 +31,9 @@ namespace ERPProject.API.Controllers
             await _invoiceService.AddAsync(invoice);
 
             InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
+
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponse);
+
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
         [HttpDelete("/RemoveInvoice/{invoiceId}")]
@@ -41,6 +46,9 @@ namespace ERPProject.API.Controllers
             }
 
             await _invoiceService.RemoveAsync(invoice);
+
+            Log.Information("Invoices => {@invoice}", invoice);
+
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithoutData());
         }
 
@@ -56,6 +64,9 @@ namespace ERPProject.API.Controllers
             await _invoiceService.UpdateAsync(invoice);
 
             InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
+
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponse);
+
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
 
@@ -69,6 +80,9 @@ namespace ERPProject.API.Controllers
             }
 
             InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
+
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponse);
+
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
 
@@ -86,6 +100,8 @@ namespace ERPProject.API.Controllers
             {
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
+
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
@@ -105,6 +121,8 @@ namespace ERPProject.API.Controllers
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
 
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
+
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
         [HttpGet("/GetInvoicesByCompany/{companyId}")]
@@ -122,6 +140,8 @@ namespace ERPProject.API.Controllers
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
 
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
+
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
         [HttpGet("/GetInvoicesByProduct/{productId}")]
@@ -138,6 +158,8 @@ namespace ERPProject.API.Controllers
             {
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
+
+            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }

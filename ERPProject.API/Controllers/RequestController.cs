@@ -2,10 +2,12 @@
 using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.ProductDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -37,6 +39,9 @@ namespace ERPProject.API.Controllers
             {
                 requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
             }
+
+            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponseList);
+
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
             
         }
@@ -54,6 +59,9 @@ namespace ERPProject.API.Controllers
             await _requestService.UpdateAsync(request);
 
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
+
+            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponse);
+
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 
         }
@@ -69,6 +77,8 @@ namespace ERPProject.API.Controllers
 
             await _requestService.RemoveAsync(request);
 
+            Log.Information("Requests => {@request}", request);
+
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithoutData());
 
         }
@@ -82,6 +92,7 @@ namespace ERPProject.API.Controllers
             await _requestService.AddAsync(request);
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
 
+            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponse);
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 
 
@@ -102,6 +113,8 @@ namespace ERPProject.API.Controllers
             {
                 requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
             }
+
+            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponseList);
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
         }
@@ -115,6 +128,9 @@ namespace ERPProject.API.Controllers
             }
 
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
+
+
+            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponse);
 
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 
