@@ -2,7 +2,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.Concrete;
-using ERPProject.Business.DependencyResolvers.Autofac;
 using ERPProject.DataAccess.Abstract.DataManagement;
 using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using ERPProject.DataAccess.Concrete.EntityFramework.DataManagement;
@@ -25,36 +24,25 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/myLog-.txt",rollingInterval:RollingInterval.Day)
     .CreateLogger();
 
-//builder.Services.AddHttpContextAccessor();
-//builder.Services.AddDbContext<ERPContext>();
-//builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-//builder.Services.AddScoped<ICompanyService,CompanyManager>();
-//builder.Services.AddScoped<IDepartmentService,DepartmentManager>();
-//builder.Services.AddScoped<ICategoryService, CategoryManager>();
-//builder.Services.AddScoped<IStockDetailService, StockDetailManager>();
-//builder.Services.AddScoped<IOfferService, OfferManager>();
-//builder.Services.AddScoped<IUserRoleService, UserRoleManager>();
-//builder.Services.AddScoped<IUserService, UserManager>();
-//builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
-//builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
-//builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDbContext<ERPContext>();
+builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+builder.Services.AddScoped<ICompanyService, CompanyManager>();
+builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
+builder.Services.AddScoped<IStockDetailService, StockDetailManager>();
+builder.Services.AddScoped<IOfferService, OfferManager>();
+builder.Services.AddScoped<IUserRoleService, UserRoleManager>();
+builder.Services.AddScoped<IUserService, UserManager>();
+builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
+builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
+builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddFluentValidationAutoValidation();
 
 
 var app = builder.Build();
 
 
-//AutofacBusinessModule
-static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-    .ConfigureContainer<ContainerBuilder>(builder =>
-    {
-        builder.RegisterModule(new AutofacBusinessModule());
-    })
-    .ConfigureWebHostDefaults(webBuilder =>
-    {
-        webBuilder.UseStartup<StartupBase>();
-    });
-//
 
 
 
@@ -67,7 +55,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
 app.UseAuthorization();
 
 app.MapControllers();
