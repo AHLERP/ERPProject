@@ -32,11 +32,11 @@ builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddScoped<IStockDetailService, StockDetailManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
-builder.Services.AddScoped<IUserRoleService, UserRoleManager>();
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddFluentValidationAutoValidation();
 
 
