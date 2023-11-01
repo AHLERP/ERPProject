@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.Poco;
@@ -56,6 +58,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddRole")]
+        [ValidationFilter(typeof(RoleValidator))]
         public async Task<IActionResult> AddRole(RoleDTORequest roleDTORequest)
         {
 
@@ -67,6 +70,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateRole")]
+        [ValidationFilter(typeof(RoleValidator))]
         public async Task<IActionResult> UpdateRole(RoleDTORequest roleDTORequest)
         {
             Role role = await _roleService.GetAsync(e => e.Id == roleDTORequest.Id);

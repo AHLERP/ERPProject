@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
@@ -21,6 +23,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddUser")]
+        [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)
         {
             User user = _mapper.Map<User>(userDTORequest);
@@ -44,6 +47,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateUser")]
+        [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);
