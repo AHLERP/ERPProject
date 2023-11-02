@@ -11,79 +11,108 @@
 </head>
 <body>
     <header>
-        
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container-fluid">
-        <a class="navbar-brand" href="">Project.Web</a>
-        <div class="navbar-collapse collapse d-sm-inline-flex position-absolute top-50 start-50 translate-middle">
-        <h2> ERP PROJECT</h2>
-        </div>
-        </div>
-        </nav> 
 
-    </header>
-    <div class="container-fluid">
-    <div class="row d-flex">
-        <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2" style="background-color:rgb(33,37,41)">
-            <div class="d-flex flex-column  p-3 text-white" style="width: 250px;">
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home" /></svg>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
-                            Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
-                            Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle" /></svg>
-                            Customers
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                <div class="dropdown">
+        <nav class="navbar navbar-expand-sm fixed-top navbar-toggleable-sm navbar-dark bg-dark opacity-75">
+            <div class="container-fluid">
+                <button class="btn text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+                    ERP PROJE
+                    <i class="bi bi-arrow-down fs-3 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex position-absolute top-50 start-50 translate-middle">
+                </div>
+                <div class="dropdown" style="padding-right:19px;">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>mdo</strong>
+                        <strong>Bilal AYDOĞAN</strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">Profil</a></li>
+                        <li><a class="dropdown-item" href="#">Ayarlar</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Çıkış Yap</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+    </header>
+    <div class="offcanvas offcanvas-start w-25 bg-dark opacity-75" style="max-width:250px;" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
+        <div class="offcanvas-header">
+            <h6 class="offcanvas-title d-none d-sm-block text-light" id="offcanvas">Menu</h6>
+            <button type="button" class="btn-light text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body px-0">
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-truncate">
+                        <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-truncate">
+                        <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-truncate">
+                        <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fs-5 bi-bootstrap"></i><span class="ms-1 d-none d-sm-inline">Bootstrap</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdown">
                         <li><a class="dropdown-item" href="#">New project...</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="#">Sign out</a></li>
                     </ul>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-truncate">
+                        <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Products</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-truncate">
+                        <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Customers</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col min-vh-100 py-3">
+                <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="bi bi-arrow-up fs-3 text-light"></i></button>
+                <div class="container">
+                    @RenderBody()
                 </div>
             </div>
         </div>
-        <div class="col">
-            @RenderBody()
-        </div>
-    </div>
     </div>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-<style>
-    
-</style>
+<style></style>
+<script>
+    let mybutton = document.getElementById("myBtn");
+    window.onscroll = function () { scrollFunction() };
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script> 

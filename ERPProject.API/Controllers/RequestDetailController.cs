@@ -5,6 +5,7 @@ using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -30,6 +31,8 @@ namespace ERPProject.API.Controllers
 
             RequestDetailDTOResponse requestDetailDTOResponse = _mapper.Map<RequestDetailDTOResponse>(requestDetail);
 
+            Log.Information("RequestDetails => {@requestDetailDTOResponse}", requestDetailDTOResponse);
+
             return Ok(Sonuc<RequestDetailDTOResponse>.SuccessWithData(requestDetailDTOResponse));
 
         }
@@ -49,6 +52,8 @@ namespace ERPProject.API.Controllers
 
             RequestDetailDTOResponse requestDetailDTOResponse = _mapper.Map<RequestDetailDTOResponse>(requestDetail);
 
+            Log.Information("RequestDetails => {@requestDetailDTOResponse}", requestDetailDTOResponse);
+
             return Ok(Sonuc<RequestDetailDTOResponse>.SuccessWithData(requestDetailDTOResponse));
         }
 
@@ -65,6 +70,7 @@ namespace ERPProject.API.Controllers
             
             await _requestDetailService.RemoveAsync(requestDetail);
 
+            Log.Information("RequestDetails => {@requestDetail}", requestDetail);
 
             return Ok(Sonuc<RequestDetailDTOResponse>.SuccessWithoutData());
         }
@@ -86,6 +92,9 @@ namespace ERPProject.API.Controllers
             {
                 requestDTOResponseList.Add(_mapper.Map<RequestDetailDTOResponse>(requestDetail));
             }
+
+            Log.Information("RequestDetails => {@requestDetailDTOResponse}", requestDTOResponseList);
+
             return Ok(Sonuc<List<RequestDetailDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
         }
@@ -100,6 +109,8 @@ namespace ERPProject.API.Controllers
             }
             RequestDetailDTOResponse requestDTOResponse = _mapper.Map<RequestDetailDTOResponse>(requestDetail);
 
+
+            Log.Information("RequestDetails => {@requestDetailDTOResponse}", requestDTOResponse);
             return Ok(Sonuc<RequestDetailDTOResponse>.SuccessWithData(requestDTOResponse));
         }
         

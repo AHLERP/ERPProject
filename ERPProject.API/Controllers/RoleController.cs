@@ -3,11 +3,13 @@ using Azure.Core;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.RequestDetailDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -40,6 +42,8 @@ namespace ERPProject.API.Controllers
             {
                 roleDTOResponses.Add(_mapper.Map<RoleDTOResponse>(item));
             }
+
+            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponses);
             return Ok(Sonuc<List<RoleDTOResponse>>.SuccessWithData(roleDTOResponses));
 
         }
@@ -53,6 +57,9 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<RoleDTOResponse>.SuccessNoDataFound());
             }
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
+
+            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponse);
+
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
 
         }
@@ -65,6 +72,9 @@ namespace ERPProject.API.Controllers
             var role = _mapper.Map<Role>(roleDTORequest);
             await _roleService.AddAsync(role);
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
+
+            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponse);
+
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
 
         }
@@ -84,6 +94,9 @@ namespace ERPProject.API.Controllers
             await _roleService.UpdateAsync(role);
 
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
+
+            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponse);
+
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
         }
 
@@ -96,6 +109,9 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<RoleDTOResponse>.SuccessNoDataFound());
             }
             await _roleService.RemoveAsync(role);
+
+            Log.Information("Roles => {@role}", role);
+
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithoutData());
 
         }

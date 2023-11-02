@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
 using ERPProject.Entity.DTO.StockDetailDTO;
+using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -27,6 +29,9 @@ namespace ERPProject.API.Controllers
             await _stockDetailService.AddAsync(stockDetail);
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
 
@@ -42,6 +47,9 @@ namespace ERPProject.API.Controllers
             }
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
 
@@ -58,6 +66,9 @@ namespace ERPProject.API.Controllers
             await _stockDetailService.UpdateAsync(stockDetail);
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
 
@@ -71,6 +82,9 @@ namespace ERPProject.API.Controllers
             }
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
 
@@ -88,6 +102,9 @@ namespace ERPProject.API.Controllers
             {
                 stockDetailDTOResponseList.Add(_mapper.Map<StockDetailDTOResponse>(stockdetail));
             }
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponseList);
+
             return Ok(Sonuc<List<StockDetailDTOResponse>>.SuccessWithData(stockDetailDTOResponseList));
         }
 
@@ -105,6 +122,9 @@ namespace ERPProject.API.Controllers
             {
                 stockDetailDTOResponseList.Add(_mapper.Map<StockDetailDTOResponse>(stockdetail));
             }
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponseList);
+
             return Ok(Sonuc<List<StockDetailDTOResponse>>.SuccessWithData(stockDetailDTOResponseList));
         }
 

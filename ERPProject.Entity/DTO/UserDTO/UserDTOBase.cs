@@ -12,7 +12,7 @@ namespace ERPProject.Entity.DTO.UserDTO
 
         public int DepartmentId { get; set; }
 
-        public int RolId { get; set; }
+        public int RoleId { get; set; }
 
         public string Name { get; set; } = null!;
 

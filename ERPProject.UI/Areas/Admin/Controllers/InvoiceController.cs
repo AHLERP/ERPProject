@@ -1,4 +1,9 @@
-﻿using ERPProject.Entity.DTO.InvoiceDTO;
+﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.InvoiceDTO;
+using ERPProject.Entity.DTO.OfferDTO;
+using ERPProject.Entity.DTO.ProductDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,8 +19,20 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
-            return View(val);
+            var invoice = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+            var product = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+            var offer = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            InvoiceVM invoiceVM = new InvoiceVM()
+
+            {
+                Invoices = invoice,
+                Products = product,
+                Offers = offer,
+                Companies = company,
+
+            };
+            return View(invoiceVM);
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)

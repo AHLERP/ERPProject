@@ -7,6 +7,7 @@ using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -31,7 +32,12 @@ namespace ERPProject.API.Controllers
             await _brandService.AddAsync(brand);
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
+
+            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponse);
+
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
+
+
         }
         [HttpDelete("/RemoveBrand/{brandId}")]
         public async Task<IActionResult> RemoveBrand(int brandId)
@@ -43,6 +49,9 @@ namespace ERPProject.API.Controllers
             }
 
             await _brandService.RemoveAsync(brand);
+
+            Log.Information("Brands => {@brand}", brand);
+
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithoutData());
         }
 
@@ -59,6 +68,9 @@ namespace ERPProject.API.Controllers
             await _brandService.UpdateAsync(brand);
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
+
+            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponse);
+
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
 
@@ -72,6 +84,9 @@ namespace ERPProject.API.Controllers
             }
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
+
+            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponse);
+
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
 
@@ -88,6 +103,9 @@ namespace ERPProject.API.Controllers
             {
                 brandDTOResponseList.Add(_mapper.Map<BrandDTOResponse>(brand));
             }
+
+            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponseList);
+
             return Ok(Sonuc<List<BrandDTOResponse>>.SuccessWithData(brandDTOResponseList));
         }
     }
