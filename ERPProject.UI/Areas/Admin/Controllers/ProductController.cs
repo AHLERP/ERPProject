@@ -1,4 +1,9 @@
-﻿using ERPProject.Entity.DTO.ProductDTO;
+﻿using ERPProject.Entity.DTO.BrandDTO;
+using ERPProject.Entity.DTO.CategoryDTO;
+using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.OfferDTO;
+using ERPProject.Entity.DTO.ProductDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,8 +19,17 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Urunler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-            return View(val);
+            var product = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+            var brand = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+            var category = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+            ProductVM productVM = new ProductVM()
+
+            {
+                Products = product,
+                Brands= brand,
+                Categories= category,
+            };
+            return View(productVM);
         }
         [HttpGet("/Admin/Urun")]
         public async Task<IActionResult> Get(long id)

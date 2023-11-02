@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,8 +16,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Departmanlar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            return View(val);
+            var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            DepartmentVM departmentVM = new DepartmentVM()
+
+            {
+                Departments = department,
+
+            };
+            return View(departmentVM);
         }
         [HttpGet("/Admin/Departman")]
         public async Task<IActionResult> Get(long id)
@@ -29,7 +37,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var response = await AddAsync(p, url + "AddDepartment");
             if (response)
             {
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
             return RedirectToAction("Index", "Home");
@@ -41,20 +49,20 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var response = await UpdateAsync(p, url + "UpdateDepartment");
             if (response)
             {
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
+
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/DepartmanSil")]
+        [HttpGet("/Admin/DepartmanSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveDepartment/" + id);
             if (response)
             {
-                return RedirectToAction("Index", "Department");
-
+                return RedirectToAction("Index", "Company");
             }
             return RedirectToAction("Index", "Home");
 

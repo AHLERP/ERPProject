@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -22,7 +25,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddCompany")]
-
+        [ValidationFilter(typeof(CompanyValidator))]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
@@ -30,6 +33,9 @@ namespace ERPProject.API.Controllers
 
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
+
+            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponse);
+
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
@@ -46,10 +52,13 @@ namespace ERPProject.API.Controllers
 
             await _companyService.RemoveAsync(company);
 
+            Log.Information("Companies => {@company}", company);
+
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
 
         [HttpPost("/UpdateCompany")]
+        [ValidationFilter(typeof(CompanyValidator))]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = await _companyService.GetAsync(x=>x.Id == companyDTORequest.Id);
@@ -63,6 +72,9 @@ namespace ERPProject.API.Controllers
             await _companyService.UpdateAsync(company);
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
+
+            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponse);
+
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
@@ -77,6 +89,9 @@ namespace ERPProject.API.Controllers
             }
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
+
+            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponse);
+
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
         [Authorize(Roles = "1")]
@@ -93,6 +108,9 @@ namespace ERPProject.API.Controllers
             {
                 companyDTOResponseList.Add(_mapper.Map<CompanyDTOResponse>(company));
             }
+
+            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponseList);
+
             return Ok(Sonuc<List<CompanyDTOResponse>>.SuccessWithData(companyDTOResponseList));
         }
     }

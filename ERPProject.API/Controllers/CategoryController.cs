@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.DTO.CategoryDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -23,12 +27,16 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddCategory")]
+        [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> AddCategory(CategoryDTORequest categoryDTORequest)
         {
             Category category = _mapper.Map<Category>(categoryDTORequest);
             await _categoryService.AddAsync(category);
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
+
+            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponse);
+
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
         [HttpDelete("/RemoveCategory/{categoryId}")]
@@ -41,10 +49,14 @@ namespace ERPProject.API.Controllers
             }
 
             await _categoryService.RemoveAsync(category);
+
+            Log.Information("Categories => {@category}", category);
+
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithoutData());
         }
 
         [HttpPost("/UpdateCategory")]
+        [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> UpdateCategory(CategoryDTORequest categoryDTORequest)
         {
             Category category = await _categoryService.GetAsync(x => x.Id == categoryDTORequest.Id);
@@ -56,6 +68,9 @@ namespace ERPProject.API.Controllers
             await _categoryService.UpdateAsync(category);
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
+
+            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponse);
+
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
 
@@ -69,6 +84,9 @@ namespace ERPProject.API.Controllers
             }
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
+
+            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponse);
+
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
         [Authorize(Roles ="2")]
@@ -85,6 +103,9 @@ namespace ERPProject.API.Controllers
             {
                 categoryDTOResponseList.Add(_mapper.Map<CategoryDTOResponse>(category));
             }
+
+            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponseList);
+
             return Ok(Sonuc<List<CategoryDTOResponse>>.SuccessWithData(categoryDTOResponseList));
         }
     }

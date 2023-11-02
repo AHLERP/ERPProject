@@ -1,4 +1,7 @@
-﻿using ERPProject.Entity.DTO.OfferDTO;
+﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.OfferDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,16 +17,25 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Teklifler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            return View(val);
+            var offer = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            OfferVM offerVM = new OfferVM()
+
+            {
+
+                Offers = offer,
+                Companies = company,
+
+            };
+            return View(offerVM);
         }
-        [HttpGet("/Admin/Sirket")]
+        [HttpGet("/Admin/Teklif")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
             return View(val);
         }
-        [HttpPost("/Admin/SirketEkle")]
+        [HttpPost("/Admin/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
             var response = await AddAsync(p, url + "AddOffer");
@@ -35,7 +47,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketGuncelle")]
+        [HttpPost("/Admin/TeklifGuncelle")]
         public async Task<IActionResult> Update(OfferDTORequest p)
         {
             var response = await UpdateAsync(p, url + "UpdateOffer");
@@ -47,7 +59,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketSil")]
+        [HttpPost("/Admin/TeklifSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveOffer/" + id);

@@ -17,8 +17,6 @@ namespace ERPProject.API.Mapper.UserMap
                 {
                     opt.MapFrom(src => src.Role.Name);
                 }).ReverseMap();
-            CreateMap<User, UserDTOResponse>();
-            CreateMap<UserDTOResponse, User>();
         }
     }
 }
