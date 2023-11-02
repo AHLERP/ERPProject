@@ -1,12 +1,6 @@
 ﻿using ERPProject.Entity.DTO.BrandDTO;
 using Microsoft.AspNetCore.Mvc;
 
-using ERPProject.Entity.Poco;
-using ERPProject.UI.Areas.Admin.Models;
-
-using ERPProject.Entity.Poco;
-using ERPProject.UI.Areas.Admin.Models;
-
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -20,8 +14,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Markalar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            return View(val);
+            var brand = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+            BrandVM brandVM = new BrandVM()
+
+            {
+                Brands = brand,
+                
+            };
+            return View(brandVM);
         }
         [HttpGet("/Admin/Marka")]
         public async Task<IActionResult> Get(long id)

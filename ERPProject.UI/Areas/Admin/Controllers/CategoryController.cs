@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.CategoryDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,8 +16,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kategoriler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
-            return View(val);
+            var category = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+            CategoryVM categoryVM = new CategoryVM()
+
+            {
+                Categories = category,
+
+            };
+            return View(categoryVM);
         }
         [HttpGet("/Admin/Kategori")]
         public async Task<IActionResult> Get(long id)
