@@ -41,9 +41,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var response = await UpdateAsync(p, url + "UpdateDepartment");
             if (response)
             {
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
+
             return RedirectToAction("Index", "Home");
 
         }
