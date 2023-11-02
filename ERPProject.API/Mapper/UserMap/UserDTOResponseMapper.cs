@@ -17,11 +17,6 @@ namespace ERPProject.API.Mapper.UserMap
                 {
                     opt.MapFrom(src => src.Role.Name);
                 }).ReverseMap();
-                //.ForMember(dest => dest.PasswordHash, opt =>
-                //{
-                //    opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password));
-                //}).
-                //ReverseMap();
         }
     }
 }

@@ -23,5 +23,6 @@ namespace ERPProject.Entity.DTO.UserDTO
         public string Phone { get; set; } = null!;
 
         public string Password { get; set; } = null!;
+
     }
 }
