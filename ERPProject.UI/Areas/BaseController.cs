@@ -20,7 +20,7 @@ namespace ERPProject.UI.Areas
             //client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync(url, stringContent);
+            var responseMessage = await client.PostAsync(url, stringContent);
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -66,12 +66,12 @@ namespace ERPProject.UI.Areas
             {
                 var jsonData = await responserMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<List<T>>>(jsonData);
-                if (value!=null)
+                if (value != null)
                 {
                     return value.Data;
                 }
 
- 
+
             }
             return null;
         }
@@ -93,3 +93,4 @@ namespace ERPProject.UI.Areas
     }
 
 }
+

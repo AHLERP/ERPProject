@@ -18,15 +18,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            CompanyVM companyVM = new CompanyVM() 
-            
+            CompanyVM companyVM = new CompanyVM()
+
             {
                 Companies = company,
                 Departments = department,
             };
 
 
-                return View(companyVM);
+            return View(companyVM);
         }
         [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
@@ -49,13 +49,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
-            p.Id = 1;
             var response = await UpdateAsync(p, url + "UpdateCompany");
             if (response)
             {
-                return RedirectToAction("Index", "Company");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
+
             return RedirectToAction("Index", "Home");
 
         }
