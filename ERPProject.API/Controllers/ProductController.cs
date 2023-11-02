@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.ProductDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -22,12 +25,16 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddProduct")]
+        [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> AddProduct(ProductDTORequest productDTORequest)
         {
             Product product = _mapper.Map<Product>(productDTORequest);
             await _productService.AddAsync(product);
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
+
+            Log.Information("Products => {@productDTOResponse}", productDTOResponse);
+
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
         [HttpDelete("/RemoveProduct/{productId}")]
@@ -40,10 +47,14 @@ namespace ERPProject.API.Controllers
             }
 
             await _productService.RemoveAsync(product);
+
+            Log.Information("Products => {@product}", product);
+
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithoutData());
         }
 
         [HttpPost("/UpdateProduct")]
+        [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> UpdateProduct(ProductDTORequest productDTORequest)
         {
             Product product = await _productService.GetAsync(x=>x.Id == productDTORequest.Id);
@@ -55,6 +66,9 @@ namespace ERPProject.API.Controllers
             await _productService.UpdateAsync(product);
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
+
+            Log.Information("Products => {@productDTOResponse}", productDTOResponse);
+
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
 
@@ -68,6 +82,9 @@ namespace ERPProject.API.Controllers
             }
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
+
+            Log.Information("Products => {@productDTOResponse}", productDTOResponse);
+
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
 
@@ -86,6 +103,8 @@ namespace ERPProject.API.Controllers
                 productDTOResponseList.Add(_mapper.Map<ProductDTOResponse>(product));
             }
 
+            Log.Information("Products => {@productDTOResponse}", productDTOResponseList);
+
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
         }
 
@@ -103,7 +122,7 @@ namespace ERPProject.API.Controllers
             {
                 productDTOResponseList.Add(_mapper.Map<ProductDTOResponse>(product));
             }
-
+            Log.Information("Products => {@productDTOResponse}", productDTOResponseList);
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
         }
         [HttpGet("/GetProductsByBrand/{brandId}")]
@@ -119,6 +138,7 @@ namespace ERPProject.API.Controllers
             {
                 productDTOResponseList.Add(_mapper.Map<ProductDTOResponse>(product));
             }
+            Log.Information("Products => {@productDTOResponse}", productDTOResponseList);
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
         } 
     }

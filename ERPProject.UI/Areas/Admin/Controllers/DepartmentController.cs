@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,8 +16,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Departmanlar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            return View(val);
+            var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            DepartmentVM departmentVM = new DepartmentVM()
+
+            {
+                Departments = department,
+
+            };
+            return View(departmentVM);
         }
         [HttpGet("/Admin/Departman")]
         public async Task<IActionResult> Get(long id)

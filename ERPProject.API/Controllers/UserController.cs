@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.StockDetailDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -21,12 +25,16 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddUser")]
+        [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)
         {
             User user = _mapper.Map<User>(userDTORequest);
             await _userService.AddAsync(user);
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponse);
+
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
@@ -40,10 +48,14 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
             }
             await _userService.RemoveAsync(user);
+
+            Log.Information("Users => {@user}", user);
+
             return Ok(Sonuc<UserDTOResponse>.SuccessWithoutData());
         }
 
         [HttpPost("/UpdateUser")]
+        [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);
@@ -55,6 +67,9 @@ namespace ERPProject.API.Controllers
             await _userService.UpdateAsync(user);
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponse);
+
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse)) ;
         }
 
@@ -68,10 +83,13 @@ namespace ERPProject.API.Controllers
             }
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponse);
+
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
-        [HttpGet("GetUsers")]
+        [HttpGet("/GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userService.GetAllAsync(x=>x.IsActive==true,"Department","Role");
@@ -84,6 +102,9 @@ namespace ERPProject.API.Controllers
             {
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
 
@@ -100,6 +121,9 @@ namespace ERPProject.API.Controllers
             {
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
 
@@ -116,6 +140,9 @@ namespace ERPProject.API.Controllers
             {
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
     }
