@@ -1,6 +1,6 @@
-﻿using ERPProject.Core.Utilities.Response;
-using ERPProject.Entity.DTO.UserLoginDTO;
+﻿using ERPProject.Entity.DTO.UserLoginDTO;
 using ERPProject.Entity.Poco;
+using ERPProject.Entity.Result;
 using FirstProgramUI.ApiServices.Interfaces;
 using Newtonsoft.Json;
 
@@ -14,13 +14,13 @@ namespace FirstProgramUI.ApiServices
         {
             _httpClient=httpClient;
         }
-        public async Task<ApiDataResponse<User>> LoginAsync(LoginDTO loginDto)
+        public async Task<Sonuc<User>> LoginAsync(LoginDTO loginDto)
         {
             HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("Auths/Login", loginDto);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 var data = await httpResponseMessage.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<ApiDataResponse<User>>(data);
+                var result = JsonConvert.DeserializeObject<Sonuc<User>>(data);
                 return await Task.FromResult(result);
             }
             return null;

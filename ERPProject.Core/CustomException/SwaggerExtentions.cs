@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace ERPProject.Core.Extensions
+namespace ERPProject.Core.CustomException
 {
     public static class SwaggerExtentions
     {

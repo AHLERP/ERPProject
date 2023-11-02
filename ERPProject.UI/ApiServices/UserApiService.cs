@@ -28,8 +28,6 @@ namespace FirstProgramUI.ApiServices
                 Roles = val3,
                 Requests = val1,
                 Users = response,
-
-
             };
             if (updateViewModels == null)
             {

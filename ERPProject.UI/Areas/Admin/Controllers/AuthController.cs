@@ -26,14 +26,14 @@ namespace FirstProgramUI.Controllers
         public async Task<IActionResult> Login(LoginDTO loginDto)
         {
             var user = await _authApiService.LoginAsync(loginDto);
-            if (user != null && user.Success)
+            if (user != null)
             {
 
                 HttpContext.Session.SetString("token", user.Data.Token);
                 var userClaims = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                 userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Data.Id.ToString()));
                 userClaims.AddClaim(new Claim(ClaimTypes.Name, user.Data.Email));
-                userClaims.AddClaim(new Claim(ClaimTypes.Role, user.Data.RolId.ToString()));
+                userClaims.AddClaim(new Claim(ClaimTypes.Role, user.Data.RoleId.ToString()));
                 var claimPrincipal = new ClaimsPrincipal(userClaims);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal);
                 return RedirectToAction("Index", "Home");

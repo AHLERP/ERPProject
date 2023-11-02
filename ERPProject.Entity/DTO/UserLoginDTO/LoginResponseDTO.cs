@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPProject.Core.Utilities.Security.Token
+namespace ERPProject.Entity.DTO.UserLoginDTO
 {
-    public class AccessToken
+    public class LoginResponseDTO
     {
         public string? Token { get; set; }
-        public DateTime? Expiration { get; set; }
-        public long? UserId { get; set; }
         public string? UserName { get; set; }
-        public int? RoleId { get; set; }
+        public string Email { get; set; }
     }
 }

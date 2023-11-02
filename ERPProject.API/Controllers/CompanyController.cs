@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.API.Controllers
@@ -78,7 +79,7 @@ namespace ERPProject.API.Controllers
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-
+        [Authorize(Roles = "1")]
         [HttpGet("/GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {

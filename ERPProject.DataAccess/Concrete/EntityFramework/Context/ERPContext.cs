@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 {
-    public partial class ERPContext:DbContext
+    public partial class ERPContext : DbContext
     {
         public ERPContext()
         {
@@ -46,7 +46,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
         public virtual DbSet<User> Users { get; set; }
 
-        public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -141,8 +140,11 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Department_Company");
+                
 
-                entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_User_Department");
+                entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_Department");
             });
 
             modelBuilder.Entity<Invoice>(entity =>
@@ -394,6 +396,8 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                 entity.Property(e => e.LastName).HasMaxLength(50);
                 entity.Property(e => e.Name).HasMaxLength(50);
                 entity.Property(e => e.Password).HasMaxLength(255);
+                entity.Property(e=>e.Token).HasMaxLength(255);
+                entity.Property(e=>e.TokenExpireDate).HasMaxLength(255);
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
                     .IsUnicode(false)
@@ -404,24 +408,11 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+                entity.HasOne(x => x.Role).WithMany(x => x.Users).HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Role");
             });
 
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity
-                    .HasNoKey()
-                    .ToTable("UserRole");
-
-                entity.HasOne(d => d.Role).WithMany()
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserRole_Role");
-
-                entity.HasOne(d => d.User).WithMany()
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserRole_User");
-            });
 
             OnModelCreatingPartial(modelBuilder);
         }

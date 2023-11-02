@@ -1,5 +1,4 @@
 ﻿using ERPProject.Business.Abstract.DataManagement;
-using ERPProject.Core.Utilities.Response;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.DTO.UserLoginDTO;
 using ERPProject.Entity.Poco;
@@ -9,6 +8,6 @@ namespace ERPProject.Business.Abstract
 {
     public interface IAuthService
     {
-        Task<ApiDataResponse<User>> LoginAsync(LoginDTO loginDto);
+        Task<Sonuc<UserDTOResponse>> LoginAsync(LoginDTO loginDto);
     }
 }

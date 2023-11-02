@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Entity.DTO.CategoryDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +71,7 @@ namespace ERPProject.API.Controllers
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
-
+        [Authorize(Roles ="2")]
         [HttpGet("/GetCategories")]
         public async Task<IActionResult> GetCategories()
         {

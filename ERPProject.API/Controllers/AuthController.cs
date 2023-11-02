@@ -1,8 +1,10 @@
 ﻿using ERPProject.Business.Abstract;
 using ERPProject.Entity.DTO.UserLoginDTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
-namespace FirstProgram.Controllers
+namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,7 +20,7 @@ namespace FirstProgram.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
             var response = await _authService.LoginAsync(loginDto);
-            if (response.Success)
+            if (response.Data != null)
                 return Ok(response);
             return BadRequest();
         }

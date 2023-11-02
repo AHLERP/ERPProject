@@ -36,7 +36,7 @@ namespace ERPProject.Core.Utilities.Security.Token.Jwt
                 Expiration = (DateTime)tokenDescriptor.Expires,
                 UserName = userName,
                 UserId = userId,
-                RolId= roleId
+                RoleId= roleId
             };
         }
     }

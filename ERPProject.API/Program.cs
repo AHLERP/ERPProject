@@ -2,9 +2,12 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.Concrete;
-using ERPProject.Core.Extensions;
+using ERPProject.Core.CustomException;
 using ERPProject.Core.Utilities.Security.Token;
+using ERPProject.Core.Utilities.Security.Token.Jwt;
+using ERPProject.DataAccess.Abstract;
 using ERPProject.DataAccess.Abstract.DataManagement;
+using ERPProject.DataAccess.Concrete.EntityFramework;
 using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using ERPProject.DataAccess.Concrete.EntityFramework.DataManagement;
 using FluentValidation.AspNetCore;
@@ -50,22 +53,23 @@ builder.Services.AddAuthentication(x =>
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
-    .WriteTo.File("logs/myLog-.txt",rollingInterval:RollingInterval.Day)
+    .WriteTo.File("logs/myLog-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ERPContext>();
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
-builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddScoped<IStockDetailService, StockDetailManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
-builder.Services.AddScoped<IUserRoleService, UserRoleManager>();
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
+builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddScoped<IAuthService, AuthManager>();
+builder.Services.AddScoped<ITokenService,JwtTokenService>();
 builder.Services.AddFluentValidationAutoValidation();
 
 

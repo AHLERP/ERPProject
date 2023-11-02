@@ -9,11 +9,13 @@ public partial class User : BaseEntity
     public long Id { get; set; }
 
     public int DepartmentId { get; set; }
+
     public virtual Department Department { get; set; } = null!;
 
-    public int RolId { get; set; }
+    public int RoleId { get; set; }
 
     public virtual Role Role { get; set; } = null!;
+
     public string Name { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
@@ -23,8 +25,8 @@ public partial class User : BaseEntity
     public string Phone { get; set; } = null!;
 
     public string Password { get; set; } = null!;
-    public string Token { get; set; }
-    public DateTime TokenExpireDate { get; set; }
+    public string? Token { get; set; }
+    public DateTime? TokenExpireDate { get; set; }
 
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
 
