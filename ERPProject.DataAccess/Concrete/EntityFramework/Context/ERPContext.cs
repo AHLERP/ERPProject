@@ -46,17 +46,13 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
         public virtual DbSet<User> Users { get; set; }
 
-        public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
 
             //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
-<<<<<<< Updated upstream
-            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Emre
-=======
             => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
->>>>>>> Stashed changes
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -317,6 +313,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+                
             });
 
             modelBuilder.Entity<Stock>(entity =>
@@ -408,24 +405,11 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+                entity.HasOne(x => x.Role).WithMany(x => x.Users).HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Role");
             });
 
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity
-                    .HasNoKey()
-                    .ToTable("UserRole");
-
-                entity.HasOne(d => d.Role).WithMany()
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserRole_Role");
-
-                entity.HasOne(d => d.User).WithMany()
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserRole_User");
-            });
 
             OnModelCreatingPartial(modelBuilder);
         }

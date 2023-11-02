@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,8 +16,17 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
-            return View(val);
+            var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            CompanyVM companyVM = new CompanyVM()
+
+            {
+                Companies = company,
+                Departments = department,
+            };
+
+
+            return View(companyVM);
         }
         [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
@@ -38,25 +49,23 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
-            p.Id = 1;
             var response = await UpdateAsync(p, url + "UpdateCompany");
             if (response)
             {
-                return RedirectToAction("Index", "Company");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
+
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/SirketSil")]
+        [HttpGet("/Admin/SirketSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            id = 3;
             var response = await DeleteAsync(url + "RemoveCompany/" + id);
             if (response)
             {
                 return RedirectToAction("Index", "Company");
-
             }
             return RedirectToAction("Index", "Home");
 

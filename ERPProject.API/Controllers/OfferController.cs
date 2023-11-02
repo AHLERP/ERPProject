@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ERPProject.API.Controllers
 {
@@ -22,12 +26,16 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/AddOffer")]
+        [ValidationFilter(typeof(OfferValidator))]
         public async Task<IActionResult> AddOffer(OfferDTORequest offerDTORequest)
         {
             Offer offer = _mapper.Map<Offer>(offerDTORequest);
             await _offerService.AddAsync(offer);
 
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
+
+            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponse);
+
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
         [HttpDelete("/RemoveOffer/{offerId}")]
@@ -40,10 +48,14 @@ namespace ERPProject.API.Controllers
             }
 
             await _offerService.RemoveAsync(offer);
+
+            Log.Information("Offers => {@offer}", offer);
+
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithoutData());
         }
 
         [HttpPost("/UpdateOffer")]
+        [ValidationFilter(typeof(OfferValidator))]
         public async Task<IActionResult> UpdateOffer(OfferDTORequest offerDTORequest)
         {
             Offer offer = await _offerService.GetAsync(x => x.Id == offerDTORequest.Id);
@@ -55,6 +67,9 @@ namespace ERPProject.API.Controllers
             await _offerService.UpdateAsync(offer);
 
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
+
+            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponse);
+
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
 
@@ -68,7 +83,28 @@ namespace ERPProject.API.Controllers
             }
 
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
+
+            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponse);
+
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
+        }
+
+        [HttpGet("/GetOffers")]
+        public async Task<IActionResult> GetOffers()
+        {
+            var offers = await _offerService.GetAllAsync(x=>x.IsActive==true);
+            if (offers == null)
+            {
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound()) ;
+            }
+            List<OfferDTOResponse> offerDTOResponseList = new();
+            foreach (var offer in offers)
+            {
+                offerDTOResponseList.Add(_mapper.Map<OfferDTOResponse>(offer));
+            }
+
+            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponseList);
+            return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponseList));
         }
     }
 }

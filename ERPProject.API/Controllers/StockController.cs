@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.ValidationRules.FluentValidation;
+using ERPProject.Core.Aspects;
+using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using System.ComponentModel.DataAnnotations;
 
 namespace ERPProject.API.Controllers
 {
@@ -35,6 +40,8 @@ namespace ERPProject.API.Controllers
             {
                 stockDTOResponses.Add(_mapper.Map<StockDTOResponse>(stock));
             }
+
+            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponses);
             return Ok(Sonuc<List<StockDTOResponse>>.SuccessWithData(stockDTOResponses));
         }
 
@@ -47,20 +54,27 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
             }
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);
+
+            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponse);
             return Ok(Sonuc<StockDTOResponse>.SuccessWithData(stockDTOResponse));
 
         }
 
         [HttpPost("/AddStock")]
+        [ValidationFilter(typeof(StockValidator))]
         public async Task<IActionResult> AddStock(StockDTORequest stockDTORequest)
         {
             var stock = _mapper.Map<Stock>(stockDTORequest);
             await _stockService.AddAsync(stock);
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);
+
+            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponse);
+
             return Ok(Sonuc<StockDTOResponse>.SuccessWithData(stockDTOResponse));
         }
 
         [HttpPost("/UpdateStock")]
+        [ValidationFilter(typeof(StockValidator))]
         public async Task<IActionResult> UpdateStock(StockDTORequest stockDTORequest)
         {
             var stock = await _stockService.GetAsync(e=>e.Id== stockDTORequest.Id);
@@ -73,6 +87,9 @@ namespace ERPProject.API.Controllers
             await _stockService.UpdateAsync(stock);
 
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);
+
+            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponse);
+
             return Ok(Sonuc<StockDTOResponse>.SuccessWithData(stockDTOResponse));
             
         }
@@ -86,6 +103,9 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
             }
             await _stockService.RemoveAsync(stock);
+
+            Log.Information("Stocks => {@stock}", stock);
+
             return Ok(Sonuc<StockDTOResponse>.SuccessWithoutData());
 
         }

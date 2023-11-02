@@ -2,12 +2,6 @@
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
-using ERPProject.Entity.DTO.BrandDTO;
-using Microsoft.AspNetCore.Mvc;
-using ERPProject.Entity.DTO.DepartmentDTO;
-using ERPProject.Entity.Poco;
-using ERPProject.UI.Areas.Admin.Models;
-
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -60,7 +54,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/MarkaSil")]
+        [HttpGet("/Admin/MarkaSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveBrand/" + id);
