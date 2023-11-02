@@ -1,4 +1,5 @@
 ﻿using ERPProject.Entity.DTO.BrandDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 using ERPProject.Entity.DTO.BrandDTO;
