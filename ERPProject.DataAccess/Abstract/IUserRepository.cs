@@ -1,4 +1,5 @@
 ﻿using ERPProject.Core.DataAccess;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace ERPProject.DataAccess.Abstract
 {
     public interface IUserRepository : IRepository<User>
     {
+        Task<User> UpdateAsyncForLogin(UserDTOResponse Entity);
     }
 }

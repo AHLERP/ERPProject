@@ -17,13 +17,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var category = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
-            CategoryVM categoryVM = new CategoryVM()
-
-            {
-                Categories = category,
-
-            };
-            return View(categoryVM);
+            
+            return View(category);
         }
         [HttpGet("/Admin/Kategori")]
         public async Task<IActionResult> Get(long id)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 {
-    public partial class ERPContext:DbContext
+    public partial class ERPContext : DbContext
     {
         public ERPContext()
         {
@@ -141,8 +141,11 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Department_Company");
+                
 
-                entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_User_Department");
+                entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_Department");
             });
 
             modelBuilder.Entity<Invoice>(entity =>
@@ -395,6 +398,8 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                 entity.Property(e => e.LastName).HasMaxLength(50);
                 entity.Property(e => e.Name).HasMaxLength(50);
                 entity.Property(e => e.Password).HasMaxLength(255);
+                entity.Property(e=>e.Token).HasMaxLength(255);
+                entity.Property(e=>e.TokenExpireDate).HasMaxLength(255);
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
                     .IsUnicode(false)

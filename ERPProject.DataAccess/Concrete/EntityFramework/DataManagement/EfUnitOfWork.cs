@@ -64,11 +64,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
 
         public IUserRepository UserRepository { get; }
 
-
-
-
-        
-
         public Task<int> SaveChangeAsync()
         {
             foreach (var item in _context.ChangeTracker.Entries<BaseEntity>())
