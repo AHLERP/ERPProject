@@ -9,31 +9,17 @@ namespace ERPProject.UI.Areas
     public class BaseController : Controller
     {
         private readonly HttpClient _httpClient;
-
-
         public BaseController(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("http://localhost:7075/api/");
-
-
-
         }
-
         protected async Task<bool> UpdateAsync<T>(T p, string url) where T : class
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
-
-
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-<<<<<<< Updated upstream
-            var responseMessage = await client.PutAsync(url, stringContent);
-=======
-            var responseMessage = await _httpClient.PostAsync(url, stringContent);
-
->>>>>>> Stashed changes
-
+            HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 _httpClient.DefaultRequestHeaders.Remove("Authorization");
@@ -85,16 +71,13 @@ namespace ERPProject.UI.Areas
                     _httpClient.DefaultRequestHeaders.Remove("Authorization");
                     return value.Data;
                 }
-<<<<<<< Updated upstream
-
- 
             }
             return null;
         }
         protected async Task<T> GetAsync<T>(string url) where T : class
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));       
-            var responseMessage = await _httpClient.GetAsync(url);
+            HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -104,8 +87,5 @@ namespace ERPProject.UI.Areas
             }
             return null;
         }
-
     }
-
 }
-
