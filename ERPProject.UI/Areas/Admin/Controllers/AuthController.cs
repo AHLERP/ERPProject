@@ -1,48 +1,52 @@
-﻿using ERPProject.Entity.DTO.UserLoginDTO;
-using FirstProgramUI.ApiServices.Interfaces;
+﻿using ERPProject.Entity.DTO.UserDTO;
+using ERPProject.Entity.DTO.UserLoginDTO;
+using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
-namespace FirstProgramUI.Controllers
+namespace ERPProject.Controllers
 {
+    [Area("Admin")]
     public class AuthController : Controller
     {
-        private IAuthApiService _authApiService;
-        private HttpClient _httpClient;
-        public AuthController(IAuthApiService authApiService, HttpClient httpClient)
+        private readonly HttpClient _httpClient;
+        public AuthController(HttpClient httpClient)
         {
-            _authApiService = authApiService;
             _httpClient = httpClient;
+
         }
-        [HttpGet]
-        public IActionResult Login()
+
+        [HttpGet("/Admin/GirisYap")]
+        public IActionResult Index()
         {
-            HttpContext.Session.Clear();
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginDTO loginDto)
+        [HttpPost("/Admin/GirisYap2")]
+        public async Task<IActionResult> Index(LoginDTO loginDto)
         {
-            var user = await _authApiService.LoginAsync(loginDto);
-            if (user != null)
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("https://localhost:7075/api/Auth/Login\r\n", loginDto);
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-
-                HttpContext.Session.SetString("token", user.Data.Token);
+                var data = await httpResponseMessage.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<ApiResponse<UserDTOResponse>>(data);
+                HttpContext.Session.SetString("token", result.Data.Token);
                 var userClaims = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Data.Id.ToString()));
-                userClaims.AddClaim(new Claim(ClaimTypes.Name, user.Data.Email));
-                userClaims.AddClaim(new Claim(ClaimTypes.Role, user.Data.RoleId.ToString()));
+                userClaims.AddClaim(new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString()));
+                userClaims.AddClaim(new Claim(ClaimTypes.Name, result.Data.Email));
+                userClaims.AddClaim(new Claim(ClaimTypes.Role, result.Data.RoleId.ToString()));
                 var claimPrincipal = new ClaimsPrincipal(userClaims);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Company");
+
             }
+
             else
             {
-                ModelState.AddModelError("", "Kullanıcı Adı veya Şifre Hatalı!");
+                return View();
             }
-            return View(loginDto);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ERPProject.Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private readonly IUnitOfWork _repo;
+        private readonly IUnitOfWork _uow;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
@@ -21,12 +21,13 @@ namespace ERPProject.Business.Concrete
             _tokenService = tokenService;
             _userService = userService;
             _mapper = mapper;
-            _repo = repo;
+            _uow = repo;
         }
 
         public async Task<Sonuc<UserDTOResponse>> LoginAsync(LoginDTO loginDto)
         {
-            var user = await _repo.UserRepository.GetAsync(x => x.Email == loginDto.UserName && x.Password == loginDto.UserPassword);
+            var user = await _uow.UserRepository.GetAsync(x => x.Email == loginDto.UserName && x.Password == loginDto.UserPassword, "Department", "Role");
+
             if (user == null)
             {
                 return Sonuc<UserDTOResponse>.SuccessNoDataFound();
