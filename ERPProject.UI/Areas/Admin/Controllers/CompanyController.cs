@@ -9,7 +9,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class CompanyController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public CompanyController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public CompanyController(HttpClient httpClient) : base(httpClient)
         {
 
         }
