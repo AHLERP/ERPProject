@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using ERPProject.Business.Abstract;
+using ERPProject.Business.Abstract.DataManagement;
 using ERPProject.Core.Utilities.Security.Token;
 using ERPProject.DataAccess.Abstract.DataManagement;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.DTO.UserLoginDTO;
+using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 
 namespace ERPProject.Business.Concrete
@@ -25,6 +27,7 @@ namespace ERPProject.Business.Concrete
         public async Task<Sonuc<UserDTOResponse>> LoginAsync(LoginDTO loginDto)
         {
             var user = await _uow.UserRepository.GetAsync(x => x.Email == loginDto.UserName && x.Password == loginDto.UserPassword, "Department", "Role");
+
             if (user == null)
             {
                 return Sonuc<UserDTOResponse>.SuccessNoDataFound();

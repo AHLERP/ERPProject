@@ -16,13 +16,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var brand = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            BrandVM brandVM = new BrandVM()
-
-            {
-                Brands = brand,
-                
-            };
-            return View(brandVM);
+            
+            return View(brand);
         }
         [HttpGet("/Admin/Marka")]
         public async Task<IActionResult> Get(long id)

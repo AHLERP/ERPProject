@@ -6,6 +6,7 @@ using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.DTO.CategoryDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -88,7 +89,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
-
+        [Authorize(Roles ="2")]
         [HttpGet("/GetCategories")]
         public async Task<IActionResult> GetCategories()
         {

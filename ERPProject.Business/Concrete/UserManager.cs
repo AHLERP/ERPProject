@@ -1,5 +1,8 @@
-﻿using ERPProject.Business.Abstract;
+﻿using AutoMapper;
+using ERPProject.Business.Abstract;
+using ERPProject.Core.Entity;
 using ERPProject.DataAccess.Abstract.DataManagement;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using System;
 using System.Collections.Generic;
@@ -10,13 +13,15 @@ using System.Threading.Tasks;
 
 namespace ERPProject.Business.Concrete
 {
-    public class UserManager : IUserService
+    public class UserManager :IUserService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public UserManager(IUnitOfWork uow)
+        public UserManager(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         public async Task<User> AddAsync(User Entity)
@@ -46,6 +51,16 @@ namespace ERPProject.Business.Concrete
         {
             await _uow.UserRepository.UpdateAsync(Entity);
             await _uow.SaveChangeAsync();
+        }
+
+        public async Task<User> UpdateAsyncForLogin(UserDTOResponse Entity)
+        {
+            var val = _mapper.Map<User>(Entity);
+            val.Token = Entity.Token;
+            val.TokenExpireDate = Entity.TokenExpireDate;
+            await _uow.UserRepository.UpdateAsync(val);
+            await _uow.SaveChangeAsync();
+            return val;
         }
     }
 }

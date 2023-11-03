@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+builder.Services.AddScoped<AuthTokenHandler>();
 builder.Services.AddHttpClient();
 
 //#region HttpClient
@@ -24,6 +27,7 @@ builder.Services.AddHttpClient();
 //}).AddHttpMessageHandler<AuthTokenHandler>();
 
 //#endregion
+
 
 #region Cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opt =>
@@ -50,6 +54,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

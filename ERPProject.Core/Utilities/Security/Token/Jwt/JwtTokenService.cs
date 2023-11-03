@@ -15,7 +15,6 @@ namespace ERPProject.Core.Utilities.Security.Token.Jwt
         }
         public AccessToken CreateToken(long userId, string userName, int roleId) //
         {
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.SecurityKey);
             var tokenDescriptor = new SecurityTokenDescriptor()
@@ -36,7 +35,7 @@ namespace ERPProject.Core.Utilities.Security.Token.Jwt
                 Expiration = (DateTime)tokenDescriptor.Expires,
                 UserName = userName,
                 UserId = userId,
-                RoleId = roleId
+                RoleId= roleId
             };
         }
     }
