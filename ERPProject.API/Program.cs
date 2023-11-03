@@ -58,6 +58,9 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
+builder.Services.AddHttpContextAccessor();
+
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
@@ -81,6 +84,7 @@ builder.Services.AddFluentValidationAutoValidation();
 
 
 
+// JWT kimlik doðrulama servisini ekleme
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -91,11 +95,13 @@ builder.Services.AddAuthentication(opt =>
         options.IncludeErrorDetails = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"])) // Gizli anahtar
+            ValidIssuer = builder.Configuration["JWT:Issuer"], // Tokený oluþturan tarafýn adresi
+            ValidAudience = builder.Configuration["JWT:Audiance"], // Tokenýn kullanýlacaðý hedef adres
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Token"])) // Gizli anahtar
         };
     });
 
@@ -115,12 +121,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 //app.UseApiAuthorizationMiddleware();
 app.UseHttpsRedirection();
 
-app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
+
+
+
+app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+
 
 
 
@@ -128,3 +140,4 @@ app.UseAuthentication();
 app.MapControllers();
 
 app.Run();
+app.UseSession();

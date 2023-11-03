@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [Authorize]
+    [Authorize(Roles = "Admin,rol")]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -97,9 +97,9 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-        
+
         [HttpGet("/GetCompanies")]
-    
+        
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _companyService.GetAllAsync(x => x.IsActive == true);

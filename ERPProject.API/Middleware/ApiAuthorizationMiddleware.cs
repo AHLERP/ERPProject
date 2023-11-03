@@ -53,7 +53,7 @@ namespace ERPProject.API.Middleware
                         httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     }
 
-                    string? kullaniciAdi = jwtToken.Claims.Where(q => q.Type == "Email").Select(q => q.Value).SingleOrDefault();
+                    string? kullaniciAdi = jwtToken.Claims.Where(q => q.Type == "EmailForMW").Select(q => q.Value).SingleOrDefault();
 
 
                     if (string.IsNullOrEmpty(kullaniciAdi))
