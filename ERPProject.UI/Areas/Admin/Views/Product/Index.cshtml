@@ -2,45 +2,56 @@
 @model ProductVM
 @{
     ViewData["Title"] = "Urunler";
+    ViewData["baslik"] = "Ürünler";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <br></br>
-<div class="container col col-md-9">
-    <h1>Urunler</h1>
+<div class="container col col-md-9 py-3">
     <div class="container mb-2" style="width: 80%;">
         <div class="input-group input-group-lg">
             <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Urun Ekle
+                Ürün Ekle
             </button>
             <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
             <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
         </div>
     </div>
 
-    <table class="table table-bordered border-dark">
+    <table class="table table-bordered border-dark table-striped">
         <thead>
             <tr>
-                <th scope="col">Kategori Adı</th>
+                <th scope="col">Adı</th>
+                <th scope="col">Kategori</th>
+                <th scope="col">Marka</th>
+                <th scope="col">Açıklama</th>
                 <th scope="col" style="width:100px ">İşlemler</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Urun</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            İşlemler
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="item.Id" data-name-id="item.Name">Düzenle</a></li>
-                            <li><hr class="dropdown-divider text-danger"></li>
-                            <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(item.Id)">Sil</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
 
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.BrandName</td>
+                    <td >@item.Description</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                İşlemler
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name-id="@item.Name">Düzenle</a></li>
+                                <li><hr class="dropdown-divider text-danger"></li>
+                                <li><a class="dropdown-item text-danger" onclick="confirmUrunDelete(@item.Id)">Sil</a></li>
+                            </ul>
+                        </div>
+                    </td>
+
+
+                </tr>
+            }
 
         </tbody>
     </table>
@@ -49,27 +60,44 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Urun Ekle</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Ürün Ekle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/KategoriEkle" method="post">
+            <form action="/Admin/UrunEkle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Urun İsmi</span>
+                        <span class="input-group-text" id="basic-addon1">Ürün İsmi</span>
                         <input autocomplete="off" type="text" class="form-control" placeholder="Urun İsmi..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1">
                     </div>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Kategori Seç</span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Kategori İsmi..." id="inputKategoriAd" name="Name" aria-describedby="basic-addon1">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputKategori"><i class="bi bi-trash"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputKategori" name="CategoryId" required>
+                            <option selected>Kategori Seç...</option>
+                            @foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                            
+                        </select>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Marka Seç</span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Marka İsmi..." id="inputMarkaAd" name="Name" aria-describedby="basic-addon1">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputMarka"><i class="bi bi-trash"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputMarka" name="BrandId" required>
+                            <option selected>Marka Seç...</option>
+                            @foreach (var item in Model.Brands)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Urun Açıklaması</span>
-                        <textarea style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Urun İsmi..." id="inputUrunAciklama" name="Name" aria-describedby="basic-addon1"></textarea>
+                        <span class="input-group-text" id="basic-addon1">Ürün Açıklaması</span>
+                        <textarea style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Ürün Açıklaması..." id="inputUrunAciklama" name="Description" aria-describedby="basic-addon1"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -85,16 +113,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Kategori Düzenle</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Ürün Düzenle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/KategoriGuncelle" method="post">
+            <form action="/Admin/UrunGuncelle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="inputKategoriId" name="Id" value="" aria-describedby="basic-addon1">
+                        <input type="hidden" class="form-control" id="inputKategoriId" name="Id" value="" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Kategori İsmi</span>
+                        <span class="input-group-text" id="basic-addon1">Urun İsmi</span>
                         <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputKategoriAd" name="Name" aria-describedby="basic-addon1">
                     </div>
 
@@ -109,10 +137,10 @@
     </div>
 </div>
 <script>
-    function confirmRolDelete(id) {
-        var result = confirm("Bu kategoriyi silmek istediğinizden emin misiniz?");
+    function confirmUrunDelete(id) {
+        var result = confirm("Bu ürünü silmek istediğinizden emin misiniz?");
         if (result) {
-            window.location.href = 'KategoriSil/' + id;
+            window.location.href = 'UrunSil/' + id;
         }
     }
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
