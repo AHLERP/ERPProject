@@ -5,13 +5,16 @@ using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+
 
 namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -42,7 +45,7 @@ namespace ERPProject.API.Controllers
         [HttpDelete("/RemoveCompany/{id}")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
-            Company company = await _companyService.GetAsync(x=>x.Id == id);
+            Company company = await _companyService.GetAsync(x => x.Id == id);
 
             if (company == null)
             {
@@ -60,8 +63,8 @@ namespace ERPProject.API.Controllers
         [ValidationFilter(typeof(CompanyValidator))]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
         {
-            Company company = await _companyService.GetAsync(x=>x.Id == companyDTORequest.Id);
-            if (company==null)
+            Company company = await _companyService.GetAsync(x => x.Id == companyDTORequest.Id);
+            if (company == null)
             {
                 return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
             }
@@ -81,8 +84,8 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
-            Company company = await _companyService.GetAsync(x=>x.Id == id);
-            if (company==null)
+            Company company = await _companyService.GetAsync(x => x.Id == id);
+            if (company == null)
             {
                 return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
             }
@@ -94,10 +97,12 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
+        
         [HttpGet("/GetCompanies")]
+    
         public async Task<IActionResult> GetCompanies()
         {
-            var companies = await _companyService.GetAllAsync(x=>x.IsActive == true);
+            var companies = await _companyService.GetAllAsync(x => x.IsActive == true);
             if (companies == null)
             {
                 return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
