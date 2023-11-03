@@ -4,6 +4,7 @@ using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    partial class ERPContextModelSnapshot : ModelSnapshot
+    [Migration("20231101131922_migE")]
+    partial class migE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -740,11 +743,10 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TokenExpireDate")
-                        .HasMaxLength(255)
+                    b.Property<DateTime>("TokenExpireDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedIPV4Address")

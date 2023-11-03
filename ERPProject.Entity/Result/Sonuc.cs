@@ -40,7 +40,6 @@ namespace ERPProject.Entity.Result
 
         public HataBilgisi HataBilgisi { get; set; }
 
-
         public static Sonuc<T> Error(string message = "Hata Oluştu", int statusCode = (int)HttpStatusCode.InternalServerError)
         {
             return new Sonuc<T>(message, statusCode, HataBilgisi.Error());
