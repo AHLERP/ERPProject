@@ -37,6 +37,7 @@ builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
 builder.Services.AddScoped<IRoleService, RoleManager>();
+builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddFluentValidationAutoValidation();
 
 
