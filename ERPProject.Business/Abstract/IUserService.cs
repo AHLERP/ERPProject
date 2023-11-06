@@ -12,6 +12,6 @@ namespace ERPProject.Business.Abstract
 {
     public interface IUserService:IGenericService<User>
     {
-        Task<User> UpdateAsyncForLogin(UserDTOResponse Entity);
+        
     }
 }
