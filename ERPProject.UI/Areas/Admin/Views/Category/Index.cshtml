@@ -1,5 +1,6 @@
 ﻿@using ERPProject.Entity.DTO.CategoryDTO;
-@model List<CategoryDTOResponse>
+@using ERPProject.Entity.Result;
+@model ApiResponse<List<CategoryDTOResponse>>
 
 @{
     ViewData["Title"] = "Kategoriler";
@@ -18,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Data)
             {
                 <tr>
                     <td>@item.Name</td>

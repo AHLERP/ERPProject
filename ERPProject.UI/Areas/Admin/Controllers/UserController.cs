@@ -19,20 +19,20 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
-            var users = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var departments = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            var roles = await GetAllAsync<RoleDTOResponse>(url + "Roles");
-            //var requests = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
-            var companies = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
 
+            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
+            var val4 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            //var val4 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
 
             UserVM userVM = new UserVM
             {
-                Departments = departments.Data,
-                Users = users.Data,
-                Roles = roles.Data,
+                Departments = val2.Data,
+                Users = val.Data,
+                Roles = val3.Data,
                 Requests = null,
-                Companies = companies.Data
+                Companies=val4.Data
             };
 
             return View(userVM);
