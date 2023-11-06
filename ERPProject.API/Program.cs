@@ -65,31 +65,9 @@ builder.Services.AddSwaggerGen(c =>
 
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddCustomSwagger();
 
-#region JWT
-var appSettingsSection = builder.Configuration.GetSection("AppSettings");
-builder.Services.Configure<AppSettings>(appSettingsSection);
-var appSettings = appSettingsSection.Get<AppSettings>();
-var key = Encoding.ASCII.GetBytes(appSettings.SecurityKey);
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        //IssuerSigningKeys = CreatKey();
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-    };
-});
-#endregion
+
+
 
 
 
@@ -112,8 +90,6 @@ builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
-builder.Services.AddScoped<IAuthService, AuthManager>();
-builder.Services.AddScoped<ITokenService,JwtTokenService>();
 builder.Services.AddFluentValidationAutoValidation();
 
 
@@ -148,7 +124,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseCustomSwagger();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 

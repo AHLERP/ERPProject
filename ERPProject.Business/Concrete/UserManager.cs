@@ -53,14 +53,6 @@ namespace ERPProject.Business.Concrete
             await _uow.SaveChangeAsync();
         }
 
-        public async Task<User> UpdateAsyncForLogin(UserDTOResponse Entity)
-        {
-            var val = _mapper.Map<User>(Entity);
-            val.Token = Entity.Token;
-            val.TokenExpireDate = Entity.TokenExpireDate;
-            await _uow.UserRepository.UpdateAsync(val);
-            await _uow.SaveChangeAsync();
-            return val;
-        }
+        
     }
 }

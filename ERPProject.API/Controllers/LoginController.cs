@@ -68,7 +68,7 @@ namespace ERPProject.API.Controllers
                     Issuer = issuer,
                     Subject = new ClaimsIdentity(claims),
                     Expires = DateTime.Now.AddDays(20), // Token süresi (örn: 20 dakika)
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
