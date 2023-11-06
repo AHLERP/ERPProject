@@ -373,8 +373,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                 entity.Property(e => e.LastName).HasMaxLength(50);
                 entity.Property(e => e.Name).HasMaxLength(50);
                 entity.Property(e => e.Password).HasMaxLength(255);
-                entity.Property(e=>e.Token).HasMaxLength(255);
-                entity.Property(e=>e.TokenExpireDate).HasMaxLength(255);
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
                     .IsUnicode(false)
