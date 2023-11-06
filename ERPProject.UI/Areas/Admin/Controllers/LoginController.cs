@@ -1,18 +1,8 @@
-﻿using ERPProject.Core.Utilities.Response;
-using ERPProject.Entity.DTO.LoginDTO;
-using ERPProject.Entity.DTO.OfferDTO;
-using ERPProject.Entity.DTO.UserDTO;
-using ERPProject.Entity.DTO.UserLoginDTO;
-using ERPProject.Entity.Poco;
+﻿using ERPProject.Entity.DTO.UserLoginDTO;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using Newtonsoft.Json;
 using RestSharp;
-using System.Net;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Text;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -39,6 +29,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             RestResponse response = await client.ExecuteAsync(request);
             var responseObject = JsonConvert.DeserializeObject<ApiResponse<LoginDTO>>(response.Content);
             HttpContext.Session.SetString("Token", responseObject.Data.Token);
+            HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
+            HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
+            HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
+            
+            
+
+            
+
 
             
             if (response.IsSuccessStatusCode)

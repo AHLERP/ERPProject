@@ -8,13 +8,15 @@ public partial class User : BaseEntity
 {
     public long Id { get; set; }
 
-    public int DepartmentId { get; set; }
+    public int DepartmentId { get; set; }//gelecek
 
     public virtual Department Department { get; set; } = null!;
 
-    public int RoleId { get; set; }
+    public int RoleId { get; set; }//gelecek
 
     public virtual Role Role { get; set; } = null!;
+    //public int CompanyId { get; set; }
+    //public Company Company { get; set; }
 
     public string Name { get; set; } = null!;
 

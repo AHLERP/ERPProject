@@ -82,7 +82,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetUser/{userId}")]
         public async Task<IActionResult> GetUser(long userId)
         {
-            User user = await _userService.GetAsync(x=>x.Id == userId);
+            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department");
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -137,6 +137,25 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetUsersByRole(int roleId)
         {
             var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId == roleId, "Department", "Role");
+            if (users == null)
+            {
+                return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
+            }
+            List<UserDTOResponse> userDTOResponseList = new();
+            foreach (var user in users)
+            {
+                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
+            }
+
+            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+
+            return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
+        }
+
+        [HttpGet("GetUsersByCompany/{companyId}")]
+        public async Task<IActionResult> GetUsersByCompany(int companyId)
+        {
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.Department.CompanyId == companyId, "Department", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
