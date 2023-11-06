@@ -14,6 +14,7 @@ document.querySelector('.toggle-btn').addEventListener('click', function () {
         sidebar.style.left = '-250px';
     }
 });
+
 var BASE_API_URI = "https://localhost:7075";
 
 function Get(action, success) {

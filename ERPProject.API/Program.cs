@@ -2,6 +2,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.Concrete;
+using ERPProject.Core.CustomException;
+using ERPProject.DataAccess.Abstract;
 using ERPProject.DataAccess.Abstract.DataManagement;
 using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using ERPProject.DataAccess.Concrete.EntityFramework.DataManagement;

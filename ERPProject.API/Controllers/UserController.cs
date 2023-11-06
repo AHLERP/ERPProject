@@ -6,6 +6,7 @@ using ERPProject.Entity.DTO.StockDetailDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -13,6 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    [AllowAnonymous]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -64,6 +66,7 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
             }
             user = _mapper.Map(userDTORequest,user);
+            //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
             await _userService.UpdateAsync(user);
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);

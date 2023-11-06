@@ -3,7 +3,6 @@ using Azure.Core;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
-using ERPProject.Entity.DTO.RequestDetailDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.Poco;

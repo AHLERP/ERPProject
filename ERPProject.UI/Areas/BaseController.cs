@@ -59,10 +59,10 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<List<T>> GetAllAsync<T>(string url) where T : class
         {
-            var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
-            var responserMessage = await client.GetAsync(url);
-            if (responserMessage.IsSuccessStatusCode)
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+
+            HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responserMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<List<T>>>(jsonData);
@@ -77,10 +77,9 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<T> GetAsync<T>(string url) where T : class
         {
-            var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
-            var responserMessage = await client.GetAsync(url);
-            if (responserMessage.IsSuccessStatusCode)
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));       
+            HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responserMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<T>>(jsonData);

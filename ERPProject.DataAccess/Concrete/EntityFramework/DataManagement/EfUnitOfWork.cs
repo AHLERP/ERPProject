@@ -31,7 +31,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
             OfferRepository = new EfOfferRepository(_context);
             ProductRepository = new EfProductRepository(_context);
             RequestRepository = new EfRequestRepository(_context);
-            RequestDetailRepository = new EfRequestDetailRepository(_context);
             RoleRepository = new EfRoleRepository(_context);
             StockRepository = new EfStockRepository(_context);
             StockDetailRepository = new EfStockDetailRepository(_context);
@@ -53,8 +52,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
         public IProductRepository ProductRepository { get; }
 
         public IRequestRepository RequestRepository { get; }
-
-        public IRequestDetailRepository RequestDetailRepository { get; }
 
         public IRoleRepository RoleRepository { get; }
 
