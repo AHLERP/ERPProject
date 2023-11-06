@@ -19,20 +19,17 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
-            var users = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var departments = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            var roles = await GetAllAsync<RoleDTOResponse>(url + "Roles");
-            //var requests = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
-            var companies = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
-
+            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
+            var val4 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
 
             UserVM userVM = new UserVM
             {
-                Departments = departments.Data,
-                Users = users.Data,
-                Roles = roles.Data,
-                Requests = null,
-                Companies = companies.Data
+                Departments = val2.Data,
+                Users = val.Data,
+                Roles = val3.Data,
+                Requests = val4.Data
             };
 
             return View(userVM);
@@ -41,13 +38,21 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             return View(val);
         }
         [HttpPost("/Admin/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddUser");
-            if (response)
+            var val = await AddAsync(p, url + "AddUser");
+            if (val)
             {
                 return RedirectToAction("Index", "User");
 
@@ -58,8 +63,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateUser");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateUser");
+            if (val)
             {
                 return RedirectToAction("Kullanicilar", "Admin");
 
@@ -70,8 +75,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/KullaniciSil/{id}")]
         public async Task<IActionResult> Delete(Int64 id)
         {
-            var response = await DeleteAsync(url + "RemoveUser/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveUser/" + id);
+            if (val)
             {
                 return RedirectToAction("Kullanicilar", "Admin");
 

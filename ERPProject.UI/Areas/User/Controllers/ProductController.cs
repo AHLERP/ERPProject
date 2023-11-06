@@ -1,4 +1,10 @@
-﻿using ERPProject.Entity.DTO.ProductDTO;
+﻿using ERPProject.Entity.DTO.BrandDTO;
+using ERPProject.Entity.DTO.CategoryDTO;
+using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.OfferDTO;
+using ERPProject.Entity.DTO.ProductDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
@@ -15,7 +21,24 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-            return View(val);
+            var val2 = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+            var val3 = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            ProductVM productVM = new ProductVM()
+
+            {
+                Products = val.Data,
+                Brands= val2.Data,
+                Categories= val3.Data,
+            };
+            return View(productVM);
         }
         [HttpGet("/User/Urun")]
         public async Task<IActionResult> Get(long id)
@@ -26,8 +49,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/UrunEkle")]
         public async Task<IActionResult> Add(ProductDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddProduct");
-            if (response)
+            var val = await AddAsync(p, url + "AddProduct");
+            if (val)
             {
                 return RedirectToAction("Index", "Product");
 
@@ -38,8 +61,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/UrunGuncelle")]
         public async Task<IActionResult> Update(ProductDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateProduct");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateProduct");
+            if (val)
             {
                 return RedirectToAction("Index", "Product");
 
@@ -47,11 +70,11 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/UrunSil")]
+        [HttpGet("/User/UrunSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveProduct/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveProduct/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Product");
 

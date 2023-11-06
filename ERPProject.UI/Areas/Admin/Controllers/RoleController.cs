@@ -15,6 +15,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<RoleDTOResponse>(url + "Roles");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return View(val);
             return View(val);
         }
         [HttpGet("/Admin/Rol")]
@@ -26,8 +35,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/RolEkle")]
         public async Task<IActionResult> Add(RoleDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddRole");
-            if (response)
+            var val = await AddAsync(p, url + "AddRole");
+            if (val)
             {
                 return RedirectToAction("Index", "Role");
 
@@ -38,8 +47,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/RolGuncelle")]
         public async Task<IActionResult> Update(RoleDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateRole");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateRole");
+            if (val)
             {
                 return RedirectToAction("Index", "Role");
 
@@ -50,8 +59,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/RolSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveRole/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveRole/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Role");
             }

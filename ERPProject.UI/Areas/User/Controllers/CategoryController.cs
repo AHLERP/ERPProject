@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.CategoryDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
@@ -15,6 +17,14 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             return View(val);
         }
         [HttpGet("/User/Kategori")]
@@ -26,8 +36,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/KategoriEkle")]
         public async Task<IActionResult> Add(CategoryDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddCategory");
-            if (response)
+            var val = await AddAsync(p, url + "AddCategory");
+            if (val)
             {
                 return RedirectToAction("Index", "Category");
 
@@ -38,8 +48,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/KategoriGuncelle")]
         public async Task<IActionResult> Update(CategoryDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateCategory");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateCategory");
+            if (val)
             {
                 return RedirectToAction("Index", "Category");
 
@@ -47,11 +57,11 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/KategoriSil")]
+        [HttpGet("/User/KategoriSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveCategory/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveCategory/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Category");
 

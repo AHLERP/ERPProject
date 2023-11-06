@@ -105,7 +105,7 @@ namespace ERPProject.UI.Areas
 
             return null;
         }
-        protected async Task<T> GetAsync<T>(string url) where T : class
+        protected async Task<ApiResponse<T>> GetAsync<T>(string url) where T : class
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
             var responseMessage = await _httpClient.GetAsync(url);
@@ -114,7 +114,7 @@ namespace ERPProject.UI.Areas
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<T>>(jsonData);
                 _httpClient.DefaultRequestHeaders.Remove("Authorization");
-                return value.Data;
+                return value;
             }
 
             return null;
