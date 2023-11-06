@@ -24,6 +24,5 @@ namespace ERPProject.Entity.DTO.UserDTO
 
         public string Password { get; set; } = null!;
 
-
     }
 }
