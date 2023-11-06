@@ -89,7 +89,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
-        [Authorize(Roles ="2")]
         [HttpGet("/GetCategories")]
         public async Task<IActionResult> GetCategories()
         {
