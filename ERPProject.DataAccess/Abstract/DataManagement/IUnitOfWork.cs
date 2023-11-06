@@ -16,7 +16,6 @@ namespace ERPProject.DataAccess.Abstract.DataManagement
         IOfferRepository OfferRepository { get; }
         IProductRepository ProductRepository { get; }
         IRequestRepository RequestRepository { get; }
-        IRequestDetailRepository RequestDetailRepository { get; }
         IRoleRepository RoleRepository { get; }
         IStockRepository StockRepository { get; }
         IStockDetailRepository StockDetailRepository { get; }

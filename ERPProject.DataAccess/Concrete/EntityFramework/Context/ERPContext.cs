@@ -36,8 +36,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
         public virtual DbSet<Request> Requests { get; set; }
 
-        public virtual DbSet<RequestDetail> RequestDetails { get; set; }
-
         public virtual DbSet<Role> Roles { get; set; }
 
         public virtual DbSet<Stock> Stocks { get; set; }
@@ -45,6 +43,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
         public virtual DbSet<StockDetail> StockDetails { get; set; }
 
         public virtual DbSet<User> Users { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
@@ -269,36 +268,10 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Request_User");
+
             });
 
-            modelBuilder.Entity<RequestDetail>(entity =>
-            {
-                entity.ToTable("RequestDetail");
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.Property(e => e.AddedIPV4Address)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .IsFixedLength()
-                    .HasColumnName("AddedIP4VAdress");
-                entity.Property(e => e.AddedTime).HasColumnType("datetime");
-                entity.Property(e => e.UpdatedIPV4Address)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .IsFixedLength()
-                    .HasColumnName("UpdatedIP4VAdress");
-                entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Product).WithMany(p => p.RequestDetails)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RequestDetail_Product");
-
-                entity.HasOne(d => d.Request).WithMany(p => p.RequestDetails)
-                    .HasForeignKey(d => d.RequestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RequestDetail_Request");
-            });
+            
 
             modelBuilder.Entity<Role>(entity =>
             {

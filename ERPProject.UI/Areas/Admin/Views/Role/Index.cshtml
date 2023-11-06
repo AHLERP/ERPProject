@@ -3,21 +3,12 @@
 @{
     ViewData["Title"] = "Roller";
     ViewData["baslik"] = "Yetkiler";
+    ViewData["buttonismi"] = "Yetki Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<br></br>
 <div class="container col col-md-9 pt-3">
-    <div class="container mb-2" style="width: 80%;">
-        <div class="input-group input-group-lg">
-            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Yetki Ekle
-            </button>
-            <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
-            <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
-        </div>
-    </div>
-
-    <table class="table table-bordered border-dark">
+    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+    <table class="table table-bordered border-dark" id="example">
         <thead>
             <tr>
                 <th scope="col">Yetki Adı</th>
@@ -35,7 +26,7 @@
                                 İşlemler
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id">Yetki Düzenle</a></li>
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name="@item.Name">Yetki Düzenle</a></li>
                                 <li><hr class="dropdown-divider text-danger"></li>
                                 <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
                             </ul>
@@ -80,11 +71,11 @@
             <form action="/Admin/RolGuncelle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="inputRolId" name="Id" value="" aria-describedby="basic-addon1">
+                        <input type="hidden" class="form-control" id="inputRolId" name="Id" value="" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Yetki İsmi</span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputDepartmanAd" name="Name" aria-describedby="basic-addon1">
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputRolName" name="Name" aria-describedby="basic-addon1">
                     </div>
 
                 </div>
@@ -107,6 +98,8 @@
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var CompanyId = button.data('id');
+        var name = button.data('name');
         $("#inputRolId").val(CompanyId);
+        $("#inputRolName").val(name);
     });
 </script>

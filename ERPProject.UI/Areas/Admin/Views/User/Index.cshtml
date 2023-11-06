@@ -1,8 +1,9 @@
 ﻿@using ERPProject.UI.Areas.Admin.Models;
 @model UserVM
 @{
-    ViewData["Title"] = "User";
+    ViewData["Title"] = "Personel";
     ViewData["baslik"] = "Personeller";
+    ViewData["buttonismi"] = "Personel Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <script>
@@ -51,22 +52,15 @@
         });
     });
 </script>
-<div class="container mb-2 mt-5" style="width: 80%;">
-    <div class="input-group input-group-lg">
-        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Personel Ekle
-        </button>
-        <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
-        <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
-    </div>
-</div>
-<table class="table table-hover table-striped">
+<div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+<table class="table table-hover table-striped" id="example">
     <thead>
         <tr>
             <th scope="col">Ad</th>
             <th scope="col">Soyad</th>
             <th scope="col">Email</th>
             <th scope="col">Telefon</th>
+            <th scope="col">Yetki</th>
             <th scope="col">Departman</th>
             <th scope="col">İşlemler</th>
 
@@ -80,6 +74,7 @@
                 <td>@user.LastName</td>
                 <td>@user.Email</td>
                 <td>@user.Phone</td>
+                <td>@user.RoleName</td>
                 <td>@user.DepartmentName</td>
                 <td>
                     <div class="dropdown">
@@ -88,7 +83,6 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@user.Id" data-name="@user.Name" data-lastname="@user.LastName" data-email="@user.Email" data-phone="@user.Phone" data-password="@user.Password" data-rol="@user.RoleId" data-departman="@user.DepartmentId">Düzenle</li>
-                            <li class="dropdown-item">İşlem 2</li>
                             <hr>
                             <li class="dropdown-item text-danger" onclick="confirmUserDelete(@user.Id)">Sil</li>
                         </ul>
@@ -112,15 +106,15 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputAds" name="Name" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Soyad..." id="inputUrunAd" name="LastName" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Soyad..." id="inputSoyAds" name="LastName" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-at-fill"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Email..." id="inputUrunAd" name="Email" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Email..." id="inputEmails" name="Email" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
@@ -148,12 +142,21 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputDeparman"><i class="bi bi-building"></i></label>
                         </div>
-                        <select class="custom-select col col-md-9" id="inputDeparman" name="DepartmentId" required>
-                            <option selected>Departman Seç...</option>
-                            @foreach (var b in Model.Departments)
+                        <select class="custom-select col col-md-9" id="inputCompany" name="CompanyId" required>
+                            <option selected>Şirket Seç...</option>
+                            @foreach (var company in Model.Companies)
                             {
-                                <option value="@b.Id">@b.Name</option>
+                                <option value="@company.Id">@company.Name</option>
                             }
+
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputDepartman"><i class="bi bi-building"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputDepartman" name="DepartmentId" required>
+                            <option selected>Departman Seç...</option>
                         </select>
                     </div>
                 </div>
@@ -204,7 +207,7 @@
                         <select class="custom-select col col-md-9" id="inputYetki1" name="RoleId" required>
                             @foreach (var item in Model.Roles)
                             {
-                                        <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id">@item.Name</option>
                             }
                         </select>
                     </div>
@@ -212,11 +215,21 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputDeparman"><i class="bi bi-building"></i></label>
                         </div>
-                        <select class="custom-select col col-md-9" id="inputDeparman1" name="DepartmentId" required>
-                            @foreach (var b in Model.Departments)
+                        <select class="custom-select col col-md-9" id="inputCompany1" name="CompanyId" required>
+                            <option selected>Şirket Seç...</option>
+                            @foreach (var company in Model.Companies)
                             {
-                                <option value="@b.Id">@b.Name</option>
+                                <option value="@company.Id">@company.Name</option>
                             }
+
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputDepartman"><i class="bi bi-building"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputDepartman1" name="DepartmentId" required>
+                            <option selected>Departman Seç...</option>
                         </select>
                     </div>
                 </div>
@@ -259,7 +272,6 @@
         $("#inputSifre1").val(pass);
         $("#inputYetki1").val(rol);
         $("#inputDeparman1").val(dep);
-        alert(rol);
     });
     function confirmUserDelete(id) {
         var result = confirm("Bu personeli silmek istediğinizden emin misiniz?");
@@ -267,4 +279,34 @@
             window.location.href = 'KullaniciSil/' + id;
         }
     }
+    $(document).ready(function () {
+        $("#inputCompany").change(function () {
+            var selectedCompanyId = $(this).val();
+            $.ajax({
+                url: "https://localhost:7075/GetDepartmentsByCompany/" + selectedCompanyId,
+                type: "GET",
+                success: function (data) {
+                    // Departman seçeneklerini güncelle
+                    $("#inputDepartman").empty();
+                    $.each(data, function (index, item) {
+                        $("#inputDepartman").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                    });
+                }
+            });
+        });
+        $("#inputCompany1").change(function () {
+            var selectedCompanyId = $(this).val();
+            $.ajax({
+                url: "https://localhost:7075/GetDepartmentsByCompany/" + selectedCompanyId,
+                type: "GET",
+                success: function (data) {
+                    // Departman seçeneklerini güncelle
+                    $("#inputDepartman1").empty();
+                    $.each(data, function (index, item) {
+                        $("#inputDepartman1").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                    });
+                }
+            });
+        });
+    });
 </script>

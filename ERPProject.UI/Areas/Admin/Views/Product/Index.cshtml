@@ -3,21 +3,12 @@
 @{
     ViewData["Title"] = "Urunler";
     ViewData["baslik"] = "Ürünler";
+    ViewData["buttonismi"] = "Ürün Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<br></br>
 <div class="container col col-md-9 py-3">
-    <div class="container mb-2" style="width: 80%;">
-        <div class="input-group input-group-lg">
-            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Ürün Ekle
-            </button>
-            <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
-            <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
-        </div>
-    </div>
-
-    <table class="table table-bordered border-dark table-striped">
+    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+    <table class="table table-bordered border-dark table-striped" id="example">
         <thead>
             <tr>
                 <th scope="col">Adı</th>
@@ -35,14 +26,14 @@
                     <td>@item.Name</td>
                     <td>@item.CategoryName</td>
                     <td>@item.BrandName</td>
-                    <td >@item.Description</td>
+                    <td>@item.Description</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 İşlemler
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name-id="@item.Name">Düzenle</a></li>
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name-id="@item.Name" data-kategori="@item.CategoryId" data-marka="@item.BrandId" data-desc="@item.Description">Düzenle</a></li>
                                 <li><hr class="dropdown-divider text-danger"></li>
                                 <li><a class="dropdown-item text-danger" onclick="confirmUrunDelete(@item.Id)">Sil</a></li>
                             </ul>
@@ -66,13 +57,13 @@
             <form action="/Admin/UrunEkle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Ürün İsmi</span>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <input autocomplete="off" type="text" class="form-control" placeholder="Urun İsmi..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputKategori"><i class="bi bi-trash"></i></label>
+                            <label class="input-group-text" for="inputKategori"><i class="bi bi-tags"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputKategori" name="CategoryId" required>
                             <option selected>Kategori Seç...</option>
@@ -80,12 +71,12 @@
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
-                            
+
                         </select>
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputMarka"><i class="bi bi-trash"></i></label>
+                            <label class="input-group-text" for="inputMarka"><i class="bi bi-bootstrap"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputMarka" name="BrandId" required>
                             <option selected>Marka Seç...</option>
@@ -96,7 +87,7 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Ürün Açıklaması</span>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
                         <textarea style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Ürün Açıklaması..." id="inputUrunAciklama" name="Description" aria-describedby="basic-addon1"></textarea>
                     </div>
                 </div>
@@ -122,8 +113,38 @@
                         <input type="hidden" class="form-control" id="inputKategoriId" name="Id" value="" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Urun İsmi</span>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputKategoriAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputKategori"><i class="bi bi-tags"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputKategori1" name="CategoryId" required>
+                            <option selected>Kategori Seç...</option>
+                            @foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputMarka"><i class="bi bi-bootstrap"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputMarka1" name="BrandId" required>
+                            <option selected>Marka Seç...</option>
+                            @foreach (var item in Model.Brands)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                        <textarea style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Ürün Açıklaması..." id="inputUrunAciklama1" name="Description" aria-describedby="basic-addon1"></textarea>
                     </div>
 
                 </div>
@@ -146,9 +167,15 @@
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var CompanyId = button.data('id');
-        var KategoriAd = button.data('nameId');
+        var urunad = button.data('nameId');
+        var category = button.data('kategori');
+        var brand = button.data('marka');
+        var desc = button.data('desc');
         $("#inputKategoriId").val(CompanyId);
-        $("#inputKategoriAd").val(KategoriAd);
+        $("#inputKategoriAd").val(urunad);
+        $("#inputKategori1").val(category);
+        $("#inputMarka1").val(brand);
+        $("#inputUrunAciklama1").val(desc);
     });
 </script>
 

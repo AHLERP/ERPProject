@@ -134,7 +134,7 @@ namespace ERPProject.API.Controllers
 
             Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponseList);
 
-            return Ok(Sonuc<List<DepartmentDTOResponse>>.SuccessWithData(departmentDTOResponseList));
+            return Ok(departmentDTOResponseList);
         }
     }
 }
