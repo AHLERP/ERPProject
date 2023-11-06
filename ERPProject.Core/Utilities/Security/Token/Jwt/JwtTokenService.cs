@@ -13,9 +13,8 @@ namespace ERPProject.Core.Utilities.Security.Token.Jwt
         {
             _appSettings = appSettings.Value;
         }
-        public AccessToken CreateToken(long userId, string userName, int roleId)
+        public AccessToken CreateToken(long userId, string userName, int roleId) //
         {
-            
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.SecurityKey);
             var tokenDescriptor = new SecurityTokenDescriptor()

@@ -7,7 +7,7 @@ namespace ERPProject.UI.Areas.User.Controllers
     public class OfferController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public OfferController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public OfferController(HttpClient httpClient) : base(httpClient)
         {
 
         }

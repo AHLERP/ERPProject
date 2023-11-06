@@ -12,7 +12,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class InvoiceController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public InvoiceController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public InvoiceController(HttpClient httpClient) : base(httpClient)
         {
 
         }
