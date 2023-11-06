@@ -5,8 +5,6 @@ using ERPProject.API.Middleware;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.Concrete;
 using ERPProject.Core.CustomException;
-using ERPProject.Core.Utilities.Security.Token;
-using ERPProject.Core.Utilities.Security.Token.Jwt;
 using ERPProject.DataAccess.Abstract;
 using ERPProject.DataAccess.Abstract.DataManagement;
 using ERPProject.DataAccess.Concrete.EntityFramework;
