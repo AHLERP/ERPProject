@@ -8,5 +8,6 @@ namespace ERPProject.Entity.DTO.UserDTO
 {
     public class UserDTORequest:UserDTOBase
     {
+        
     }
 }

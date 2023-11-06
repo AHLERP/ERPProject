@@ -1,24 +1,15 @@
 ﻿@using ERPProject.Entity.DTO.BrandDTO;
-@model List<BrandDTOResponse>
+@using ERPProject.Entity.Result;
+@model ApiResponse<List<BrandDTOResponse>>
 @{
     ViewData["Title"] = "Markalar";
     ViewData["baslik"] = "Markalar";
+    ViewData["buttonismi"] = "Marka Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
-<br></br>
 <div class="container col col-md-9 py-3">
-    <div class="container mb-2" style="width: 80%;">
-        <div class="input-group input-group-lg">
-            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Marka Ekle
-            </button>
-            <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
-            <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
-        </div>
-    </div>
-
-    <table class="table table-bordered border-dark">
+    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+    <table class="table table-bordered border-dark" id="example">
         <thead>
             <tr>
                 <th scope="col">Marka Adı</th>
@@ -26,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Data)
             {
                 <tr>
                     <td>@item.Name</td>
@@ -44,7 +35,6 @@
                     </td>
                 </tr>
             }
-
         </tbody>
     </table>
 </div>

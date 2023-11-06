@@ -1,4 +1,5 @@
-﻿using ERPProject.Entity.DTO.DepartmentDTO;
+﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.UserDTO;
@@ -29,7 +30,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 Users = val.Data,
                 Roles = val3.Data,
                 Requests = val4.Data
-
             };
 
             return View(userVM);
