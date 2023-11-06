@@ -10,6 +10,7 @@ namespace ERPProject.Entity.DTO.LoginDTO
     {
         public string AdSoyad { get; set; }
         public string EPosta { get; set; }
+        public string Sifre { get; set; }
 
         public string Token { get; set; }
         public string RoleName { get; set; }

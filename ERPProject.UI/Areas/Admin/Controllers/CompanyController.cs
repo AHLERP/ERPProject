@@ -18,11 +18,21 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            if (company.StatusCode == 401 || department.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (company.StatusCode == 403 || department.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+
+
             CompanyVM companyVM = new CompanyVM()
 
             {
-                Companies = company,
-                Departments = department,
+                Companies = company.Data,
+                Departments = department.Data,
             };
 
 

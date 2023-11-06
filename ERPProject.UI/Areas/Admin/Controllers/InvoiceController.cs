@@ -26,10 +26,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             InvoiceVM invoiceVM = new InvoiceVM()
 
             {
-                Invoices = invoice,
-                Products = product,
-                Offers = offer,
-                Companies = company,
+                Invoices = invoice.Data,
+                Products = product.Data,
+                Offers = offer.Data,
+                Companies = company.Data,
 
             };
             return View(invoiceVM);

@@ -29,5 +29,9 @@ namespace ERPProject.Entity.Result
         {
             return new HataBilgisi { Hata = hata, HataAciklama = hataAciklama };
         }
+        public static HataBilgisi ForbiddenError(List<string> hata = null, string hataAciklama = "Yetkisiz Giriş!")
+        {
+            return new HataBilgisi { Hata = hata, HataAciklama = hataAciklama };
+        }
     }
 }

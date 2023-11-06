@@ -35,7 +35,6 @@ namespace ERPProject.Entity.Result
 
         public string Mesaj { get; set; }
 
-        [JsonIgnore]
         public int StatusCode { get; set; }
 
         public HataBilgisi HataBilgisi { get; set; }
