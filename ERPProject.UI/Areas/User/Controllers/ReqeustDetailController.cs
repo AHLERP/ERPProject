@@ -7,7 +7,7 @@ namespace ERPProject.UI.Areas.User.Controllers
     public class RequestDetailController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public RequestDetailController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public RequestDetailController(HttpClient httpClient) : base(httpClient)
         {
 
         }

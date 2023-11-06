@@ -43,9 +43,9 @@ namespace ERPProject.API.Controllers
 
         [HttpDelete("/RemoveUser/{userId}")]
 
-        public async Task<IActionResult> RemoveUser(long id)
+        public async Task<IActionResult> RemoveUser(Int64 userId)
         {
-            User user = await _userService.GetAsync(x=>x.Id == id);
+            User user = await _userService.GetAsync(x=>x.Id == userId);
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());

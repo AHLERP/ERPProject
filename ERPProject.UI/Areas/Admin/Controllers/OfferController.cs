@@ -1,4 +1,7 @@
-﻿using ERPProject.Entity.DTO.OfferDTO;
+﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.OfferDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -7,15 +10,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class OfferController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public OfferController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public OfferController(HttpClient httpClient) : base(httpClient)
         {
 
         }
         [HttpGet("/Admin/Teklifler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            return View(val);
+            var offer = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            OfferVM offerVM = new OfferVM()
+
+            {
+
+                Offers = offer,
+                Companies = company,
+
+            };
+            return View(offerVM);
         }
         [HttpGet("/Admin/Teklif")]
         public async Task<IActionResult> Get(long id)

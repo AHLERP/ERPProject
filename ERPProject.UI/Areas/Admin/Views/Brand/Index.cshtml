@@ -1,0 +1,115 @@
+﻿@using ERPProject.Entity.DTO.BrandDTO;
+@model List<BrandDTOResponse>
+@{
+    ViewData["Title"] = "Markalar";
+    ViewData["baslik"] = "Markalar";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br></br>
+<div class="container col col-md-9 py-3">
+    <div class="container mb-2" style="width: 80%;">
+        <div class="input-group input-group-lg">
+            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Marka Ekle
+            </button>
+            <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
+            <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
+        </div>
+    </div>
+
+    <table class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th scope="col">Marka Adı</th>
+                <th scope="col" style="width:100px ">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                İşlemler
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name-id="@item.Name">Marka Düzenle</a></li>
+                                <li><hr class="dropdown-divider text-danger"></li>
+                                <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Marka Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/Admin/MarkaEkle" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Marka İsmi</span>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputRolAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static1" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Marka Düzenle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/Admin/MarkaGuncelle" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="hidden" class="form-control" id="inputMarkaId" name="Id" value="" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Marka İsmi</span>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Marka İsmi..." id="inputMarkaAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmRolDelete(id) {
+        var result = confirm("Bu yetkiyi silmek istediğinizden emin misiniz?");
+        if (result) {
+            window.location.href = 'MarkaSil/' + id;
+        }
+    }
+    $('#staticBackdrop1').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var CompanyId = button.data('id');
+        var MarkaAd = button.data('nameId');
+        $("#inputMarkaId").val(CompanyId);
+        $("#inputMarkaAd").val(MarkaAd);
+    });
+</script>
+

@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -7,15 +9,21 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class DepartmentController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public DepartmentController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public DepartmentController(HttpClient httpClient) : base(httpClient)
         {
 
         }
         [HttpGet("/Admin/Departmanlar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            return View(val);
+            var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            DepartmentVM departmentVM = new DepartmentVM()
+
+            {
+                Departments = department,
+
+            };
+            return View(departmentVM);
         }
         [HttpGet("/Admin/Departman")]
         public async Task<IActionResult> Get(long id)
@@ -41,9 +49,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var response = await UpdateAsync(p, url + "UpdateDepartment");
             if (response)
             {
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Sirketler", "Admin");
 
             }
+
             return RedirectToAction("Index", "Home");
 
         }

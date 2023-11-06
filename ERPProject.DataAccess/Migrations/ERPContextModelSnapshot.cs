@@ -739,6 +739,14 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Token")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime?>("TokenExpireDate")
+                        .HasMaxLength(255)
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)
                         .IsUnicode(false)

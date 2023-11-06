@@ -257,6 +257,8 @@ namespace ERPProject.DataAccess.Migrations
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "char(10)", unicode: false, fixedLength: true, maxLength: 10, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),

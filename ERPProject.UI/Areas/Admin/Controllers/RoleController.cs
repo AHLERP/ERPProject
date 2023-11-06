@@ -1,23 +1,20 @@
 ﻿using ERPProject.Entity.DTO.RoleDTO;
 using Microsoft.AspNetCore.Mvc;
 
-using ERPProject.Entity.DTO.RoleDTO;
-using Microsoft.AspNetCore.Mvc;
-
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class RoleController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public RoleController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public RoleController(HttpClient httpClient) : base(httpClient)
         {
 
         }
         [HttpGet("/Admin/Roller")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<RoleDTOResponse>(url + "GetRoles");
+            var val = await GetAllAsync<RoleDTOResponse>(url + "Roles");
             return View(val);
         }
         [HttpGet("/Admin/Rol")]
@@ -50,14 +47,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/RolSil")]
+        [HttpGet("/Admin/RolSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveRole/" + id);
             if (response)
             {
                 return RedirectToAction("Index", "Role");
-
             }
             return RedirectToAction("Index", "Home");
 

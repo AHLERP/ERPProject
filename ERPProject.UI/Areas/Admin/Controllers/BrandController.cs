@@ -1,7 +1,5 @@
 ﻿using ERPProject.Entity.DTO.BrandDTO;
-using Microsoft.AspNetCore.Mvc;
-
-using ERPProject.Entity.DTO.BrandDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -10,15 +8,16 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class BrandController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public BrandController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public BrandController(HttpClient httpClient) : base(httpClient)
         {
 
         }
         [HttpGet("/Admin/Markalar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            return View(val);
+            var brand = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+            
+            return View(brand);
         }
         [HttpGet("/Admin/Marka")]
         public async Task<IActionResult> Get(long id)
@@ -50,7 +49,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/MarkaSil")]
+        [HttpGet("/Admin/MarkaSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var response = await DeleteAsync(url + "RemoveBrand/" + id);

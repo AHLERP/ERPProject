@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    [Migration("20231101124754_migE")]
+    [Migration("20231101131922_migE")]
     partial class migE
     {
         /// <inheritdoc />
@@ -741,6 +741,13 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TokenExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)

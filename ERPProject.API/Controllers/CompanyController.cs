@@ -97,7 +97,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-
+        [Authorize(Roles = "1")]
         [HttpGet("/GetCompanies")]
         
         public async Task<IActionResult> GetCompanies()

@@ -1,4 +1,8 @@
-﻿using ERPProject.Entity.DTO.UserDTO;
+﻿using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.RoleDTO;
+using ERPProject.Entity.DTO.UserDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -7,15 +11,28 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public UserController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public UserController(HttpClient httpClient) : base(httpClient)
         {
 
         }
         [HttpGet("/Admin/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            return View(val);
+            var users = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            var departments = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            var roles = await GetAllAsync<RoleDTOResponse>(url + "Roles");
+            var requests = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+
+            UserVM userVM = new UserVM
+            {
+                Departments = departments,
+                Users = users,
+                Roles = roles,
+                Requests = requests
+                
+            };
+
+            return View(userVM);
         }
         [HttpGet("/Admin/Kullanici")]
         public async Task<IActionResult> Get(long id)
@@ -41,19 +58,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var response = await UpdateAsync(p, url + "UpdateUser");
             if (response)
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Kullanicilar", "Admin");
 
             }
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/KullaniciSil")]
-        public async Task<IActionResult> Delete(long id)
+        [HttpGet("/Admin/KullaniciSil/{id}")]
+        public async Task<IActionResult> Delete(Int64 id)
         {
             var response = await DeleteAsync(url + "RemoveUser/" + id);
             if (response)
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Kullanicilar", "Admin");
 
             }
             return RedirectToAction("Index", "Home");
