@@ -1,7 +1,6 @@
 ﻿using ERPProject.Entity.DTO.BrandDTO;
-using Microsoft.AspNetCore.Mvc;
-
-using ERPProject.Entity.DTO.BrandDTO;
+using ERPProject.Entity.Poco;
+using ERPProject.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
@@ -18,19 +17,28 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             return View(val);
         }
         [HttpGet("/User/Marka")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<BrandDTOResponse>(url + "GetBrand/" + id);
+            
             return View(val);
         }
         [HttpPost("/User/MarkaEkle")]
         public async Task<IActionResult> Add(BrandDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddBrand");
-            if (response)
+            var val = await AddAsync(p, url + "AddBrand");
+            if (val)
             {
                 return RedirectToAction("Index", "Brand");
 
@@ -41,8 +49,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/MarkaGuncelle")]
         public async Task<IActionResult> Update(BrandDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateBrand");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateBrand");
+            if (val)
             {
                 return RedirectToAction("Index", "Brand");
 
@@ -50,11 +58,11 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/MarkaSil")]
+        [HttpGet("/User/MarkaSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveBrand/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveBrand/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Brand");
 

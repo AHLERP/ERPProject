@@ -1,4 +1,8 @@
-﻿using ERPProject.Entity.DTO.UserDTO;
+﻿using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.RoleDTO;
+using ERPProject.Entity.DTO.UserDTO;
+using ERPProject.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
@@ -15,19 +19,41 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            return View(val);
+            var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
+            var val4 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+
+            UserVM userVM = new UserVM
+            {
+                Departments = val2.Data,
+                Users = val.Data,
+                Roles = val3.Data,
+                Requests = val4.Data
+
+            };
+
+            return View(userVM);
         }
         [HttpGet("/User/Kullanici")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return View(val);
             return View(val);
         }
         [HttpPost("/User/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddUser");
-            if (response)
+            var val = await AddAsync(p, url + "AddUser");
+            if (val)
             {
                 return RedirectToAction("Index", "User");
 
@@ -38,22 +64,22 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateUser");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateUser");
+            if (val)
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Kullanicilar", "User");
 
             }
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/KullaniciSil")]
-        public async Task<IActionResult> Delete(long id)
+        [HttpGet("/User/KullaniciSil/{id}")]
+        public async Task<IActionResult> Delete(Int64 id)
         {
-            var response = await DeleteAsync(url + "RemoveUser/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveUser/" + id);
+            if (val)
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Kullanicilar", "User");
 
             }
             return RedirectToAction("Index", "Home");

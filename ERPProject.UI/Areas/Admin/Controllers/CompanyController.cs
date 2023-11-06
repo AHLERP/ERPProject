@@ -1,5 +1,6 @@
 ﻿using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.Poco;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +17,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {
-            var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
-            var department = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            if (company.StatusCode == 401 || department.StatusCode == 401)
+            var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
+            if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
             }
-            else if (company.StatusCode == 403 || department.StatusCode == 403)
+            else if (val.StatusCode == 403)
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -31,10 +32,9 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             CompanyVM companyVM = new CompanyVM()
 
             {
-                Companies = company.Data,
-                Departments = department.Data,
+                Companies = val.Data,
+                Departments = val2.Data,
             };
-
 
             return View(companyVM);
         }
@@ -42,13 +42,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
+
             return View(val);
         }
         [HttpPost("/Admin/SirketEkle")]
         public async Task<IActionResult> AddCompany(CompanyDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddCompany");
-            if (response)
+            var val = await AddAsync(p, url + "AddCompany");
+
+            if (val)
             {
                 return RedirectToAction("Index", "Company");
 
@@ -59,8 +61,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateCompany");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateCompany");
+            if (val)
             {
                 return RedirectToAction("Sirketler", "Admin");
 
@@ -72,8 +74,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/SirketSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveCompany/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveCompany/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Company");
             }
