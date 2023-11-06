@@ -1,5 +1,6 @@
 ﻿@using ERPProject.Entity.DTO.BrandDTO;
-@model List<BrandDTOResponse>
+@using ERPProject.Entity.Result;
+@model ApiResponse<List<BrandDTOResponse>>
 @{
     ViewData["Title"] = "Markalar";
     ViewData["baslik"] = "Markalar";
@@ -26,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Data)
             {
                 <tr>
                     <td>@item.Name</td>

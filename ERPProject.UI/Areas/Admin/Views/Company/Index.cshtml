@@ -1,6 +1,6 @@
 @using ERPProject.UI.Areas.Admin.Models;
 @model CompanyVM
-
+@inject IHttpContextAccessor Accessor
 @{
     ViewData["Title"] = "Şirketler";
     ViewData["baslik"] = "Şirketler";
@@ -13,6 +13,10 @@
         </button>
         <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
         <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
+        @Accessor.HttpContext.Session.GetString("Token")
+        @Accessor.HttpContext.Session.GetString("Role")
+        @Accessor.HttpContext.Session.GetString("Company")
+        @Accessor.HttpContext.Session.GetString("Department")
     </div>
 </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">

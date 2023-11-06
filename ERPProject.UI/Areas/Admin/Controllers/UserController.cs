@@ -21,14 +21,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var users = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var departments = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var roles = await GetAllAsync<RoleDTOResponse>(url + "Roles");
-            var requests = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            //var requests = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
 
             UserVM userVM = new UserVM
             {
                 Departments = departments.Data,
                 Users = users.Data,
                 Roles = roles.Data,
-                Requests = requests.Data
+                Requests = null
 
             };
 
