@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Şirketler";
     ViewData["baslik"] = "Şirketler";
+    ViewData["buttonismi"] = "Şirket Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="container mb-2 mt-5" style="width: 80%;">
@@ -19,13 +20,13 @@
         @Accessor.HttpContext.Session.GetString("Department")
     </div>
 </div>
+
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @{
         int i = 0;
     }
     @foreach (var item in Model.Companies)
     {
-
         <div>
             <div class="card">
                 <div class="card-front">
@@ -47,11 +48,9 @@
                         <img src="~/Admin/img/ahlatci.jpg" class="card-img-top" alt="ahlatcilogo" style="height:350px!important;">
                         <h5 class="card-title">@item.Name</h5>
                     </div>
-
                 </div>
                 <div class="card-back" style="max-height: 395px; overflow-y: auto;">
-
-                    <table class="table table-hover table-secondary table-striped" style="min-width:375px; min-height:375px;">
+                    <table class="table table-hover table-secondary table-striped" id="example" style="min-width:375px; min-height:375px;">
                         <thead>
                             <tr>
                                 <th scope="col">Departmanlar</th>
@@ -169,7 +168,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Departman düzenle</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Şirket düzenle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="SirketGuncelle" method="post">

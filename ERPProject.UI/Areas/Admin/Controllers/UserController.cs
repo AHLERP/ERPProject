@@ -1,4 +1,5 @@
-﻿using ERPProject.Entity.DTO.DepartmentDTO;
+﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.UserDTO;
@@ -22,6 +23,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var departments = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var roles = await GetAllAsync<RoleDTOResponse>(url + "Roles");
             //var requests = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            var companies = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+
 
             UserVM userVM = new UserVM
             {
@@ -29,7 +32,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 Users = users.Data,
                 Roles = roles.Data,
                 Requests = null
-
+                Companies = companies.Data
             };
 
             return View(userVM);

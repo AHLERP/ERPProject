@@ -22,7 +22,5 @@ public partial class Product : BaseEntity
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 
-    public virtual ICollection<RequestDetail> RequestDetails { get; set; } = new List<RequestDetail>();
-
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }
