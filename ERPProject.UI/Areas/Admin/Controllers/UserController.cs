@@ -31,7 +31,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 Departments = departments.Data,
                 Users = users.Data,
                 Roles = roles.Data,
-                Requests = null
+                Requests = null,
                 Companies = companies.Data
             };
 

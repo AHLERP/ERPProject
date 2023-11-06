@@ -7,20 +7,11 @@
     ViewData["buttonismi"] = "Şirket Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<div class="container mb-2 mt-5" style="width: 80%;">
-    <div class="input-group input-group-lg">
-        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Şirket Ekle
-        </button>
-        <input autocomplete="off" type="text" class="form-control" placeholder="Arama Yap...">
-        <button class="btn btn-secondary"><i onclick="alert('Arama Yapılacak')">Ara...</i></button>
-        @Accessor.HttpContext.Session.GetString("Token")
-        @Accessor.HttpContext.Session.GetString("Role")
-        @Accessor.HttpContext.Session.GetString("Company")
-        @Accessor.HttpContext.Session.GetString("Department")
-    </div>
-</div>
 
+@Accessor.HttpContext.Session.GetString("Token")
+@Accessor.HttpContext.Session.GetString("Role")
+@Accessor.HttpContext.Session.GetString("Company")
+@Accessor.HttpContext.Session.GetString("Department")
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @{
         int i = 0;
