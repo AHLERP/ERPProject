@@ -34,7 +34,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/Login")]
         public async Task<IActionResult> LoginAsync(LoginRequestDTO loginRequestDTO)
-        {
+          {
 
 
             var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Role");
@@ -82,7 +82,6 @@ namespace ERPProject.API.Controllers
                 };
 
                 Log.Information("LoginResponse => {@loginResponseDTO}", loginResponseDTO);
-
                 return Ok(Sonuc<LoginResponseDTO>.SuccessWithData(loginResponseDTO));
             }
 

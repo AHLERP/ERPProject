@@ -5,6 +5,7 @@ using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using FluentValidation.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -14,7 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [Authorize(Roles = "Admin,rol")]
+    [Authorize(Roles="a")]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -105,7 +106,7 @@ namespace ERPProject.API.Controllers
             var companies = await _companyService.GetAllAsync(x => x.IsActive == true);
             if (companies == null)
             {
-                return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
+                return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
             }
             List<CompanyDTOResponse> companyDTOResponseList = new();
             foreach (var company in companies)

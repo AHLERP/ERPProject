@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using ERPProject.API.Middleware;
 using ERPProject.Business.Abstract;
 using ERPProject.Business.Concrete;
 using ERPProject.Core.CustomException;

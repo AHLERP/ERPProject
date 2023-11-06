@@ -25,9 +25,9 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             ProductVM productVM = new ProductVM()
 
             {
-                Products = product,
-                Brands= brand,
-                Categories= category,
+                Products = product.Data,
+                Brands= brand.Data,
+                Categories= category.Data,
             };
             return View(productVM);
         }

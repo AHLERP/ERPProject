@@ -20,7 +20,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             DepartmentVM departmentVM = new DepartmentVM()
 
             {
-                Departments = department,
+                Departments = department.Data,
 
             };
             return View(departmentVM);

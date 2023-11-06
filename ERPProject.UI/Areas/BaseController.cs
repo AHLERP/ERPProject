@@ -1,6 +1,9 @@
 ﻿using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 
@@ -47,7 +50,7 @@ namespace ERPProject.UI.Areas
         protected async Task<bool> DeleteAsync(string url)
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
-            
+
             HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -57,26 +60,55 @@ namespace ERPProject.UI.Areas
 
             return false;
         }
-        protected async Task<List<T>> GetAllAsync<T>(string url) where T : class
+        protected async Task<ApiResponse<List<T>>> GetAllAsync<T>(string url) where T : class
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
 
-            HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
+            var responseMessage = await _httpClient.GetAsync(url);
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<List<T>>>(jsonData);
-                if (value != null)
-                {
-                    _httpClient.DefaultRequestHeaders.Remove("Authorization");
-                    return value.Data;
-                }
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                return value;
+
+
             }
+            else if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                var forbiddenResponse = new ApiResponse<List<T>>
+                    (
+                        data: null,
+                        statustCode: 403,
+                        hataBilgisi: null,
+                        mesaj: "Yetkisiz"
+                    );
+
+                return forbiddenResponse;
+
+            }
+            else if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                var unauthorizedResponse = new ApiResponse<List<T>>
+                    (
+                        data: null,
+                        statustCode: 401,
+                        hataBilgisi: null,
+                        mesaj: "Oturum Açılmadı"
+                    );
+
+                return unauthorizedResponse;
+
+            }
+
             return null;
         }
         protected async Task<T> GetAsync<T>(string url) where T : class
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));       
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
             HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {

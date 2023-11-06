@@ -23,8 +23,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
             {
 
-                Offers = offer,
-                Companies = company,
+                Offers = offer.Data,
+                Companies = company.Data,
 
             };
             return View(offerVM);

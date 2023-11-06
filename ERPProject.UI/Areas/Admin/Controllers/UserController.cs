@@ -25,11 +25,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
             UserVM userVM = new UserVM
             {
-                Departments = departments,
-                Users = users,
-                Roles = roles,
-                Requests = requests
-                
+                Departments = departments.Data,
+                Users = users.Data,
+                Roles = roles.Data,
+                Requests = requests.Data
+
             };
 
             return View(userVM);

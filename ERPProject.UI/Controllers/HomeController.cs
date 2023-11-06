@@ -8,5 +8,13 @@ namespace ERPProject.UI.Controllers
         {
             return View();
         }
+        public IActionResult Unauthorized()
+        {
+            return View();
+        }
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
     }
 }
