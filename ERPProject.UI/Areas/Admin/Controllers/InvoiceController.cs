@@ -12,7 +12,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class InvoiceController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public InvoiceController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public InvoiceController(HttpClient httpClient) : base(httpClient)
         {
 
         }
@@ -26,10 +26,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             InvoiceVM invoiceVM = new InvoiceVM()
 
             {
-                Invoices = invoice,
-                Products = product,
-                Offers = offer,
-                Companies = company,
+                Invoices = invoice.Data,
+                Products = product.Data,
+                Offers = offer.Data,
+                Companies = company.Data,
 
             };
             return View(invoiceVM);

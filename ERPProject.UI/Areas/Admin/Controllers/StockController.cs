@@ -10,7 +10,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class StockController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public StockController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public StockController(HttpClient httpClient) : base(httpClient)
         {
 
         }

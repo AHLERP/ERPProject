@@ -1,29 +1,31 @@
 ﻿using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace ERPProject.UI.Areas
 {
     public class BaseController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public BaseController(IHttpClientFactory httpClientFactory)
+        private readonly HttpClient _httpClient;
+        public BaseController(HttpClient httpClient)
         {
-            _httpClientFactory = httpClientFactory;
-
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("http://localhost:7075/api/");
         }
         protected async Task<bool> UpdateAsync<T>(T p, string url) where T : class
         {
-            var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync(url, stringContent);
-
+            HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
                 return true;
             }
 
@@ -31,14 +33,15 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<bool> AddAsync<T>(T p, string url) where T : class
         {
-            var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync(url, stringContent);
+            HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, stringContent);
+
 
             if (responseMessage.IsSuccessStatusCode)
             {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
                 return true;
             }
 
@@ -46,50 +49,74 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<bool> DeleteAsync(string url)
         {
-            var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Add("Header", "Bearer " + HttpContext.Session.GetString("Token"));
-            var responserMessage = await client.DeleteAsync(url);
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
 
-            if (responserMessage.IsSuccessStatusCode)
+            HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(url);
+            if (responseMessage.IsSuccessStatusCode)
             {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
                 return true;
             }
 
             return false;
         }
-        protected async Task<List<T>> GetAllAsync<T>(string url) where T : class
+        protected async Task<ApiResponse<List<T>>> GetAllAsync<T>(string url) where T : class
         {
-            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
+            var responseMessage = await _httpClient.GetAsync(url);
 
-            HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {
-                var jsonData = await responserMessage.Content.ReadAsStringAsync();
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<List<T>>>(jsonData);
-                if (value != null)
-                {
-                    return value.Data;
-                }
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                return value;
 
 
             }
+            else if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                var forbiddenResponse = new ApiResponse<List<T>>
+                    (
+                        data: null,
+                        statustCode: 403,
+                        hataBilgisi: null,
+                        mesaj: "Yetkisiz"
+                    );
+
+                return forbiddenResponse;
+
+            }
+            else if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                var unauthorizedResponse = new ApiResponse<List<T>>
+                    (
+                        data: null,
+                        statustCode: 401,
+                        hataBilgisi: null,
+                        mesaj: "Oturum Açılmadı"
+                    );
+
+                return unauthorizedResponse;
+
+            }
+
             return null;
         }
         protected async Task<T> GetAsync<T>(string url) where T : class
         {
-            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));       
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
             HttpResponseMessage responseMessage = await _httpClient.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {
-                var jsonData = await responserMessage.Content.ReadAsStringAsync();
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var value = JsonConvert.DeserializeObject<ApiResponse<T>>(jsonData);
-
+                _httpClient.DefaultRequestHeaders.Remove("Authorization");
                 return value.Data;
             }
             return null;
         }
-
     }
-
 }
-

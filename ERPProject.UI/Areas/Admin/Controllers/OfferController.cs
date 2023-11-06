@@ -10,7 +10,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class OfferController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public OfferController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public OfferController(HttpClient httpClient) : base(httpClient)
         {
 
         }
@@ -23,8 +23,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
             {
 
-                Offers = offer,
-                Companies = company,
+                Offers = offer.Data,
+                Companies = company.Data,
 
             };
             return View(offerVM);

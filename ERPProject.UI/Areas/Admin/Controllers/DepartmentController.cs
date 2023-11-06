@@ -9,7 +9,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class DepartmentController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public DepartmentController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public DepartmentController(HttpClient httpClient) : base(httpClient)
         {
 
         }
@@ -20,7 +20,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             DepartmentVM departmentVM = new DepartmentVM()
 
             {
-                Departments = department,
+                Departments = department.Data,
 
             };
             return View(departmentVM);

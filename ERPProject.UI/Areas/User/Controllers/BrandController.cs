@@ -10,7 +10,7 @@ namespace ERPProject.UI.Areas.User.Controllers
     public class BrandController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public BrandController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public BrandController(HttpClient httpClient) : base(httpClient)
         {
 
         }

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPProject.Entity.DTO.UserLoginDTO
+namespace ERPProject.Entity.DTO.LoginDTO
 {
-    public class LoginDTO
+    public class LoginResponseDTO
     {
-        public string KullaniciAdi { get; set; }
+        public string AdSoyad { get; set; }
+        public string EPosta { get; set; }
         public string Sifre { get; set; }
 
         public string Token { get; set; }

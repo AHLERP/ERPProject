@@ -12,7 +12,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public UserController(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public UserController(HttpClient httpClient) : base(httpClient)
         {
 
         }
@@ -27,12 +27,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
             UserVM userVM = new UserVM
             {
-                Departments = departments,
-                Users = users,
-                Roles = roles,
-                Requests = requests,
-                Companies= compaines
-                
+                Departments = departments.Data,
+                Users = users.Data,
+                Roles = roles.Data,
+                Requests = requests.Data,
+                Companies = companies.Data
             };
 
             return View(userVM);

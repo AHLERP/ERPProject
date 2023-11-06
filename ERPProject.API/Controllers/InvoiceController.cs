@@ -89,7 +89,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetInvoices")]
         public async Task<IActionResult> GetInvoices()
         {
-            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true, "Category", "Brand");
+            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true, "Offer", "Company", "Product");
             if (invoices == null)
             {
                 return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());

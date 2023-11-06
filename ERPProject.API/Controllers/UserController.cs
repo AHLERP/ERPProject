@@ -31,9 +31,12 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)
         {
             User user = _mapper.Map<User>(userDTORequest);
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
             await _userService.AddAsync(user);
 
-            UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
+            UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user); 
 
             Log.Information("Users => {@userDTOResponse}", userDTOResponse);
 

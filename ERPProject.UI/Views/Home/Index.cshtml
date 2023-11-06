@@ -16,30 +16,34 @@
                     <div class="container"><h2> LOGO FALAN EKLENECEK <br><br><br><br><br></h2></div>
                     <div class="card col-md-7 p-4 mb-0">
                         <div class="card-body">
-                            <h1>Giriş Yap</h1>
-                            <p class="text-medium-emphasis">Bilgileriniz doğru girdiğinizden emin olun</p>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">
-                                </span>
-                                <input class="form-control" type="email" name="Email" id="Email" placeholder="Email..." required>
-                            </div>
-                            <div class="input-group mb-4">
-                                <span class="input-group-text">
-                                </span>
-                                <input class="form-control" type="password" name="Password" id="Password" placeholder="Şifre..." required>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="col-6">
-                                        <button class="btn btn-primary px-4" type="submit">Login</button>
+                            <form action="/Admin/GirisYap" method="post">
+
+                                <h1>Giriş Yap</h1>
+                                <p class="text-medium-emphasis">Bilgileriniz doğru girdiğinizden emin olun</p>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">
+                                    </span>
+                                    <input class="form-control" type="email" name="KullaniciAdi" id="Email" placeholder="Email..." required>
+                                </div>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text">
+                                    </span>
+                                    <input class="form-control" type="password" name="Sifre" id="Password" placeholder="Şifre..." required>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="col-6">
+                                            <button class="btn btn-primary px-4" type="submit">Login</button>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="col-12">
+                                            <a class="text-danger px-4 text-decoration-none" onclick="alert('Şifremi unuttum eklenecek');">Şifremi Unuttum?</a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="col-12">
-                                        <a class="text-danger px-4 text-decoration-none" onclick="alert('Şifremi unuttum eklenecek');">Şifremi Unuttum?</a>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
