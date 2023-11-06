@@ -18,6 +18,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<StockDTOResponse>(url + "GetStocks");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return View(val);
             return View(val);
         }
         [HttpGet("/Admin/Stok")]
@@ -29,8 +38,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokEkle")]
         public async Task<IActionResult> Add(StockDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddStock");
-            if (response)
+            var val = await AddAsync(p, url + "AddStock");
+            if (val)
             {
                 return RedirectToAction("Index", "Stock");
 
@@ -41,8 +50,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokGuncelle")]
         public async Task<IActionResult> Update(StockDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateStock");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateStock");
+            if (val)
             {
                 return RedirectToAction("Index", "Stock");
 
@@ -53,8 +62,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokSil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveStock/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveStock/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Stock");
 

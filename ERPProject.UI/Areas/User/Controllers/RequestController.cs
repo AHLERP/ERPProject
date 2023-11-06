@@ -15,6 +15,15 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<RequestDTOResponse>(url + "GetCompanies");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return View(val);
             return View(val);
         }
         [HttpGet("/User/Talep")]
@@ -26,8 +35,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/TalepEkle")]
         public async Task<IActionResult> AddRequest(RequestDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddRequest");
-            if (response)
+            var val = await AddAsync(p, url + "AddRequest");
+            if (val)
             {
                 return RedirectToAction("Index", "Request");
 
@@ -39,8 +48,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Update(RequestDTORequest p)
         {
             p.Id = 1;
-            var response = await UpdateAsync(p, url + "UpdateRequest");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateRequest");
+            if (val)
             {
                 return RedirectToAction("Index", "Request");
 
@@ -52,8 +61,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Delete(long id)
         {
             id = 3;
-            var response = await DeleteAsync(url + "RemoveRequest/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveRequest/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Request");
 

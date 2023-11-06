@@ -5,6 +5,7 @@ using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -13,8 +14,10 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = "deneme")]
     public class BrandController : ControllerBase
     {
+        
         private readonly IBrandService _brandService;
         private readonly IMapper _mapper;
 

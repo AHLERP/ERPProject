@@ -19,17 +19,25 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            var invoice = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
-            var product = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-            var offer = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            var company = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+            var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+            var val3 = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            var val4 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             InvoiceVM invoiceVM = new InvoiceVM()
 
             {
-                Invoices = invoice.Data,
-                Products = product.Data,
-                Offers = offer.Data,
-                Companies = company.Data,
+                Invoices = val.Data,
+                Products = val2.Data,
+                Offers = val3.Data,
+                Companies = val4.Data,
 
             };
             return View(invoiceVM);
@@ -43,8 +51,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/FaturaEkle")]
         public async Task<IActionResult> Add(InvoiceDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddInvoice");
-            if (response)
+            var val = await AddAsync(p, url + "AddInvoice");
+            if (val)
             {
                 return RedirectToAction("Index", "Invoice");
 
@@ -55,8 +63,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateInvoice");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateInvoice");
+            if (val)
             {
                 return RedirectToAction("Index", "Invoice");
 
@@ -67,8 +75,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/FaturaSil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveInvoice/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveInvoice/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "Invoice");
 

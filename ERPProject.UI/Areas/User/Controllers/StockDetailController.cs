@@ -11,10 +11,19 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Stokdetaylar")]
+        [HttpGet("/User/StokDetaylar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<StockDetailDTOResponse>(url + "GetStockDetails");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return View(val);
             return View(val);
         }
         [HttpGet("/User/StokDetay")]
@@ -26,8 +35,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/StokDetayEkle")]
         public async Task<IActionResult> Add(StockDetailDTORequest p)
         {
-            var response = await AddAsync(p, url + "AddStockDetail");
-            if (response)
+            var val = await AddAsync(p, url + "AddStockDetail");
+            if (val)
             {
                 return RedirectToAction("Index", "StockDetail");
 
@@ -38,8 +47,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/StokDetayGuncelle")]
         public async Task<IActionResult> Update(StockDetailDTORequest p)
         {
-            var response = await UpdateAsync(p, url + "UpdateStockDetail");
-            if (response)
+            var val = await UpdateAsync(p, url + "UpdateStockDetail");
+            if (val)
             {
                 return RedirectToAction("Index", "StockDetail");
 
@@ -50,8 +59,8 @@ namespace ERPProject.UI.Areas.User.Controllers
         [HttpPost("/User/StokDetaySil")]
         public async Task<IActionResult> Delete(long id)
         {
-            var response = await DeleteAsync(url + "RemoveStockDetail/" + id);
-            if (response)
+            var val = await DeleteAsync(url + "RemoveStockDetail/" + id);
+            if (val)
             {
                 return RedirectToAction("Index", "StockDetail");
 
