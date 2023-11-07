@@ -1,5 +1,8 @@
 ﻿using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
+using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,9 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            var val2 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            var val3 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            var val4 = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -32,7 +37,9 @@ namespace ERPProject.UI.Areas.User.Controllers
             {
 
                 Offers = val.Data,
-                Companies = val2.Data,
+                Users = val2.Data,
+                Requests = val3.Data,
+                Invoices = val4.Data,
 
             };
             return View(offerVM);

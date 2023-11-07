@@ -20,6 +20,6 @@ public partial class Request : BaseEntity
     public decimal QuantityUnit { get; set; }
     public int RequestStatus { get; set; }
     public virtual Product Product { get; set; } = null!;
-
     public virtual User User { get; set; } = null!;
+    public virtual ICollection<Offer> Offers { get; set; } = new List<Offer>();
 }

@@ -139,7 +139,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Department_Company");
-                
+
 
                 entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -208,6 +208,16 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+
+                entity.HasOne(e => e.User).WithMany(e => e.Offers)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Offer_User");
+
+                entity.HasOne(e => e.Request).WithMany(e => e.Offers)
+                .HasForeignKey(e => e.RequestId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Offer_Request");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -289,7 +299,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
-                
+
             });
 
             modelBuilder.Entity<Stock>(entity =>
