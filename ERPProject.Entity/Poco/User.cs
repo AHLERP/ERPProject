@@ -27,8 +27,7 @@ public partial class User : BaseEntity
     public string Phone { get; set; } = null!;
 
     public string Password { get; set; } = null!;
-    public string? Token { get; set; }
-    public DateTime? TokenExpireDate { get; set; }
+
 
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
 
@@ -36,4 +35,6 @@ public partial class User : BaseEntity
     public virtual ICollection<Offer> Offers { get; set; } = new List<Offer>();
 
     public virtual ICollection<StockDetail> StockDetailRecievers { get; set; } = new List<StockDetail>();
+
+    
 }
