@@ -410,8 +410,10 @@ namespace ERPProject.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AcceptedId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("AcceptedId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -697,14 +699,6 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Token")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("TokenExpireDate")
-                        .HasMaxLength(255)
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)

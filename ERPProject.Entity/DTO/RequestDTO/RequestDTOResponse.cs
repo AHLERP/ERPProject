@@ -9,6 +9,6 @@ namespace ERPProject.Entity.DTO.RequestDTO
     public class RequestDTOResponse:RequestDTOBase
     {
         public string UserName { get; set; }
-        public string AcceptedName { get; set; }
+        public string ProductName { get; set; }
     }
 }
