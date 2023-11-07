@@ -42,7 +42,7 @@ namespace ERPProject.API.Controllers
                 roleDTOResponses.Add(_mapper.Map<RoleDTOResponse>(item));
             }
 
-            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponses);
+            Log.Information("Roles => {@roleDTOResponse} => { Roller Getirildi. }", roleDTOResponses);
             return Ok(Sonuc<List<RoleDTOResponse>>.SuccessWithData(roleDTOResponses));
 
         }
@@ -57,7 +57,7 @@ namespace ERPProject.API.Controllers
             }
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
 
-            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponse);
+            Log.Information("Roles => {@roleDTOResponse} => { Rol Getirildi. }", roleDTOResponse);
 
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
 
@@ -72,7 +72,7 @@ namespace ERPProject.API.Controllers
             await _roleService.AddAsync(role);
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
 
-            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponse);
+            Log.Information("Roles => {@roleDTOResponse} => { Rol Eklendi. }", roleDTOResponse);
 
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
 
@@ -94,7 +94,7 @@ namespace ERPProject.API.Controllers
 
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
 
-            Log.Information("Roles => {@roleDTOResponse}", roleDTOResponse);
+            Log.Information("Roles => {@roleDTOResponse} => { Rol Güncellendi. }", roleDTOResponse);
 
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
         }
@@ -109,7 +109,7 @@ namespace ERPProject.API.Controllers
             }
             await _roleService.RemoveAsync(role);
 
-            Log.Information("Roles => {@role}", role);
+            Log.Information("Roles => {@role} => { Rol Silindi. }", role);
 
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithoutData());
 

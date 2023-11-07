@@ -32,7 +32,7 @@ namespace ERPProject.API.Controllers
 
             InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponse);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Eklendi. }", invoiceDTOResponse);
 
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
@@ -47,7 +47,7 @@ namespace ERPProject.API.Controllers
 
             await _invoiceService.RemoveAsync(invoice);
 
-            Log.Information("Invoices => {@invoice}", invoice);
+            Log.Information("Invoices => {@invoice} => { Fatura Silindi. }", invoice);
 
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithoutData());
         }
@@ -65,7 +65,7 @@ namespace ERPProject.API.Controllers
 
             InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponse);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Güncellendi. }", invoiceDTOResponse);
 
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
@@ -81,7 +81,7 @@ namespace ERPProject.API.Controllers
 
             InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponse);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Getirildi. }", invoiceDTOResponse);
 
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
@@ -101,7 +101,7 @@ namespace ERPProject.API.Controllers
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Faturalar Getirildi. }", invoiceDTOResponseList);
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
@@ -121,7 +121,7 @@ namespace ERPProject.API.Controllers
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Teklife Göre Faturalar Getirildi. }", invoiceDTOResponseList);
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
@@ -140,7 +140,7 @@ namespace ERPProject.API.Controllers
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Şirkete Göre Faturalar Getirildi. }", invoiceDTOResponseList);
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
@@ -159,7 +159,7 @@ namespace ERPProject.API.Controllers
                 invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
             }
 
-            Log.Information("Invoices => {@invoiceDTOResponse}", invoiceDTOResponseList);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Ürüne Göre Faturalar Getirildi. }", invoiceDTOResponseList);
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }

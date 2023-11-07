@@ -41,7 +41,7 @@ namespace ERPProject.API.Controllers
                 stockDTOResponses.Add(_mapper.Map<StockDTOResponse>(stock));
             }
 
-            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponses);
+            Log.Information("Stocks => {@stockDTOResponse} => { Stoklar Getirildi. }", stockDTOResponses);
             return Ok(Sonuc<List<StockDTOResponse>>.SuccessWithData(stockDTOResponses));
         }
 
@@ -55,7 +55,7 @@ namespace ERPProject.API.Controllers
             }
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);
 
-            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponse);
+            Log.Information("Stocks => {@stockDTOResponse} => { Stok Getirildi. }", stockDTOResponse);
             return Ok(Sonuc<StockDTOResponse>.SuccessWithData(stockDTOResponse));
 
         }
@@ -68,7 +68,7 @@ namespace ERPProject.API.Controllers
             await _stockService.AddAsync(stock);
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);
 
-            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponse);
+            Log.Information("Stocks => {@stockDTOResponse} => { Stok Eklendi. }", stockDTOResponse);
 
             return Ok(Sonuc<StockDTOResponse>.SuccessWithData(stockDTOResponse));
         }
@@ -88,7 +88,7 @@ namespace ERPProject.API.Controllers
 
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);
 
-            Log.Information("Stocks => {@stockDTOResponse}", stockDTOResponse);
+            Log.Information("Stocks => {@stockDTOResponse} => { Stok Güncellendi. }", stockDTOResponse);
 
             return Ok(Sonuc<StockDTOResponse>.SuccessWithData(stockDTOResponse));
             
@@ -104,7 +104,7 @@ namespace ERPProject.API.Controllers
             }
             await _stockService.RemoveAsync(stock);
 
-            Log.Information("Stocks => {@stock}", stock);
+            Log.Information("Stocks => {@stock} => { Stok Silindi. }", stock);
 
             return Ok(Sonuc<StockDTOResponse>.SuccessWithoutData());
 
