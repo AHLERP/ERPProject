@@ -4,6 +4,7 @@ using ERPProject.DataAccess.Concrete.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    partial class ERPContextModelSnapshot : ModelSnapshot
+    [Migration("20231107063835_m2")]
+    partial class m2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,9 +314,6 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("char(2)")
                         .IsFixedLength();
 
-                    b.Property<long>("RequestId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(2)
@@ -339,14 +339,7 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<long?>("UpdatedUser")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RequestId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Offer", (string)null);
                 });
@@ -770,25 +763,6 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
-                {
-                    b.HasOne("ERPProject.Entity.Poco.Request", "Request")
-                        .WithMany("Offers")
-                        .HasForeignKey("RequestId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Offer_Request");
-
-                    b.HasOne("ERPProject.Entity.Poco.User", "User")
-                        .WithMany("Offers")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Offer_User");
-
-                    b.Navigation("Request");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ERPProject.Entity.Poco.Product", b =>
                 {
                     b.HasOne("ERPProject.Entity.Poco.Brand", "Brand")
@@ -928,11 +902,6 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Stocks");
                 });
 
-            modelBuilder.Entity("ERPProject.Entity.Poco.Request", b =>
-                {
-                    b.Navigation("Offers");
-                });
-
             modelBuilder.Entity("ERPProject.Entity.Poco.Role", b =>
                 {
                     b.Navigation("Users");
@@ -945,8 +914,6 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
                 {
-                    b.Navigation("Offers");
-
                     b.Navigation("Requests");
 
                     b.Navigation("StockDetailDeliverers");

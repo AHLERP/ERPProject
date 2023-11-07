@@ -46,13 +46,9 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-
-
 
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
-        //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
-
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Ege
 
 
@@ -267,6 +263,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("AddedIP4VAdress");
                 entity.Property(e => e.AddedTime).HasColumnType("datetime");
                 entity.Property(e => e.Description).HasMaxLength(511);
+                entity.Property(e=>e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.Title).HasMaxLength(50);
                 entity.Property(e => e.UpdatedIPV4Address)
                     .HasMaxLength(15)
