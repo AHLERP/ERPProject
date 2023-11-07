@@ -31,6 +31,7 @@ public partial class User : BaseEntity
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
 
     public virtual ICollection<StockDetail> StockDetailDeliverers { get; set; } = new List<StockDetail>();
+    public virtual ICollection<Offer> Offers { get; set; } = new List<Offer>();
 
     public virtual ICollection<StockDetail> StockDetailRecievers { get; set; } = new List<StockDetail>();
 }

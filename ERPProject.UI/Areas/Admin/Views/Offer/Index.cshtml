@@ -1,0 +1,184 @@
+﻿@using ERPProject.UI.Areas.Admin.Models;
+@model OfferVM
+@{
+    ViewData["Title"] = "Teklifler";
+    ViewData["baslik"] = "Teklifler";
+    ViewData["buttonismi"] = "Teklif Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container col col-md-9 py-3">
+    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+    <table class="table table-bordered border-dark table-striped" id="example">
+        <thead>
+            <tr>
+                <th scope="col">Adı</th>
+                <th scope="col">Kullanıcı</th>
+                <th scope="col">Talep</th>
+                <th scope="col">Kullanıcı</th>
+                <th scope="col">Açıklama</th>
+                <th scope="col" style="width:100px ">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Offers)
+            {
+                <tr>
+                    <td>@item.SupplierName</td>
+                    <td>@item.UserName</td>
+                    <td>@item.RequestName</td>
+                    <td>@item.UserName</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                İşlemler
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name-id="@item.SupplierName" data-Talep="@item.RequestId" data-Kullanıcı="@item.UserId" data-desc="@item.Description">Düzenle</a></li>
+                                <li><hr class="dropdown-divider text-danger"></li>
+                                <li><a class="dropdown-item text-danger" onclick="confirmTeklifDelete(@item.Id)">Sil</a></li>
+                            </ul>
+                        </div>
+                    </td>
+
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Teklif Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/Admin/TeklifEkle" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Teklif İsmi..." id="inputTeklifAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputTalep"><i class="bi bi-tags"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputTalep" name="RequestId" required>
+                            <option selected>Talep Seç...</option>
+                            @foreach (var item in Model.Requests)
+                            {
+                                <option value="@item.Id">@item.Title</option>
+                            }
+
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputKullanıcı"><i class="bi bi-bootstrap"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputKullanıcı" name="UserId" required>
+                            <option selected>Kullanıcı Seç...</option>
+                            @foreach (var item in Model.Users)
+                            {
+                                <option value="@item.Id">@item.Id</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                        <textarea style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Teklif Açıklaması..." id="inputTeklifAciklama" name="Description" aria-describedby="basic-addon1"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static1" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Teklif Düzenle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/Admin/TeklifGuncelle" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="hidden" class="form-control" id="inputTalepId" name="Id" value="" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputTalepAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputTalep"><i class="bi bi-tags"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputTalep1" name="RequestId" required>
+                            <option selected>Talep Seç...</option>
+                            @foreach (var item in Model.Requests)
+                            {
+                                <option value="@item.Id">@item.Title</option>
+                            }
+
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputKullanıcı"><i class="bi bi-bootstrap"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputKullanıcı1" name="UserId" required>
+                            <option selected>Kullanıcı Seç...</option>
+                            @foreach (var item in Model.Users)
+                            {
+                                <option value="@item.Id">@item.Id</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                        <textarea style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Teklif Açıklaması..." id="inputTeklifAciklama1" name="Description" aria-describedby="basic-addon1"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmTeklifDelete(id) {
+        var result = confirm("Bu Teklifü silmek istediğinizden emin misiniz?");
+        if (result) {
+            window.location.href = 'TeklifSil/' + id;
+        }
+    }
+    $('#staticBackdrop1').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var CompanyId = button.data('id');
+        var Teklifad = button.data('nameId');
+        var Request = button.data('Talep');
+        var User = button.data('Kullanıcı');
+        var desc = button.data('desc');
+        $("#inputTalepId").val(CompanyId);
+        $("#inputTalepAd").val(Teklifad);
+        $("#inputTalep1").val(Request);
+        $("#inputKullanıcı1").val(User);
+        $("#inputTeklifAciklama1").val(desc);
+    });
+</script>
+
+

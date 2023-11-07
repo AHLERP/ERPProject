@@ -311,6 +311,9 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("char(2)")
                         .IsFixedLength();
 
+                    b.Property<long>("RequestId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(2)
@@ -336,7 +339,14 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<long?>("UpdatedUser")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Offer", (string)null);
                 });
@@ -740,11 +750,9 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TokenExpireDate")
-                        .HasMaxLength(255)
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedIPV4Address")
@@ -805,6 +813,25 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Offer");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
+                {
+                    b.HasOne("ERPProject.Entity.Poco.Request", "Request")
+                        .WithMany("Offers")
+                        .HasForeignKey("RequestId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Offer_Request");
+
+                    b.HasOne("ERPProject.Entity.Poco.User", "User")
+                        .WithMany("Offers")
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Offer_User");
+
+                    b.Navigation("Request");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Product", b =>
@@ -961,7 +988,7 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Request", b =>
                 {
-                    b.Navigation("RequestDetails");
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Role", b =>
@@ -976,6 +1003,8 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
                 {
+                    b.Navigation("Offers");
+
                     b.Navigation("Requests");
 
                     b.Navigation("StockDetailDeliverers");

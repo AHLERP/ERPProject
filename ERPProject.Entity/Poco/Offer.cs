@@ -17,6 +17,10 @@ public partial class Offer : BaseEntity
     public string PriceStatus { get; set; } = null!;
 
     public string Status { get; set; } = null!;
+    public long UserId { get; set; }//gelecek
+    public virtual User User { get; set; } = null!;
+    public long RequestId { get; set; }//gelecek
+    public virtual Request Request { get; set; } = null!;
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }

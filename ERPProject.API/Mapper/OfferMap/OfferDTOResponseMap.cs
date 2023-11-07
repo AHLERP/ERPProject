@@ -8,8 +8,11 @@ namespace ERPProject.API.Mapper.OfferMap
     {
         public OfferDTOResponseMap()
         {
-            CreateMap<Offer, OfferDTOResponse>();
-            CreateMap<OfferDTOResponse, Offer>();
+            CreateMap<Offer, OfferDTOResponse>().
+                ForMember(dest => dest.UserName, opt =>
+                {
+                    opt.MapFrom(src => src.User.Name);
+                }).ReverseMap();
         }
     }
 }
