@@ -267,7 +267,9 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("AddedIP4VAdress");
                 entity.Property(e => e.AddedTime).HasColumnType("datetime");
                 entity.Property(e => e.Description).HasMaxLength(511);
+                entity.Property(e=>e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.Title).HasMaxLength(50);
+                entity.Property(e => e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.UpdatedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
