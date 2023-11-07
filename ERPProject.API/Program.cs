@@ -84,6 +84,7 @@ builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
 builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
+builder.Services.AddScoped<IRequestService, RequestManager>();
 builder.Services.AddFluentValidationAutoValidation();
 
 

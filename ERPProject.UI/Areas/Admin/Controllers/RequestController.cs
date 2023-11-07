@@ -14,7 +14,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<RequestDTOResponse>(url + "GetCompanies");
+            var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
