@@ -11,6 +11,7 @@ namespace ERPProject.Entity.DTO.OfferDTO
         public long Id { get; set; }
         public long UserId { get; set; }
         public long RequestId { get; set; }
+
         public string SupplierName { get; set; } = null!;
 
         public string Description { get; set; } = null!;
