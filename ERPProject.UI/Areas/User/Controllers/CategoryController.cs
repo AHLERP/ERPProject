@@ -13,7 +13,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Kategoriler")]
+        [HttpGet("/Kullanici/Kategoriler")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");

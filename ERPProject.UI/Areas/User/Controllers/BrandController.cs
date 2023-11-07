@@ -13,7 +13,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Markalar")]
+        [HttpGet("/Kullanici/Markalar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
