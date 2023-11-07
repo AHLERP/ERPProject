@@ -40,7 +40,7 @@ namespace ERPProject.API.Controllers
                 requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
             }
 
-            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponseList);
+            Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
 
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
             
@@ -60,7 +60,7 @@ namespace ERPProject.API.Controllers
 
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
 
-            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponse);
+            Log.Information("Requests => {@requestDTOResponse} => { İstek Güncellendi. }", requestDTOResponse);
 
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 
@@ -77,7 +77,7 @@ namespace ERPProject.API.Controllers
 
             await _requestService.RemoveAsync(request);
 
-            Log.Information("Requests => {@request}", request);
+            Log.Information("Requests => {@request} => { İstek Silindi. }", request);
 
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithoutData());
 
@@ -92,7 +92,7 @@ namespace ERPProject.API.Controllers
             await _requestService.AddAsync(request);
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
 
-            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponse);
+            Log.Information("Requests => {@requestDTOResponse} => { İstek Eklendi. }", requestDTOResponse);
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 
 
@@ -114,7 +114,7 @@ namespace ERPProject.API.Controllers
                 requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
             }
 
-            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponseList);
+            Log.Information("Requests => {@requestDTOResponse} => { Kullanıcıya Göre İstek Getirildi. }", requestDTOResponseList);
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
         }
@@ -130,7 +130,7 @@ namespace ERPProject.API.Controllers
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
 
 
-            Log.Information("Requests => {@requestDTOResponse}", requestDTOResponse);
+            Log.Information("Requests => {@requestDTOResponse} => { İstek Getirildi. } ", requestDTOResponse);
 
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 

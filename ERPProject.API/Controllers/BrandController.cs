@@ -36,7 +36,7 @@ namespace ERPProject.API.Controllers
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
 
-            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponse);
+            Log.Information("Brands => {@brandDTOResponse} => { Marka Eklendi. }", brandDTOResponse);
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
 
@@ -53,7 +53,7 @@ namespace ERPProject.API.Controllers
 
             await _brandService.RemoveAsync(brand);
 
-            Log.Information("Brands => {@brand}", brand);
+            Log.Information("Brands => {@brand} => { Marka Silindi. }", brand);
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithoutData());
         }
@@ -72,7 +72,7 @@ namespace ERPProject.API.Controllers
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
 
-            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponse);
+            Log.Information("Brands => {@brandDTOResponse} => { Marka Güncellendi. }", brandDTOResponse);
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
@@ -88,7 +88,7 @@ namespace ERPProject.API.Controllers
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
 
-            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponse);
+            Log.Information("Brands => {@brandDTOResponse} => { Marka Getirildi. }", brandDTOResponse);
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
@@ -107,7 +107,7 @@ namespace ERPProject.API.Controllers
                 brandDTOResponseList.Add(_mapper.Map<BrandDTOResponse>(brand));
             }
 
-            Log.Information("Brands => {@brandDTOResponse}", brandDTOResponseList);
+            Log.Information("Brands => {@brandDTOResponse} => { Markalar Getirildi. }", brandDTOResponseList);
 
             return Ok(Sonuc<List<BrandDTOResponse>>.SuccessWithData(brandDTOResponseList));
         }
