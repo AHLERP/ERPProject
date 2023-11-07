@@ -8,7 +8,7 @@ public partial class Request : BaseEntity
 {
     public long Id { get; set; }
 
-    public long UserId { get; set; }
+    public long UserId { get; set; } 
 
     public long? AcceptedId { get; set; }
 

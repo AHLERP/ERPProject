@@ -36,8 +36,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
         public virtual DbSet<Request> Requests { get; set; }
 
-        public virtual DbSet<RequestDetail> RequestDetails { get; set; }
-
         public virtual DbSet<Role> Roles { get; set; }
 
         public virtual DbSet<Stock> Stocks { get; set; }
@@ -51,8 +49,10 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
 
 
-            //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
-            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
+
+        //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
+        //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
+
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Ege
 
 
@@ -279,36 +279,10 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Request_User");
+
             });
 
-            modelBuilder.Entity<RequestDetail>(entity =>
-            {
-                entity.ToTable("RequestDetail");
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.Property(e => e.AddedIPV4Address)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .IsFixedLength()
-                    .HasColumnName("AddedIP4VAdress");
-                entity.Property(e => e.AddedTime).HasColumnType("datetime");
-                entity.Property(e => e.UpdatedIPV4Address)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .IsFixedLength()
-                    .HasColumnName("UpdatedIP4VAdress");
-                entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Product).WithMany(p => p.RequestDetails)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RequestDetail_Product");
-
-                entity.HasOne(d => d.Request).WithMany(p => p.RequestDetails)
-                    .HasForeignKey(d => d.RequestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RequestDetail_Request");
-            });
+            
 
             modelBuilder.Entity<Role>(entity =>
             {
@@ -410,8 +384,6 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                 entity.Property(e => e.LastName).HasMaxLength(50);
                 entity.Property(e => e.Name).HasMaxLength(50);
                 entity.Property(e => e.Password).HasMaxLength(255);
-                entity.Property(e=>e.Token).HasMaxLength(255);
-                entity.Property(e=>e.TokenExpireDate).HasMaxLength(255);
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
                     .IsUnicode(false)

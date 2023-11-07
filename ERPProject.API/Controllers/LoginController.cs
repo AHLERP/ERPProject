@@ -37,7 +37,7 @@ namespace ERPProject.API.Controllers
           {
 
 
-            var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Role");
+            var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Role","Department");
             if (user == null)
             {
                 return NotFound("Kullanıcı bulunamadı");
@@ -78,7 +78,10 @@ namespace ERPProject.API.Controllers
                     AdSoyad = user.Name + user.LastName,
                     EPosta = user.Email,
                     Token = tokenHandler.WriteToken(token),
-                    RoleName = user.Role.Name.ToString()
+                    RoleName = user.Role.Name.ToString(),
+                    UserId = user.Id,
+                    CompanyId = user.Department.CompanyId,
+                    DepartmentId =user.DepartmentId
                 };
 
                 Log.Information("LoginResponse => {@loginResponseDTO}", loginResponseDTO);

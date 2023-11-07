@@ -29,6 +29,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             RestResponse response = await client.ExecuteAsync(request);
             var responseObject = JsonConvert.DeserializeObject<ApiResponse<LoginDTO>>(response.Content);
             HttpContext.Session.SetString("Token", responseObject.Data.Token);
+            HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
+            HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
+            HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
+            
+            
+
+            
+
 
             
             if (response.IsSuccessStatusCode)

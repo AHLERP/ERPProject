@@ -1,5 +1,4 @@
-﻿using ERPProject.Entity.DTO.RequestDetailDTO;
-using ERPProject.Entity.DTO.RoleDTO;
+﻿using ERPProject.Entity.DTO.RoleDTO;
 
 namespace ERPProject.UI.Areas.Admin.Models
 {

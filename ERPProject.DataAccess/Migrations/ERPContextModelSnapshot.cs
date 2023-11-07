@@ -443,6 +443,18 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("QuantityUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("RequestStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -466,64 +478,11 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Request", (string)null);
-                });
-
-            modelBuilder.Entity("ERPProject.Entity.Poco.RequestDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AddedIPV4Address")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("char(15)")
-                        .HasColumnName("AddedIP4VAdress")
-                        .IsFixedLength();
-
-                    b.Property<DateTime?>("AddedTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<long?>("AddedUser")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<long>("RequestId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UpdatedIPV4Address")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("char(15)")
-                        .HasColumnName("UpdatedIP4VAdress")
-                        .IsFixedLength();
-
-                    b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<long?>("UpdatedUser")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("RequestDetail", (string)null);
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Role", b =>
@@ -855,32 +814,21 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Request", b =>
                 {
+                    b.HasOne("ERPProject.Entity.Poco.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ERPProject.Entity.Poco.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_Request_User");
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ERPProject.Entity.Poco.RequestDetail", b =>
-                {
-                    b.HasOne("ERPProject.Entity.Poco.Product", "Product")
-                        .WithMany("RequestDetails")
-                        .HasForeignKey("ProductId")
-                        .IsRequired()
-                        .HasConstraintName("FK_RequestDetail_Product");
-
-                    b.HasOne("ERPProject.Entity.Poco.Request", "Request")
-                        .WithMany("RequestDetails")
-                        .HasForeignKey("RequestId")
-                        .IsRequired()
-                        .HasConstraintName("FK_RequestDetail_Request");
-
                     b.Navigation("Product");
 
-                    b.Navigation("Request");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Stock", b =>
@@ -980,8 +928,6 @@ namespace ERPProject.DataAccess.Migrations
             modelBuilder.Entity("ERPProject.Entity.Poco.Product", b =>
                 {
                     b.Navigation("Invoices");
-
-                    b.Navigation("RequestDetails");
 
                     b.Navigation("Stocks");
                 });
