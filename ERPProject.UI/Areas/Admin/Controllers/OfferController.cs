@@ -20,7 +20,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
             var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var val3 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
