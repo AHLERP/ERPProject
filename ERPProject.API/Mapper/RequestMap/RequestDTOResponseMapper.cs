@@ -8,8 +8,16 @@ namespace ERPProject.API.Mapper.RequestMap
     {
         public RequestDTOResponseMapper()
         {
-            CreateMap<Request, RequestDTOResponse>();
-            CreateMap<RequestDTOResponse, Request>();
+            CreateMap<Request, RequestDTOResponse>().
+                ForMember(dest => dest.UserName, opt =>
+                {
+                    opt.MapFrom(src => src.User.Name);
+                }).
+                ForMember(dest => dest.ProductName, opt =>
+                {
+                    opt.MapFrom(src => src.Product.Name);
+                }).ReverseMap();
+            
         }
     }
 }

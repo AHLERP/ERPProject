@@ -311,6 +311,9 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("char(2)")
                         .IsFixedLength();
 
+                    b.Property<long>("RequestId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(2)
@@ -336,7 +339,14 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<long?>("UpdatedUser")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Offer", (string)null);
                 });
@@ -410,8 +420,10 @@ namespace ERPProject.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AcceptedId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("AcceptedId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -698,14 +710,6 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Token")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("TokenExpireDate")
-                        .HasMaxLength(255)
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)
                         .IsUnicode(false)
@@ -764,6 +768,25 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Offer");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
+                {
+                    b.HasOne("ERPProject.Entity.Poco.Request", "Request")
+                        .WithMany("Offers")
+                        .HasForeignKey("RequestId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Offer_Request");
+
+                    b.HasOne("ERPProject.Entity.Poco.User", "User")
+                        .WithMany("Offers")
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Offer_User");
+
+                    b.Navigation("Request");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Product", b =>
@@ -905,6 +928,11 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Stocks");
                 });
 
+            modelBuilder.Entity("ERPProject.Entity.Poco.Request", b =>
+                {
+                    b.Navigation("Offers");
+                });
+
             modelBuilder.Entity("ERPProject.Entity.Poco.Role", b =>
                 {
                     b.Navigation("Users");
@@ -917,6 +945,8 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
                 {
+                    b.Navigation("Offers");
+
                     b.Navigation("Requests");
 
                     b.Navigation("StockDetailDeliverers");

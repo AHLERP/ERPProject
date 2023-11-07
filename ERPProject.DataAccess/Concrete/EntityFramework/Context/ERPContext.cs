@@ -139,7 +139,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Department_Company");
-                
+
 
                 entity.HasMany(d => d.Users).WithOne(d => d.Department).HasForeignKey(d => d.DepartmentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -208,6 +208,16 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+
+                entity.HasOne(e => e.User).WithMany(e => e.Offers)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Offer_User");
+
+                entity.HasOne(e => e.Request).WithMany(e => e.Offers)
+                .HasForeignKey(e => e.RequestId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Offer_Request");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -253,7 +263,9 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("AddedIP4VAdress");
                 entity.Property(e => e.AddedTime).HasColumnType("datetime");
                 entity.Property(e => e.Description).HasMaxLength(511);
+                entity.Property(e=>e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.Title).HasMaxLength(50);
+                entity.Property(e => e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.UpdatedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -288,7 +300,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
-                
+
             });
 
             modelBuilder.Entity<Stock>(entity =>

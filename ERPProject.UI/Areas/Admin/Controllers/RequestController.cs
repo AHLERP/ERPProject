@@ -1,4 +1,7 @@
-﻿using ERPProject.Entity.DTO.RequestDTO;
+﻿using ERPProject.Entity.DTO.ProductDTO;
+using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.UserDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -15,6 +18,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
+            var val1 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -23,8 +28,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
-            return View(val);
+            RequestVM requestVM = new RequestVM()
+
+            {
+                Requests = val.Data,
+                Products = val2.Data,
+                Users = val1.Data,
+            };
+            return View(requestVM);
         }
         [HttpGet("/Admin/Talep")]
         public async Task<IActionResult> Get(long id)
@@ -47,7 +58,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/TalepGuncelle")]
         public async Task<IActionResult> Update(RequestDTORequest p)
         {
-            p.Id = 1;
             var val = await UpdateAsync(p, url + "UpdateRequest");
             if (val)
             {
@@ -57,10 +67,9 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/TalepSil")]
+        [HttpGet("/Admin/TalepSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            id = 3;
             var val = await DeleteAsync(url + "RemoveRequest/" + id);
             if (val)
             {
