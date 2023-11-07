@@ -90,6 +90,18 @@
             <div class="col min-vh-80 py-3">
                 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="bi bi-arrow-up fs-3 text-light"></i></button>
                 <div class="container">
+                    <br />
+                    <br />
+                    <br />
+                    <div class="container mb-2" style="width: 80%;">
+                        <div class="input-group input-group-lg">
+                            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                @ViewData["buttonismi"]
+                            </button>
+                            <input autocomplete="off" type="text" class="form-control" id="myInput" placeholder="Arama Yap...">
+
+                        </div>
+                    </div>
                     @RenderBody()
                 </div>
             </div>
