@@ -39,11 +39,16 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
 
             
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
             {
                 return RedirectToAction("Index","Company");
             }
-            
+            else if (response.IsSuccessStatusCode && HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return RedirectToAction("Sirketler", "Kullanici");
+
+            }
+
 
             return RedirectToAction("Index", "Home");
         }
