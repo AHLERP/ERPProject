@@ -27,13 +27,13 @@ namespace ERPProject.UI.Areas.User.Controllers
             }
             return View(val);
         }
-        [HttpGet("/User/Kategori")]
+        [HttpGet("/Kullanici/Kategori")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<CategoryDTOResponse>(url + "GetCategory/" + id);
             return View(val);
         }
-        [HttpPost("/User/KategoriEkle")]
+        [HttpPost("/Kullanici/KategoriEkle")]
         public async Task<IActionResult> Add(CategoryDTORequest p)
         {
             var val = await AddAsync(p, url + "AddCategory");
@@ -45,7 +45,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/KategoriGuncelle")]
+        [HttpPost("/Kullanici/KategoriGuncelle")]
         public async Task<IActionResult> Update(CategoryDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateCategory");
@@ -57,7 +57,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpGet("/User/KategoriSil/{id}")]
+        [HttpGet("/Kullanici/KategoriSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveCategory/" + id);

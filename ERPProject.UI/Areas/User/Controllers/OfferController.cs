@@ -40,13 +40,13 @@ namespace ERPProject.UI.Areas.User.Controllers
             };
             return View(offerVM);
         }
-        [HttpGet("/User/Teklif")]
+        [HttpGet("/Kullanici/Teklif")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
             return View(val);
         }
-        [HttpPost("/User/TeklifEkle")]
+        [HttpPost("/Kullanici/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
             var val = await AddAsync(p, url + "AddOffer");
@@ -58,7 +58,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/TeklifGuncelle")]
+        [HttpPost("/Kullanici/TeklifGuncelle")]
         public async Task<IActionResult> Update(OfferDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateOffer");
@@ -70,7 +70,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/TeklifSil")]
+        [HttpPost("/Kullanici/TeklifSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveOffer/" + id);

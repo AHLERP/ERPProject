@@ -15,7 +15,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Kullanicilar")]
+        [HttpGet("/Kullanici/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
@@ -35,6 +35,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return View(userVM);
         }
         [HttpGet("/Kullanici/Kullanici")]
+
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
@@ -49,7 +50,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return View(val);
             return View(val);
         }
-        [HttpPost("/User/KullaniciEkle")]
+        [HttpPost("/Kullanici/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)
         {
             var val = await AddAsync(p, url + "AddUser");
@@ -61,7 +62,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/KullaniciGuncelle")]
+        [HttpPost("/Kullanici/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateUser");
@@ -73,7 +74,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpGet("/User/KullaniciSil/{id}")]
+        [HttpGet("/Kullanici/KullaniciSil/{id}")]
         public async Task<IActionResult> Delete(Int64 id)
         {
             var val = await DeleteAsync(url + "RemoveUser/" + id);

@@ -7,12 +7,12 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 
 }
-<div class="container col col-md-9 py-3">
+<div class="container col col-md-12 py-3">
     <div class="accordion accordion-flush" id="accordionFlushExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    Talepler
+                    Onay Bekleyen Talepler
                 </button>
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -24,7 +24,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">Kullanıcı Adı</th>
-                                <th scope="col">Onaylayan Kullanıcı</th>
                                 <th scope="col">Talep Adı</th>
                                 <th scope="col">Ürün</th>
                                 <th scope="col">Açıklama</th>
@@ -45,23 +44,87 @@
 
                                 @foreach (var item in Model.Requests)
                                 {
-                                    if (item.RequestStatus!=3)
+                                    if (item.RequestStatus == 0)
                                     {
                                         <tr>
                                             <td>@item.UserName</td>
-                                            <td>@item.AcceptedId</td>
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
                                             <td>@item.Description</td>
-                                            <td>@item.Quantity @item.QuantityUnit</td>
-                                            
-                                            @if (@item.RequestStatus == 1)
+                                            @if(@item.QuantityUnit == 1){
+                                            <td>
+                                                @item.Quantity Metre
+                                            </td>
+                                            }
+                                            else if (@item.QuantityUnit == 2)
+                                            {
+                                                <td>
+                                                    @item.Quantity Kilometre
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 3)
+                                            {
+                                                <td>
+                                                    @item.Quantity Mililitre
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 4)
+                                            {
+                                                <td>
+                                                    @item.Quantity Litre
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 5)
+                                            {
+                                                <td>
+                                                    @item.Quantity Kilogram
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 6)
+                                            {
+                                                <td>
+                                                    @item.Quantity Ton
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 7)
+                                            {
+                                                <td>
+                                                    @item.Quantity Adet
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 8)
+                                            {
+                                                <td>
+                                                    @item.Quantity Koli
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 9)
+                                            {
+                                                <td>
+                                                    @item.Quantity m²
+                                                </td>
+                                            }
+                                            else if (@item.QuantityUnit == 10)
+                                            {
+                                                <td>
+                                                    @item.Quantity m³
+                                                </td>
+                                            }
+                                            @if (@item.RequestStatus == 0)
                                             {
                                                 <td> Beklemede... </td>
                                             }
-                                            else if (@item.RequestStatus == 2)
+                                            else if (@item.RequestStatus == 1)
                                             {
                                                 <td> Onaylandı... </td>
+                                            }
+                                            else if (@item.RequestStatus == 2)
+                                            {
+                                                <td> Satın Alındı... </td>
+                                            }
+                                            else if (@item.RequestStatus == 3)
+                                            {
+                                                <td> Reddedildi... </td>
                                             }
 
                                             <td>
@@ -70,18 +133,28 @@
                                                         İşlemler
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
-                                                            data-id="@item.Id"
-                                                            data-title="@item.Title"
-                                                            data-description="@item.Description"
-                                                            data-username="@item.UserId"
-                                                            data-product="@item.ProductId"
-                                                            data-brim="@item.QuantityUnit"
-                                                            data-miktar="@item.Quantity"
-                                                            data-status="@item.RequestStatus"
-                                                            
-                                                        
-                                                        >Düzenle</a></li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+                                                               data-id="@item.Id"
+                                                               data-title="@item.Title"
+                                                               data-description="@item.Description"
+                                                               data-username="@item.UserId"
+                                                               data-product="@item.ProductId"
+                                                               data-brim="@item.QuantityUnit"
+                                                               data-miktar="@item.Quantity"
+                                                               data-status="@item.RequestStatus">Düzenle</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticOnayla"
+                                                               data-id="@item.Id"
+                                                               data-title="@item.Title"
+                                                               data-description="@item.Description"
+                                                               data-username="@item.UserId"
+                                                               data-product="@item.ProductId"
+                                                               data-brim="@item.QuantityUnit"
+                                                               data-miktar="@item.Quantity"
+                                                               data-status="@item.RequestStatus">Onayla</a>
+                                                        </li>
                                                         <li><hr class="dropdown-divider text-danger"></li>
                                                         <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
                                                     </ul>
@@ -89,7 +162,7 @@
                                             </td>
                                         </tr>
                                     }
-                                    
+
 
                                 }
 
@@ -104,10 +177,116 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    Önceki Talepler
+                    Onaylanmış Talepler
                 </button>
             </h2>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div id="example_filter" class="dataTables_filter">
+                        <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+                    </div>
+                    <table id="example" class="table table-bordered border-dark" >
+                        <thead>
+                            <tr>
+                                <th scope="col">Kullanıcı Adı</th>
+                                <th scope="col">Onaylayan Kullanıcı</th>
+                                <th scope="col">Talep Adı</th>
+                                <th scope="col">Ürün</th>
+                                <th scope="col">Durum</th>
+                                <th scope="col" style="width:100px ">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Requests == null)
+                            {
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            }
+                            else
+                            {
+
+                                @foreach (var item in Model.Requests)
+                                {
+                                    if (item.RequestStatus == 1)
+                                    {
+                                        <tr>
+                                            <td>@item.UserName</td>
+                                            <td>@item.AcceptedId</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.ProductName</td>
+                                            @if (@item.RequestStatus == 0)
+                                            {
+                                                <td> Beklemede... </td>
+                                            }
+                                            else if (@item.RequestStatus == 1)
+                                            {
+                                                <td> Onaylandı... </td>
+                                            }
+                                            else if (@item.RequestStatus == 2)
+                                            {
+                                                <td> Satın Alındı... </td>
+                                            }
+                                            else if (@item.RequestStatus == 3)
+                                            {
+                                                <td> Reddedildi... </td>
+                                            }
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        İşlemler
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                               data-id1="@item.Id"
+                                                               data-title1="@item.Title"
+                                                               data-description1="@item.Description"
+                                                               data-username1="@item.UserId"
+                                                               data-product1="@item.ProductId"
+                                                               data-brim1="@item.QuantityUnit"
+                                                               data-miktar1="@item.Quantity"
+                                                               data-status1="@item.RequestStatus">Detay</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticOnayla"
+                                                               data-id="@item.Id"
+                                                               data-title="@item.Title"
+                                                               data-description="@item.Description"
+                                                               data-username="@item.UserId"
+                                                               data-product="@item.ProductId"
+                                                               data-brim="@item.QuantityUnit"
+                                                               data-miktar="@item.Quantity"
+                                                               data-status="@item.RequestStatus">Onayla</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticTeklifEkle"
+                                                               data-id="@item.Id">Teklif Ekle</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticTeklifleriGor"
+                                                               data-id="@item.Id">Teklifleri Gör</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    Reddedilmiş Talepler
+                </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
                     <div id="example_filter" class="dataTables_filter">
                         <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
@@ -132,7 +311,6 @@
                             }
                             else
                             {
-
                                 @foreach (var item in Model.Requests)
                                 {
                                     if (item.RequestStatus == 3)
@@ -142,9 +320,120 @@
                                             <td>@item.AcceptedId</td>
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
-                                            <td>Satın Alındı</td>
-                                            
+                                            @if (@item.RequestStatus == 0)
+                                            {
+                                                <td> Beklemede... </td>
+                                            }
+                                            else if (@item.RequestStatus == 1)
+                                            {
+                                                <td> Onaylandı... </td>
+                                            }
+                                            else if (@item.RequestStatus == 2)
+                                            {
+                                                <td> Satın Alındı... </td>
+                                            }
+                                            else if (@item.RequestStatus == 3)
+                                            {
+                                                <td> Reddedildi... </td>
+                                            }
 
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        İşlemler
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                               data-id1="@item.Id"
+                                                               data-title1="@item.Title"
+                                                               data-description1="@item.Description"
+                                                               data-username1="@item.UserId"
+                                                               data-product1="@item.ProductId"
+                                                               data-brim1="@item.QuantityUnit"
+                                                               data-miktar1="@item.Quantity"
+                                                               data-status1="@item.RequestStatus">Detay</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticOnayla"
+                                                               data-id="@item.Id"
+                                                               data-title="@item.Title"
+                                                               data-description="@item.Description"
+                                                               data-username="@item.UserId"
+                                                               data-product="@item.ProductId"
+                                                               data-brim="@item.QuantityUnit"
+                                                               data-miktar="@item.Quantity"
+                                                               data-status="@item.RequestStatus">Onayla</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                    Tamamlanan Talepler
+                </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div id="example_filter" class="dataTables_filter">
+                        <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+                    </div>
+                    <table id="example" class="table table-bordered border-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Kullanıcı Adı</th>
+                                <th scope="col">Onaylayan Kullanıcı</th>
+                                <th scope="col">Talep Adı</th>
+                                <th scope="col">Ürün</th>
+                                <th scope="col">Durum</th>
+                                <th scope="col" style="width:100px ">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Requests == null)
+                            {
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.Requests)
+                                {
+                                    if (item.RequestStatus == 2)
+                                    {
+                                        <tr>
+                                            <td>@item.UserName</td>
+                                            <td>@item.AcceptedId</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.ProductName</td>
+                                                @if (@item.RequestStatus == 0)
+                                                {
+                                                <td> Beklemede... </td>
+                                                }
+                                                else if (@item.RequestStatus == 1)
+                                                {
+                                                <td> Onaylandı... </td>
+                                                }
+                                                else if (@item.RequestStatus == 2)
+                                                {
+                                                <td> Satın Alındı... </td>
+                                                }
+                                                else if (@item.RequestStatus == 3)
+                                                {
+                                                <td> Reddedildi... </td>
+                                                }
                                             <td>
                                                 <div class="dropdown">
                                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -167,22 +456,17 @@
                                             </td>
                                         </tr>
                                     }
-
-
                                 }
-
                             }
-
 
                         </tbody>
                     </table>
 
-                </div>
+                </div>.
+            </div>
             </div>
         </div>
     </div>
-
-</div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -193,9 +477,9 @@
             <form action="/Admin/TalepEkle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">User Id</span>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <select class="form-control" id="inputTalepAd" name="UserId" aria-describedby="basic-addon1" required>
-                            <option>Kullanıcı Seçiniz...</option>
+                            <option value="">Kullanıcı Seçiniz...</option>
 
                             @foreach (var item in Model.Users)
                             {
@@ -210,20 +494,16 @@
                         <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd" name="Title" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama" name="Description" aria-describedby="basic-addon1" required></textarea>
-                    </div>
-                    <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <select class="form-control" id="inputTalepAd" name="ProductId" aria-describedby="basic-addon1" required>
-                            <option>Ürün Seçiniz...</option>
+                            <option value="">Ürün Seçiniz...</option>
                             @foreach (var item in Model.Products)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </select>
                         <select class="form-control" id="inputTalepAd" name="QuantityUnit" aria-describedby="basic-addon1" required>
-                            <option>Birim Seçiniz...</option>
+                            <option value="">Birim Seçiniz...</option>
                             <option value="1">Metre</option>
                             <option value="2">Kilometre</option>
                             <option value="3">Mililitre</option>
@@ -240,10 +520,11 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <input autocomplete="off" type="number" class="form-control" placeholder="Miktar..." id="inputTalepAd" name="Quantity" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" value="0" type="hidden" class="form-control" placeholder="Durum..." id="inputTalepAd" name="RequestStatus" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" value="1" type="text" class="form-control" placeholder="Durum..." id="inputTalepAd" name="RequestStatus" aria-describedby="basic-addon1" required>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 
@@ -266,11 +547,11 @@
             </div>
             <form action="/Admin/TalepGuncelle" method="post">
                 <div class="modal-body">
-                    <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputId1" name="Id" aria-describedby="basic-addon1" required>
+                    <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId1" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">User Id</span>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <select class="form-control" id="inputUserId1" name="UserId" aria-describedby="basic-addon1" required>
-                            <option>Kullanıcı Seçiniz...</option>
+                            <option value="">Kullanıcı Seçiniz...</option>
 
                             @foreach (var item in Model.Users)
                             {
@@ -285,20 +566,16 @@
                         <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd1" name="Title" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama1" name="Description" aria-describedby="basic-addon1" required></textarea>
-                    </div>
-                    <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <select class="form-control" id="inputProduct1" name="ProductId" aria-describedby="basic-addon1" required>
-                            <option>Ürün Seçiniz...</option>
+                            <option value="">Ürün Seçiniz...</option>
                             @foreach (var item in Model.Products)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </select>
                         <select class="form-control" id="inputBirim1" name="QuantityUnit" aria-describedby="basic-addon1" required>
-                            <option>Birim Seçiniz...</option>
+                            <option value="">Birim Seçiniz...</option>
                             <option value="1,00">Metre</option>
                             <option value="2,00">Kilometre</option>
                             <option value="3,00">Mililitre</option>
@@ -318,14 +595,18 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <select class="form-control" id="inputBirim1" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                        <select class="form-control" id="inputRequestStatus1" name="RequestStatus" aria-describedby="basic-addon1" required>
                             <option>Durum Seçiniz...</option>
-                            <option value="1">Onay Bekliyor</option>
-                            <option value="2">Onaylandı</option>
-                            <option value="3">Satın Alındı</option>
-                            <option style="background:Red;opacity:50%;" value="4">Reddedildi</option>
-                            
+                            <option value="0">Onay Bekliyor</option>
+                            <option value="1">Onaylandı</option>
+                            <option value="2">Satın Alındı</option>
+                            <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
+
                         </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama1" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 
@@ -346,12 +627,91 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Talep Detay</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId2" name="Id" aria-describedby="basic-addon1" required>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+                    <select class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
+                        <option value="">Kullanıcı Seçiniz...</option>
+
+                        @foreach (var item in Model.Users)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                    <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd2" name="Title" aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                    <select class="form-control" id="inputProduct2" name="ProductId" aria-describedby="basic-addon1" required>
+                        <option value="">Ürün Seçiniz...</option>
+                        @foreach (var item in Model.Products)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                    <select class="form-control" id="inputBirim2" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                        <option value="">Birim Seçiniz...</option>
+                        <option value="1,00">Metre</option>
+                        <option value="2,00">Kilometre</option>
+                        <option value="3,00">Mililitre</option>
+                        <option value="4,00">Litre</option>
+                        <option value="5,00">Kilogram</option>
+                        <option value="6,00">Ton</option>
+                        <option value="7,00">Adet</option>
+                        <option value="8,00">Koli</option>
+                        <option value="9,00">m²</option>
+                        <option value="10,00">m³</option>
+                    </select>
+
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                    <input autocomplete="off" type="text" class="form-control" placeholder="Miktar..." id="inputMiktar2" name="Quantity" aria-describedby="basic-addon1" required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                    <select class="form-control"  id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                        <option value="">Durum Seçiniz...</option>
+                        <option value="0">Onay Bekliyor</option>
+                        <option value="1">Onaylandı</option>
+                        <option value="2">Satın Alındı</option>
+                        <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
+
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                    <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticOnayla" data-bs-backdrop="static1" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Talep Onayla</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/Admin/TalepGuncelle" method="post">
                 <div class="modal-body">
-                    <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputId2" name="Id" aria-describedby="basic-addon1" required>
+                    <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputIdonay" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">User Id</span>
-                        <select class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
-                            <option>Kullanıcı Seçiniz...</option>
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+                        <select class="form-control" disabled="disabled"  id="inputUserIdonay" name="UserId" aria-describedby="basic-addon1">
+                            <option value="">Kullanıcı Seçiniz...</option>
 
                             @foreach (var item in Model.Users)
                             {
@@ -363,23 +723,19 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd2" name="Title" aria-describedby="basic-addon1" required>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
+                        <input autocomplete="off" disabled="disabled" type="text" class="form-control" placeholder="İstek..." id="inputTalepAdonay" name="Title" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <select class="form-control" id="inputProduct2" name="ProductId" aria-describedby="basic-addon1" required>
-                            <option>Ürün Seçiniz...</option>
+                        <select class="form-control" disabled="disabled" id="inputProductonay" name="ProductId" aria-describedby="basic-addon1" required>
+                            <option value="">Ürün Seçiniz...</option>
                             @foreach (var item in Model.Products)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </select>
-                        <select class="form-control" id="inputBirim2" name="QuantityUnit" aria-describedby="basic-addon1" required>
-                            <option>Birim Seçiniz...</option>
+                        <select class="form-control" disabled="disabled" id="inputBirimonay" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                            <option value="">Birim Seçiniz...</option>
                             <option value="1,00">Metre</option>
                             <option value="2,00">Kilometre</option>
                             <option value="3,00">Mililitre</option>
@@ -395,29 +751,35 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Miktar..." id="inputMiktar2" name="Quantity" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" disabled="disabled" type="text" class="form-control" placeholder="Miktar..." id="inputMiktaronay" name="Quantity" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <select class="form-control" disabled="true" id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
-                            <option>Durum Seçiniz...</option>
-                            <option value="1">Onay Bekliyor</option>
-                            <option value="2">Onaylandı</option>
-                            <option value="3">Satın Alındı</option>
-                            <option style="background:Red;opacity:50%;" value="4">Reddedildi</option>
+                        <select class="form-control" id="inputRequestStatusonay" name="RequestStatus" aria-describedby="basic-addon1" required>
+                            <option value="">Durum Seçiniz...</option>
+                            <option value="0">Onay Bekliyor</option>
+                            <option value="1">Onaylandı</option>
+                            <option value="2">Satın Alındı</option>
+                            <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
 
                         </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+                        <textarea autocomplete="off" disabled="disabled" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklamaonay" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Onayla</button>
 
                 </div>
+            </form>
+
         </div>
     </div>
 </div>
-
 <script>
     function confirmRolDelete(id) {
         var result = confirm("Bu talebi silmek istediğinizden emin misiniz?");
@@ -442,7 +804,7 @@
         $("#inputProduct1").val(product);
         $("#inputBirim1").val(brim);
         $("#inputMiktar1").val(miktar);
-        $("#inputStatus1").val(status);
+        $("#inputRequestStatus1").val(status);
     });
     $('#staticBackdrop2').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
@@ -462,6 +824,25 @@
         $("#inputBirim2").val(brim);
         $("#inputMiktar2").val(miktar);
         $("#inputStatus2").val(status);
+    });
+    $('#staticOnayla').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var title = button.data('title');
+        var description = button.data('description');
+        var username = button.data('username');
+        var product = button.data('product');
+        var brim = button.data('brim');
+        var miktar = button.data('miktar');
+        var status = button.data('status');
+        $("#inputIdonay").val(id);
+        $("#inputTalepAdonay").val(title);
+        $("#inputAciklamaonay").val(description);
+        $("#inputUserIdonay").val(username);
+        $("#inputProductonay").val(product);
+        $("#inputBirimonay").val(brim);
+        $("#inputMiktaronay").val(miktar);
+        $("#inputRequestStatusonay").val(status);
     });
 
 </script>
