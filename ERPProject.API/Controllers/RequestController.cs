@@ -17,11 +17,17 @@ namespace ERPProject.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IRequestService _requestService;
+        private readonly IUserService _userService;
+        private readonly IDepartmentService _departmentService;
+        private readonly ICompanyService _companyService;
 
-        public RequestController(IRequestService requestService, IMapper mapper)
+        public RequestController(IRequestService requestService, IMapper mapper, IUserService userService, IDepartmentService departmentService, ICompanyService companyService)
         {
+            _userService = userService;
             _requestService = requestService;
             _mapper = mapper;
+            _departmentService = departmentService;
+            _companyService = companyService;
         }
 
         [HttpGet("/Requests")]
@@ -134,6 +140,35 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<RequestDTOResponse>.SuccessWithData(requestDTOResponse));
 
+
+        }
+
+
+        [HttpGet("/RequestsByCompany/{userId}")]
+        public async Task<IActionResult> GetRequestsByCompany(long userId)
+        {
+            User user = await _userService.GetAsync(x=>x.Id == userId);
+            Department department = await _departmentService.GetAsync(x=>x.Id == user.DepartmentId);
+            Company company = await _companyService.GetAsync(x=>x.Id == department.CompanyId);
+
+            
+
+            var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.Department.CompanyId == company.Id , "User", "Product");
+            if (requests == null)
+            {
+                return NotFound(Sonuc<List<RequestDTOResponse>>.SuccessNoDataFound());
+            }
+
+            List<RequestDTOResponse> requestDTOResponseList = new();
+
+            foreach (var request in requests)
+            {
+                requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
+            }
+
+            Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
+
+            return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
         }
 

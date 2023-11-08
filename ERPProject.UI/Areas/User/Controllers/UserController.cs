@@ -48,7 +48,6 @@ namespace ERPProject.UI.Areas.User.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             return View(val);
-            return View(val);
         }
         [HttpPost("/Kullanici/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)

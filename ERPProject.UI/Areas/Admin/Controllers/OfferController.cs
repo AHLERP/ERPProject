@@ -18,9 +18,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Teklifler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            var id = HttpContext.Session.GetString("User");
             var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
+            var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/"+id);
+            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            OfferVM offerVM = null;
+            if (val == null)
+            {
+                 offerVM = new OfferVM()
+
+                {
+                    Offers = null,
+                    Users = val2.Data,
+                    Requests = val3.Data,
+
+                };
+                return View(offerVM);
+            }
+
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -29,10 +44,9 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            OfferVM offerVM = new OfferVM()
+            offerVM = new OfferVM()
 
             {
-
                 Offers = val.Data,
                 Users = val2.Data,
                 Requests = val3.Data,
@@ -49,6 +63,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
+            p.UserId = 1;
             var val = await AddAsync(p, url + "AddOffer");
             if (val)
             {

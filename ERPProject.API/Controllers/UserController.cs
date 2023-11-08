@@ -18,12 +18,16 @@ namespace ERPProject.API.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IDepartmentService _departmentService;
+        private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
 
-        public UserController(IMapper mapper, IUserService userService)
+        public UserController(IMapper mapper, IUserService userService, ICompanyService companyService, IDepartmentService departmentService)
         {
             _mapper = mapper;
             _userService = userService;
+            _companyService = companyService;
+            _departmentService = departmentService;
         }
 
         [HttpPost("/AddUser")]
@@ -133,6 +137,8 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
 
+
+
         [HttpGet("GetUsersByRole/{roleId}")]
         public async Task<IActionResult> GetUsersByRole(int roleId)
         {
@@ -170,5 +176,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
+
+
     }
 }
