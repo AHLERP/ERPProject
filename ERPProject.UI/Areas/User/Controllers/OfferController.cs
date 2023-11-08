@@ -22,7 +22,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
             var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
             var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var val3 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -34,8 +34,8 @@ namespace ERPProject.UI.Areas.User.Controllers
             OfferVM offerVM = new OfferVM()
 
             {
+                Offers = val.Data,
                 Users = val2.Data,
-                Requests = val3.Data,
                 Requests = val3.Data,
             };
             return View(offerVM);

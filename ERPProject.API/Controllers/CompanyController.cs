@@ -40,7 +40,7 @@ namespace ERPProject.API.Controllers
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
 
-            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponse);
+            Log.Information("Companies => {@companyDTOResponse} => { Şirket Eklendi. }", companyDTOResponse);
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
@@ -58,7 +58,7 @@ namespace ERPProject.API.Controllers
 
             await _companyService.RemoveAsync(company);
 
-            Log.Information("Companies => {@company}", company);
+            Log.Information("Companies => {@company} => { Şirket Silindi. }", company);
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
@@ -79,7 +79,7 @@ namespace ERPProject.API.Controllers
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
 
-            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponse);
+            Log.Information("Companies => {@companyDTOResponse} => { Şirket Güncellendi. }", companyDTOResponse);
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
@@ -96,7 +96,7 @@ namespace ERPProject.API.Controllers
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
 
-            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponse);
+            Log.Information("Companies => {@companyDTOResponse} => { Şirket Getirildi. }", companyDTOResponse);
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
@@ -117,7 +117,7 @@ namespace ERPProject.API.Controllers
                 companyDTOResponseList.Add(_mapper.Map<CompanyDTOResponse>(company));
             }
 
-            Log.Information("Companies => {@companyDTOResponse}", companyDTOResponseList);
+            Log.Information("Companies => {@companyDTOResponse} => { Şirketler Getirildi. } ", companyDTOResponseList);
 
             return Ok(Sonuc<List<CompanyDTOResponse>>.SuccessWithData(companyDTOResponseList));
         }
