@@ -21,7 +21,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
-            var val4 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            var val4 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
 
             UserVM userVM = new UserVM
             {
@@ -34,7 +34,7 @@ namespace ERPProject.UI.Areas.User.Controllers
 
             return View(userVM);
         }
-        [HttpGet("/User/Kullanici")]
+        [HttpGet("/Kullanici/Kullanici")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
