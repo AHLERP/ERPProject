@@ -14,10 +14,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
+
         [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var id = HttpContext.Session.GetString("User");
+
+            var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/"+id);
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             if (val.StatusCode == 401)
             {

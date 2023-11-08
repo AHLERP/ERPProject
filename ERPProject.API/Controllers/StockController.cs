@@ -110,5 +110,25 @@ namespace ERPProject.API.Controllers
 
         }
 
+        [HttpGet("/StocksByCompany/{companyId}")]
+        public async Task<IActionResult> GetStocksByCompany(int companyId)
+        {
+
+            var stocks = await _stockService.GetAllAsync(x=>x.CompanyId == companyId);
+            if (stocks == null)
+            {
+                return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
+            }
+
+            List<StockDTOResponse> stockDTOResponses = new();
+            foreach (var stock in stocks)
+            {
+                stockDTOResponses.Add(_mapper.Map<StockDTOResponse>(stock));
+            }
+
+            Log.Information("Stocks => {@stockDTOResponse} => { Stoklar Getirildi. }", stockDTOResponses);
+            return Ok(Sonuc<List<StockDTOResponse>>.SuccessWithData(stockDTOResponses));
+        }
+
     }
 }
