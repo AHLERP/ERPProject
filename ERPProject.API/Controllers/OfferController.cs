@@ -34,7 +34,7 @@ namespace ERPProject.API.Controllers
 
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
 
-            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponse);
+            Log.Information("Offers => {@offerDTOResponse} => { Teklif Eklendi. }", offerDTOResponse);
 
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
@@ -49,7 +49,7 @@ namespace ERPProject.API.Controllers
 
             await _offerService.RemoveAsync(offer);
 
-            Log.Information("Offers => {@offer}", offer);
+            Log.Information("Offers => {@offer} => { Teklif Silindi. }", offer);
 
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithoutData());
         }
@@ -68,7 +68,7 @@ namespace ERPProject.API.Controllers
 
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
 
-            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponse);
+            Log.Information("Offers => {@offerDTOResponse} => { Teklif Güncellendi. }", offerDTOResponse);
 
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
@@ -84,7 +84,8 @@ namespace ERPProject.API.Controllers
 
             OfferDTOResponse offerDTOResponse = _mapper.Map<OfferDTOResponse>(offer);
 
-            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponse);
+            Log.Information("Offers => {@offerDTOResponse} => { Teklif Getirildi. }", offerDTOResponse);
+            //Log.Information($"Offers => {offerDTOResponse} =>  Teklif Getirildi.");
 
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
@@ -103,7 +104,7 @@ namespace ERPProject.API.Controllers
                 offerDTOResponseList.Add(_mapper.Map<OfferDTOResponse>(offer));
             }
 
-            Log.Information("Offers => {@offerDTOResponse}", offerDTOResponseList);
+            Log.Information("Offers => {@offerDTOResponse} => { Teklifleri Getir. }", offerDTOResponseList);
             return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponseList));
         }
     }

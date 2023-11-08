@@ -33,7 +33,7 @@ namespace ERPProject.API.Controllers
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
 
-            Log.Information("Products => {@productDTOResponse}", productDTOResponse);
+            Log.Information("Products => {@productDTOResponse} => { Ürün Eklendi. }", productDTOResponse);
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
@@ -48,7 +48,7 @@ namespace ERPProject.API.Controllers
 
             await _productService.RemoveAsync(product);
 
-            Log.Information("Products => {@product}", product);
+            Log.Information("Products => {@product} => { Ürün Silindi. } ", product);
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithoutData());
         }
@@ -67,7 +67,7 @@ namespace ERPProject.API.Controllers
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
 
-            Log.Information("Products => {@productDTOResponse}", productDTOResponse);
+            Log.Information("Products => {@productDTOResponse} => { Ürün Güncellendi. }", productDTOResponse);
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
@@ -83,7 +83,7 @@ namespace ERPProject.API.Controllers
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
 
-            Log.Information("Products => {@productDTOResponse}", productDTOResponse);
+            Log.Information("Products => {@productDTOResponse} => { Ürün Getirildi. }", productDTOResponse);
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
@@ -103,7 +103,7 @@ namespace ERPProject.API.Controllers
                 productDTOResponseList.Add(_mapper.Map<ProductDTOResponse>(product));
             }
 
-            Log.Information("Products => {@productDTOResponse}", productDTOResponseList);
+            Log.Information("Products => {@productDTOResponse} => { Ürünler Getirildi. }", productDTOResponseList);
 
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
         }
@@ -122,7 +122,7 @@ namespace ERPProject.API.Controllers
             {
                 productDTOResponseList.Add(_mapper.Map<ProductDTOResponse>(product));
             }
-            Log.Information("Products => {@productDTOResponse}", productDTOResponseList);
+            Log.Information("Products => {@productDTOResponse} => { Kategoriye Göre Ürünler Getirildi. }", productDTOResponseList);
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
         }
         [HttpGet("/GetProductsByBrand/{brandId}")]
@@ -138,7 +138,7 @@ namespace ERPProject.API.Controllers
             {
                 productDTOResponseList.Add(_mapper.Map<ProductDTOResponse>(product));
             }
-            Log.Information("Products => {@productDTOResponse}", productDTOResponseList);
+            Log.Information("Products => {@productDTOResponse} => { Markaya Göre Ürünler Getirildi. }", productDTOResponseList);
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
         } 
     }

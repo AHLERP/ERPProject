@@ -40,11 +40,18 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 TempData["HATA"] = "Hatalı Giriş Yaptınız";
                 return RedirectToAction("","");
             }
+            HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
+
             if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
             {
                 return RedirectToAction("Index","Company");
             }
-            
+            else if (response.IsSuccessStatusCode && HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return RedirectToAction("Sirketler", "Kullanici");
+
+            }
+
 
             return RedirectToAction("Index", "Home");
         }

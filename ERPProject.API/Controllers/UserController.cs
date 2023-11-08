@@ -18,12 +18,16 @@ namespace ERPProject.API.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IDepartmentService _departmentService;
+        private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
 
-        public UserController(IMapper mapper, IUserService userService)
+        public UserController(IMapper mapper, IUserService userService, ICompanyService companyService, IDepartmentService departmentService)
         {
             _mapper = mapper;
             _userService = userService;
+            _companyService = companyService;
+            _departmentService = departmentService;
         }
 
         [HttpPost("/AddUser")]
@@ -38,7 +42,7 @@ namespace ERPProject.API.Controllers
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user); 
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponse);
+            Log.Information("Users => {@userDTOResponse} => { Kullanıcı Eklendi. }", userDTOResponse);
 
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
@@ -54,7 +58,7 @@ namespace ERPProject.API.Controllers
             }
             await _userService.RemoveAsync(user);
 
-            Log.Information("Users => {@user}", user);
+            Log.Information("Users => {@user} => { Kullanıcı Silindi. }", user);
 
             return Ok(Sonuc<UserDTOResponse>.SuccessWithoutData());
         }
@@ -74,7 +78,7 @@ namespace ERPProject.API.Controllers
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponse);
+            Log.Information("Users => {@userDTOResponse} => { Kullanıcı Güncellendi. }", userDTOResponse);
 
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse)) ;
         }
@@ -90,7 +94,7 @@ namespace ERPProject.API.Controllers
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponse);
+            Log.Information("Users => {@userDTOResponse} => { Kullanıcı Getirildi. }", userDTOResponse);
 
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
@@ -109,7 +113,7 @@ namespace ERPProject.API.Controllers
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+            Log.Information("Users => {@userDTOResponse} => { Kullanıcılar Getirildi. }", userDTOResponseList);
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
@@ -128,10 +132,12 @@ namespace ERPProject.API.Controllers
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+            Log.Information("Users => {@userDTOResponse} => { Departmana Göre Kullanıcılar Getirildi. }", userDTOResponseList);
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
+
+
 
         [HttpGet("GetUsersByRole/{roleId}")]
         public async Task<IActionResult> GetUsersByRole(int roleId)
@@ -147,7 +153,7 @@ namespace ERPProject.API.Controllers
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+            Log.Information("Users => {@userDTOResponse} => { Rollere Göre Kullanıcılar Getirildi. }", userDTOResponseList);
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
@@ -166,9 +172,11 @@ namespace ERPProject.API.Controllers
                 userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
             }
 
-            Log.Information("Users => {@userDTOResponse}", userDTOResponseList);
+            Log.Information("Users => {@userDTOResponse} => { Şirkete Göre Kullanıcılar Getirildi. }", userDTOResponseList);
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
+
+
     }
 }

@@ -14,7 +14,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Departmanlar")]
+        [HttpGet("/Kullanici/Departmanlar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
@@ -28,13 +28,13 @@ namespace ERPProject.UI.Areas.User.Controllers
             }
             return View(val);
         }
-        [HttpGet("/User/Departman")]
+        [HttpGet("/Kullanici/Departman")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<DepartmentDTOResponse>(url + "GetDepartment/" + id);
             return View(val);
         }
-        [HttpPost("/User/DepartmanEkle")]
+        [HttpPost("/Kullanici/DepartmanEkle")]
         public async Task<IActionResult> Add(DepartmentDTORequest p)
         {
             var val = await AddAsync(p, url + "AddDepartment");
@@ -46,7 +46,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/DepartmanGuncelle")]
+        [HttpPost("/Kullanici/DepartmanGuncelle")]
         public async Task<IActionResult> Update(DepartmentDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateDepartment");
@@ -59,7 +59,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpGet("/User/DepartmanSil/{id}")]
+        [HttpGet("/Kullanici/DepartmanSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveDepartment/" + id);

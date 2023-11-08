@@ -35,7 +35,7 @@ namespace ERPProject.API.Controllers
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
 
-            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponse);
+            Log.Information("Categories => {@categoryDTOResponse} => { Kategori Eklendi. }", categoryDTOResponse);
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
@@ -50,7 +50,7 @@ namespace ERPProject.API.Controllers
 
             await _categoryService.RemoveAsync(category);
 
-            Log.Information("Categories => {@category}", category);
+            Log.Information("Categories => {@category} => { Kategori Silindi. }", category);
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithoutData());
         }
@@ -69,7 +69,7 @@ namespace ERPProject.API.Controllers
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
 
-            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponse);
+            Log.Information("Categories => {@categoryDTOResponse} => { Kategori Güncellendi. }", categoryDTOResponse);
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
@@ -85,7 +85,7 @@ namespace ERPProject.API.Controllers
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
 
-            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponse);
+            Log.Information("Categories => {@categoryDTOResponse} => { Kategori Getirildi. }", categoryDTOResponse);
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
@@ -103,7 +103,7 @@ namespace ERPProject.API.Controllers
                 categoryDTOResponseList.Add(_mapper.Map<CategoryDTOResponse>(category));
             }
 
-            Log.Information("Categories => {@categoryDTOResponse}", categoryDTOResponseList);
+            Log.Information("Categories => {@categoryDTOResponse} => { Kategoriler Getirildi. }", categoryDTOResponseList);
 
             return Ok(Sonuc<List<CategoryDTOResponse>>.SuccessWithData(categoryDTOResponseList));
         }

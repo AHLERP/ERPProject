@@ -11,8 +11,6 @@ namespace ERPProject.UI.Areas.User.Models
         public virtual ICollection<UserDTOResponse> Users { get; set; } = new List<UserDTOResponse>();
         public virtual ICollection<OfferDTOResponse> Offers { get; set; } = new List<OfferDTOResponse>();
         public virtual ICollection<RequestDTOResponse> Requests { get; set; } = new List<RequestDTOResponse>();
-        public virtual ICollection<InvoiceDTOResponse> Invoices { get; set; } = new List<InvoiceDTOResponse>();
-
 
     }
 }

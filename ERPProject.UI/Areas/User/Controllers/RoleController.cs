@@ -1,20 +1,20 @@
-﻿using ERPProject.Entity.DTO.RequestDTO;
+﻿using ERPProject.Entity.DTO.RoleDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.User.Controllers
 {
     [Area("User")]
-    public class RequestController : BaseController
+    public class RoleController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public RequestController(HttpClient httpClient) : base(httpClient)
+        public RoleController(HttpClient httpClient) : base(httpClient)
         {
 
         }
-        [HttpGet("/Kullanici/Talepler")]
+        [HttpGet("/Kullanici/Roller")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<RequestDTOResponse>(url + "GetCompanies");
+            var val = await GetAllAsync<RoleDTOResponse>(url + "Roles");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -26,50 +26,46 @@ namespace ERPProject.UI.Areas.User.Controllers
             return View(val);
             return View(val);
         }
-        [HttpGet("/Kullanici/Talep")]
+        [HttpGet("/Kullanici/Rol")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<RequestDTOResponse>(url + "GetRequest/" + id);
+            var val = await GetAsync<RoleDTOResponse>(url + "GetRole/" + id);
             return View(val);
         }
-        [HttpPost("/Kullanici/TalepEkle")]
-        public async Task<IActionResult> AddRequest(RequestDTORequest p)
+        [HttpPost("/Kullanici/RolEkle")]
+        public async Task<IActionResult> Add(RoleDTORequest p)
         {
-            var val = await AddAsync(p, url + "AddRequest");
+            var val = await AddAsync(p, url + "AddRole");
             if (val)
             {
-                return RedirectToAction("Index", "Request");
+                return RedirectToAction("Index", "Role");
 
             }
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Kullanici/TalepGuncelle")]
-        public async Task<IActionResult> Update(RequestDTORequest p)
+        [HttpPost("/Kullanici/RolGuncelle")]
+        public async Task<IActionResult> Update(RoleDTORequest p)
         {
-            p.Id = 1;
-            var val = await UpdateAsync(p, url + "UpdateRequest");
+            var val = await UpdateAsync(p, url + "UpdateRole");
             if (val)
             {
-                return RedirectToAction("Index", "Request");
+                return RedirectToAction("Index", "Role");
 
             }
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Kullanici/TalepSil")]
+        [HttpGet("/Kullanici/RolSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            id = 3;
-            var val = await DeleteAsync(url + "RemoveRequest/" + id);
+            var val = await DeleteAsync(url + "RemoveRole/" + id);
             if (val)
             {
-                return RedirectToAction("Index", "Request");
-
+                return RedirectToAction("Index", "Role");
             }
             return RedirectToAction("Index", "Home");
 
         }
-
     }
 }
