@@ -13,6 +13,7 @@ namespace ERPProject.Entity.DTO.StockDTO
         public int ProductId { get; set; }
 
         public int Quantity { get; set; }
+        public short QuantityUnit { get; set; }
 
         public string? Description { get; set; }
 

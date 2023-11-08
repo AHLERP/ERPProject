@@ -28,18 +28,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             request.AddBody(body, "application/json");
             RestResponse response = await client.ExecuteAsync(request);
             var responseObject = JsonConvert.DeserializeObject<ApiResponse<LoginDTO>>(response.Content);
+            if(responseObject.StatusCode==200) { 
             HttpContext.Session.SetString("Token", responseObject.Data.Token);
             HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
             HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
             HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
-            
-            
 
-            
-
-
-            
-            if (response.IsSuccessStatusCode)
+            }
+            else
+            {
+                TempData["HATA"] = "Hatalı Giriş Yaptınız";
+                return RedirectToAction("","");
+            }
+            if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
             {
                 return RedirectToAction("Index","Company");
             }

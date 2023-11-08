@@ -14,25 +14,37 @@ namespace ERPProject.API.Controllers
     public class StockDetailController : Controller
     {
         private readonly IStockDetailService _stockDetailService;
+        private readonly IStockService _stockService;
         private readonly IMapper _mapper;
 
-        public StockDetailController(IMapper mapper, IStockDetailService stockDetailService)
+        public StockDetailController(IMapper mapper, IStockDetailService stockDetailService, IStockService stockService)
         {
             _mapper = mapper;
             _stockDetailService = stockDetailService;
+            _stockService = stockService;
         }
 
         [HttpPost("/AddStockDetail")]
         public async Task<IActionResult> AddStockDetail(StockDetailDTORequest stockDetailDTORequest)
         {
-            StockDetail stockDetail = _mapper.Map<StockDetail>(stockDetailDTORequest);
-            await _stockDetailService.AddAsync(stockDetail);
+            Stock stock = await _stockService.GetAsync(x => x.Id == stockDetailDTORequest.StockId);
 
-            StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
-
-            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
-
-            return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
+            if ((stock.Quantity + stockDetailDTORequest.Quantity)>=0)
+            {
+                StockDetail stockDetail = _mapper.Map<StockDetail>(stockDetailDTORequest);
+                await _stockDetailService.AddAsync(stockDetail);
+                stock.Quantity += stockDetailDTORequest.Quantity;
+                await _stockService.UpdateAsync(stock);
+                StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
+                Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stok Detayı Eklendi }", stockDetailDTOResponse);
+                return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
+            }
+            else
+            {
+                return NotFound("Stokta Yeterli Ürün Yok!!");
+            }
+            
+            
         }
 
 
