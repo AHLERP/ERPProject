@@ -29,7 +29,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/Stocks")]
         public async Task<IActionResult> GetStocks()
         {
-            var stocks = await _stockService.GetAllAsync();
+            var stocks = await _stockService.GetAllAsync(x=>x.IsActive == true ,"Product","Company");
             if (stocks == null)
             {
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
@@ -48,7 +48,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/Stock/{stockId}")]
         public async Task<IActionResult> GetStock(int stockId)
         {
-            var stock = await _stockService.GetAsync(e=>e.Id== stockId);
+            var stock = await _stockService.GetAsync(e=>e.Id== stockId && e.IsActive == true, "Product", "Company");
             if (stock == null)
             {
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
