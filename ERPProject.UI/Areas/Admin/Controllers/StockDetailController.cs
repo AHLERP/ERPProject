@@ -1,4 +1,6 @@
 ﻿using ERPProject.Entity.DTO.StockDetailDTO;
+using ERPProject.Entity.DTO.StockDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,7 +16,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/StokDetaylar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<StockDetailDTOResponse>(url + "GetStockDetails");
+            var val = await GetAllAsync<StockDetailDTOResponse>(url + "StockDetails");
+            var val1 = await GetAllAsync<StockDTOResponse>(url + "Stocks");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -23,13 +26,17 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
-            return View(val);
+            StockDetailVM stockDetailVM = new StockDetailVM
+            {
+                StockDetails = val.Data,
+                Stocks = val1.Data
+            };
+            return View(stockDetailVM);
         }
         [HttpGet("/Admin/StokDetay")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<StockDetailDTOResponse>(url + "GetStockDetail/" + id);
+            var val = await GetAsync<StockDetailDTOResponse>(url + "StockDetail/" + id);
             return View(val);
         }
         [HttpPost("/Admin/StokDetayEkle")]
@@ -38,10 +45,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var val = await AddAsync(p, url + "AddStockDetail");
             if (val)
             {
-                return RedirectToAction("Index", "StockDetail");
+                return RedirectToAction("Index", "Stock");
 
             }
-            return RedirectToAction("Index", "Home");
+            TempData["stok"] = "Stok Yetersiz...";
+            return RedirectToAction("Index", "Stock");
 
         }
         [HttpPost("/Admin/StokDetayGuncelle")]
@@ -50,7 +58,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var val = await UpdateAsync(p, url + "UpdateStockDetail");
             if (val)
             {
-                return RedirectToAction("Index", "StockDetail");
+                return RedirectToAction("Index", "Stock");
 
             }
             return RedirectToAction("Index", "Home");

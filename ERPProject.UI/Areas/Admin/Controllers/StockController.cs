@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using ERPProject.Entity.DTO.StockDTO;
 using Microsoft.AspNetCore.Mvc;
+using ERPProject.Entity.DTO.ProductDTO;
+using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.UI.Areas.Admin.Models;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -17,7 +20,9 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Stoklar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<StockDTOResponse>(url + "GetStocks");
+            var val = await GetAllAsync<StockDTOResponse>(url + "Stocks");
+            var val1 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+            var val2 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -26,8 +31,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
-            return View(val);
+
+            StockVM stockVM = new StockVM()
+            {
+                Companies = val2.Data,
+                Products = val1.Data,
+                Stocks = val.Data
+            };
+
+            return View(stockVM);
         }
         [HttpGet("/Admin/Stok")]
         public async Task<IActionResult> Get(long id)
@@ -59,7 +71,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/Admin/StokSil")]
+        [HttpGet("/Admin/StokSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveStock/" + id);

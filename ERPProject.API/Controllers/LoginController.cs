@@ -40,7 +40,7 @@ namespace ERPProject.API.Controllers
             var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Role","Department");
             if (user == null)
             {
-                return NotFound("Kullanıcı bulunamadı");
+                return Ok(Sonuc<LoginResponseDTO>.SuccessNoDataFound()); 
             }
 
 
@@ -90,7 +90,7 @@ namespace ERPProject.API.Controllers
             }
 
 
-            return BadRequest("Şifre Yanlış.");
+            return Ok(Sonuc<LoginResponseDTO>.SuccessNoDataFound());
 
         }
 
