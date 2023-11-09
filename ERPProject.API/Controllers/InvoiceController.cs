@@ -16,12 +16,18 @@ namespace ERPProject.API.Controllers
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;
+        private readonly IUserService _userService;
+        private readonly IDepartmentService _departmentService;
+        private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
 
-        public InvoiceController(IMapper mapper, IInvoiceService invoiceService)
+        public InvoiceController(IMapper mapper, IInvoiceService invoiceService, IUserService userService, IDepartmentService departmentService, ICompanyService companyService)
         {
             _mapper = mapper;
             _invoiceService = invoiceService;
+            _userService = userService;
+            _departmentService = departmentService;
+            _companyService = companyService;
         }
 
         [HttpPost("/AddInvoice")]
@@ -125,10 +131,14 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
-        [HttpGet("/GetInvoicesByCompany/{companyId}")]
-        public async Task<IActionResult> GetInvoicesByCompany(int companyId)
+        [HttpGet("/GetInvoicesByCompany/{userId}")]
+        public async Task<IActionResult> GetInvoicesByCompany(int userId)
         {
-            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.CompanyId == companyId, "Offer", "Company", "Product");
+            User user = await _userService.GetAsync(x=>x.Id == userId);
+            Department department = await _departmentService.GetAsync(x=>x.Id == user.DepartmentId);
+            Company company = await _companyService.GetAsync(x=>x.Id == department.CompanyId);
+
+            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.CompanyId == company.Id, "Offer", "Company", "Product");
             if (invoices == null)
             {
                 return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
