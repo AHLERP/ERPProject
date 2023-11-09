@@ -81,7 +81,8 @@ namespace ERPProject.API.Controllers
                     RoleName = user.Role.Name.ToString(),
                     UserId = user.Id,
                     CompanyId = user.Department.CompanyId,
-                    DepartmentId =user.DepartmentId
+                    DepartmentId =user.DepartmentId,
+                    DepartmentName=user.Department.Name
                 };
 
                 Log.Information("LoginResponse => {@loginResponseDTO} => { Giriş Yapıldı. }", loginResponseDTO);

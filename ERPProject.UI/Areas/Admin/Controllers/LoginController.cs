@@ -32,25 +32,20 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
             HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
             HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
+            HttpContext.Session.SetString("DepartmentName", responseObject.Data.DepartmentName);
             HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
-            
-            
-
-            
 
 
-            
-            if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
+
+
+
+
+
+            if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index","Company");
-            }
-            else if (response.IsSuccessStatusCode && HttpContext.Session.GetString("Role") != "Admin")
-            {
-                return RedirectToAction("Sirketler", "Kullanici");
+                return RedirectToAction("Index", "Company");
 
             }
-
-
             return RedirectToAction("Index", "Home");
         }
     }

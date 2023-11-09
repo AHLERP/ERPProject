@@ -12,7 +12,7 @@ namespace ERPProject.Entity.DTO.UserDTO
         public string DepartmentName { get; set; }
         public string RoleName { get; set; }
         public int CompanyId { get; set; }
-
+        public string CompanyName { get; set; }
 
 
         //public string PasswordHash {get; set;}
