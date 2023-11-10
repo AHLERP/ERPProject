@@ -351,15 +351,16 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Deliverer).WithMany(p => p.StockDetailDeliverers)
-                    .HasForeignKey(d => d.DelivererId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_StockDetail_User1");
+                //entity.HasOne(d => d.Deliverer).WithMany(p => p.StockDetailDeliverers)
+                //    .HasForeignKey(d => d.DelivererId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_StockDetail_User1");
 
-                entity.HasOne(d => d.Reciever).WithMany(p => p.StockDetailRecievers)
-                    .HasForeignKey(d => d.RecieverId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_StockDetail_User");
+                //entity.HasOne(d => d.Reciever).WithMany(p => p.StockDetailRecievers)
+                //    .HasForeignKey(d => d.RecieverId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_StockDetail_User");
+                entity.HasOne(e => e.User).WithMany(e => e.StockDetailDeliverers).HasForeignKey(e => e.DelivererId).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_StockDetail_User");
 
                 entity.HasOne(d => d.Stock).WithMany(p => p.StockDetails)
                     .HasForeignKey(d => d.StockId)

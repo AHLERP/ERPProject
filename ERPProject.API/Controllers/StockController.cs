@@ -7,6 +7,7 @@ using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,8 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    //[Authorize(Roles = "Admin")]
+
     public class StockController : Controller
     {
         private readonly IMapper _mapper;

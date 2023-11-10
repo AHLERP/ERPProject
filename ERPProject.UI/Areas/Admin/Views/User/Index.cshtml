@@ -244,6 +244,7 @@
 </div>
 
 <script>
+    var token = $("#token").val();
     function phoneMask() {
         var num = $("#inputPhone").val().replace(/\D/g, '');
         $(this).val(num.substring(0, 10));
@@ -285,6 +286,9 @@
             $.ajax({
                 url: "https://localhost:7075/GetDepartmentsByCompany/" + selectedCompanyId,
                 type: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                },
                 success: function (data) {
                     // Departman seçeneklerini güncelle
                     $("#inputDepartman").empty();
@@ -299,6 +303,9 @@
             $.ajax({
                 url: "https://localhost:7075/GetDepartmentsByCompany/" + selectedCompanyId,
                 type: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                },
                 success: function (data) {
                     // Departman seçeneklerini güncelle
                     $("#inputDepartman1").empty();

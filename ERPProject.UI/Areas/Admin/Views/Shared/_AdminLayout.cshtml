@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@inject IHttpContextAccessor Accessor
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
 </head>
 <body>
     <header>
-
+        <input id="token" type="hidden" value="@Accessor.HttpContext.Session.GetString("Token")">
         <nav class="navbar navbar-expand-sm fixed-top navbar-toggleable-sm navbar-dark bg-dark opacity-75">
             <div class="container-fluid">
                 <button class="btn text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
@@ -24,13 +25,12 @@
                 </div>
                 <div class="dropdown" style="padding-right:19px;">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <strong style="font-size:large">Ege Yenigezer</strong>
+                        <strong style="font-size:large">@Accessor.HttpContext.Session.GetString("UserName")</strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">Profil</a></li>
-                        <li><a class="dropdown-item" href="#">Ayarlar</a></li>
+                        <li><a class="dropdown-item" href="/Admin/Kullanici">Profil</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Çıkış Yap</a></li>
+                        <li><a class="dropdown-item" href="/Logout">Çıkış Yap</a></li>
                     </ul>
 
                 </div>
@@ -103,7 +103,7 @@
                     <br >
                     <br />
                     <br>
-                    <div class="container mb-2" style="width: 80%;">
+                    <div class="container mb-2" id="SearchBtn" style="width: 80%;">
                         <div class="input-group input-group-lg">
                             <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 @ViewData["buttonismi"]

@@ -75,7 +75,7 @@ namespace ERPProject.API.Controllers
 
                 LoginResponseDTO loginResponseDTO = new()
                 {
-                    AdSoyad = user.Name + user.LastName,
+                    AdSoyad = user.Name  +" "+ user.LastName,
                     EPosta = user.Email,
                     Token = tokenHandler.WriteToken(token),
                     RoleName = user.Role.Name.ToString(),

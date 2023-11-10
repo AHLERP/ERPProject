@@ -49,6 +49,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/UrunEkle")]
         public async Task<IActionResult> Add(ProductDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddProduct");
             if (val)
             {
@@ -61,6 +63,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/UrunGuncelle")]
         public async Task<IActionResult> Update(ProductDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateProduct");
             if (val)
             {

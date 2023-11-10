@@ -36,6 +36,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KategoriEkle")]
         public async Task<IActionResult> Add(CategoryDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddCategory");
             if (val)
             {
@@ -48,6 +50,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KategoriGuncelle")]
         public async Task<IActionResult> Update(CategoryDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateCategory");
             if (val)
             {

@@ -19,7 +19,7 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<bool> UpdateAsync<T>(T p, string url) where T : class
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, stringContent);
@@ -33,7 +33,7 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<bool> AddAsync<T>(T p, string url) where T : class
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, stringContent);
@@ -49,7 +49,7 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<bool> DeleteAsync(string url)
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
 
             HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(url);
             if (responseMessage.IsSuccessStatusCode)
@@ -62,7 +62,7 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<ApiResponse<List<T>>> GetAllAsync<T>(string url) where T : class
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
             var responseMessage = await _httpClient.GetAsync(url);
 
             if (responseMessage.IsSuccessStatusCode)
@@ -107,7 +107,7 @@ namespace ERPProject.UI.Areas
         }
         protected async Task<ApiResponse<T>> GetAsync<T>(string url) where T : class
         {
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
+            //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
             var responseMessage = await _httpClient.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {

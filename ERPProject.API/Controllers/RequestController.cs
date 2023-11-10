@@ -6,6 +6,7 @@ using ERPProject.Entity.DTO.ProductDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -13,6 +14,8 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    //[Authorize(Roles = "Admin")]
+
     public class RequestController : Controller
     {
         private readonly IMapper _mapper;
