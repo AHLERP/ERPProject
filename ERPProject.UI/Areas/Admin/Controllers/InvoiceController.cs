@@ -1,5 +1,7 @@
 ﻿using ClosedXML.Excel;
+using ERPProject.Entity.DTO.InvoiceDetailDTO;
 using ERPProject.Entity.DTO.InvoiceDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -20,6 +22,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+            var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -28,8 +31,12 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-
-            return View(val);
+            InvoiceVM invoiceVM = new InvoiceVM()
+            {
+                Invoices=val.Data,
+                InvoiceDetail=val2.Data
+            };
+            return View(invoiceVM);
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)
@@ -75,40 +82,48 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
                             dt.Rows.Add(dr);
                         }
-                        InvoiceDTORequest dTORequest=null;
-                        n = dt.Rows.Count;
-                        for (i = n; i <= n ; i++)
+                        InvoiceDTORequest dTORequest = null;
+                        long id=0;
+                        for (i = 0; i < n-1; i++)
                         {
                             DataRow row = dt.Rows[i];
                             dTORequest = new InvoiceDTORequest
                             {
                                 SupplierName = row["Tedarikci"].ToString(),
                                 CompanyName = row["Şirket"].ToString(),
-                                TotalPrice = Convert.ToInt32(row["ToplamFiyat"]),
+                                TotalPrice = Convert.ToInt32(row["Fiyat"]),
                                 InvoiceDate = Convert.ToDateTime(row["Tarih"])
                             };
-                            var val = await AddAsync(dTORequest, url + "AddInvoice");
+                            
                         }
-                        
-                        for (i = 0; i < n-1; i++)
+                        var val = await AddAsync(dTORequest, url + "AddInvoice");
+                        id = val.Data.Id;
+                        InvoiceDetailDTORequest ınvoiceDetailDTORequest = null;
+                        for (i = 0; i < n - 2; i++)
                         {
                             DataRow row = dt.Rows[i];
-                             dTORequest = new InvoiceDTORequest
+                            ınvoiceDetailDTORequest = new InvoiceDetailDTORequest
                             {
-                                SupplierName = row["Tedarikci"].ToString(),
-                                CompanyName = row["Şirket"].ToString(),
-                                TotalPrice = Convert.ToInt32(row["Fiyat"]), 
-                                InvoiceDate = Convert.ToDateTime(row["Tarih"])
+                                ProductName = row["Tedarikci"].ToString(),
+                                Price = Convert.ToInt32(row["Fiyat"]),
+                                Quantity = Convert.ToInt32(row["Miktar"]),
+                                QuantityUnit = Convert.ToInt16(row["Birim"]),
+                                InvoiceId = id,
                             };
-                            var val = await AddAsync(dTORequest, url + "AddInvoice");
+                            var val2 = await AddAsync(ınvoiceDetailDTORequest, url + "AddInvoiceDetail");
                         }
-                            
+
                         //if (val)
                         //{
                         //    return RedirectToAction("Index", "Invoice");
 
                         //}
-                        return RedirectToAction("Index", "Invoice");                     
+                        return RedirectToAction("Index", "Invoice");
+
+                }
+            }
+            return RedirectToAction("Index", "Invoice");
+
         }
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)

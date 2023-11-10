@@ -88,12 +88,12 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetInvoiceDetails()
         {
             var invoiceDetails = await _invoiceDetailService.GetAllAsync(x=>x.IsActive == true,"Invoice");
-            if (invoiceDetails != null)
+            if (invoiceDetails == null)
             {
-                return NotFound(Sonuc<InvoiceDTOResponse>.SuccessWithoutData());
+                return NotFound(Sonuc<InvoiceDetailDTOResponse>.SuccessNoDataFound());
             }
             List<InvoiceDetailDTOResponse> invoiceDetailDTOResponseList = new();
-            foreach (var item in invoiceDetailDTOResponseList)
+            foreach (var item in invoiceDetails)
             {
                 invoiceDetailDTOResponseList.Add(_mapper.Map<InvoiceDetailDTOResponse>(item));
             }
@@ -111,9 +111,8 @@ namespace ERPProject.API.Controllers
             {
                 return NotFound(Sonuc<InvoiceDetailDTOResponse>.SuccessNoDataFound());
             }
-
             List<InvoiceDetailDTOResponse> invoiceDetailDTOResponseList = new();
-            foreach (var item in invoiceDetailDTOResponseList)
+            foreach (var item in invoiceDetails)
             {
                 invoiceDetailDTOResponseList.Add(_mapper.Map<InvoiceDetailDTOResponse>(item));
             }

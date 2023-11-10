@@ -68,9 +68,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
-            p.UserId = 1;
             var val = await AddAsync(p, url + "AddOffer");
-            if (val)
+            if (val.Data!=null)
             {
                 return RedirectToAction("Index", "Offer");
 

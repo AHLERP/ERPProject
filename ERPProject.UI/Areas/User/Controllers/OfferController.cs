@@ -50,7 +50,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
             var val = await AddAsync(p, url + "AddOffer");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Offer");
 

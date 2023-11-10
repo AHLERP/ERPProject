@@ -38,7 +38,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(BrandDTORequest p)
         {
             var val = await AddAsync(p, url + "AddBrand");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Brand");
 

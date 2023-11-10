@@ -53,7 +53,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Add(UserDTORequest p)
         {
             var val = await AddAsync(p, url + "AddUser");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "User");
 

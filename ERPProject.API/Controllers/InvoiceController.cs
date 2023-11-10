@@ -36,11 +36,11 @@ namespace ERPProject.API.Controllers
             Invoice invoice = _mapper.Map<Invoice>(invoiceDTORequest);
             await _invoiceService.AddAsync(invoice);
 
-            //InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
+            InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
 
-            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Eklendi. }", invoice);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Eklendi. }", invoiceDTOResponse);
 
-            return Ok(Sonuc<Invoice>.SuccessWithData(invoice));
+            return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
         [HttpDelete("/RemoveInvoice/{invoiceId}")]
         public async Task<IActionResult> RemoveInvoice(int invoiceId)

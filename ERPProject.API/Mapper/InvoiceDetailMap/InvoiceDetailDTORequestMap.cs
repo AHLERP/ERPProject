@@ -8,8 +8,8 @@ namespace ERPProject.API.Mapper.InvoiceDetailMap
     {
         public InvoiceDetailDTORequestMap()
         {
-            CreateMap<InvoiceDetailDTORequest, InvoiceDetail>();
             CreateMap<InvoiceDetail, InvoiceDetailDTORequest>();
+            CreateMap<InvoiceDetailDTORequest, InvoiceDetail>();
         }
     }
 }

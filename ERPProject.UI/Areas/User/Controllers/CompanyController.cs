@@ -50,7 +50,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
             var val = await AddAsync(p, url + "AddCompany");
 
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Company");
 

@@ -14,6 +14,6 @@ namespace ERPProject.Entity.DTO.InvoiceDetailDTO
         public decimal Quantity { get; set; }
         public short QuantityUnit { get; set; }
         public string ProductName { get; set; }
-        public int InvoiceId { get; set; }
+        public long InvoiceId { get; set; }
     }
 }

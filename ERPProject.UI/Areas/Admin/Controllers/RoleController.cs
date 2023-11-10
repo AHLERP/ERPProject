@@ -36,7 +36,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(RoleDTORequest p)
         {
             var val = await AddAsync(p, url + "AddRole");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Role");
 

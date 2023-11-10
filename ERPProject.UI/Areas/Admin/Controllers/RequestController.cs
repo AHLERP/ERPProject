@@ -61,7 +61,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> AddRequest(RequestDTORequest p)
         {
             var val = await AddAsync(p, url + "AddRequest");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 

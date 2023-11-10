@@ -15,6 +15,6 @@ namespace ERPProject.Entity.Poco
         public short QuantityUnit { get; set; }
         public string ProductName { get; set; }
         public Invoice Invoice { get; set; }
-        public int InvoiceId { get; set; }
+        public long InvoiceId { get; set; }
     }
 }
