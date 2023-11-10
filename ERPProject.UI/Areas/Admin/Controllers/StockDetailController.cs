@@ -1,5 +1,6 @@
 ﻿using ERPProject.Entity.DTO.StockDetailDTO;
 using ERPProject.Entity.DTO.StockDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +43,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokDetayEkle")]
         public async Task<IActionResult> Add(StockDetailDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.DelivererId = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            var deliuser= await GetAsync<UserDTOResponse>(url + "GetUser/" + p.DelivererId);
+            p.DelivererName = deliuser.Data.Name+ " " +deliuser.Data.LastName;
+            var reciuser= await GetAsync<UserDTOResponse>(url + "GetUser/" + p.RecieverId);
+            p.RecieverName = reciuser.Data.Name+ " " +reciuser.Data.LastName;
+
+
             var val = await AddAsync(p, url + "AddStockDetail");
             if (val.Data != null)
             {
@@ -55,6 +65,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokDetayGuncelle")]
         public async Task<IActionResult> Update(StockDetailDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateStockDetail");
             if (val)
             {

@@ -8,5 +8,8 @@ namespace ERPProject.Entity.DTO.ProductDTO
 {
     public class ProductDTORequest:ProductDTOBase
     {
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }

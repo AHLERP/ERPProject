@@ -28,28 +28,28 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             request.AddBody(body, "application/json");
             RestResponse response = await client.ExecuteAsync(request);
             var responseObject = JsonConvert.DeserializeObject<ApiResponse<LoginDTO>>(response.Content);
-            if(responseObject.StatusCode==200) { 
-            HttpContext.Session.SetString("Token", responseObject.Data.Token);
-            HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
-            HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
-            HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
-            HttpContext.Session.SetString("DepartmentName", responseObject.Data.DepartmentName);
-            HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
-
-
+            if (responseObject.StatusCode == 200)
+            {
+                HttpContext.Session.SetString("Token", responseObject.Data.Token);
+                HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
+                HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
+                HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
+                HttpContext.Session.SetString("UserName", responseObject.Data.AdSoyad.ToString());
+                HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
+             
 
             }
             else
             {
                 TempData["HATA"] = "Hatalı Giriş Yaptınız";
-                return RedirectToAction("","");
+                return RedirectToAction("", "");
             }
             HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
 
 
             if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
             {
-                return RedirectToAction("Index","Company");
+                return RedirectToAction("Index", "Company");
             }
             else if (response.IsSuccessStatusCode && HttpContext.Session.GetString("Role") != "Admin")
             {
@@ -58,6 +58,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("/Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("", "");
         }
     }
 }

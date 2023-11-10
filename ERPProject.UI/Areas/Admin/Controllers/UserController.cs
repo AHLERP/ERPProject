@@ -54,9 +54,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             return View(userVM);
         }
         [HttpGet("/Admin/Kullanici")]
-        public async Task<IActionResult> Get(long id)
+        public async Task<IActionResult> Profile()
         {
-            var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
+            var userId = Convert.ToInt64(HttpContext.Session.GetString("User"));  
+            var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + userId);
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -65,11 +66,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
+            return View(val.Data);
         }
         [HttpPost("/Admin/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddUser");
             if (val.Data != null)
             {
@@ -82,6 +85,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateUser");
             if (val)
             {
