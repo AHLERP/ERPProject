@@ -22,5 +22,4 @@ public partial class Offer : BaseEntity
     public long RequestId { get; set; }//gelecek
     public virtual Request Request { get; set; } = null!;
 
-    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }

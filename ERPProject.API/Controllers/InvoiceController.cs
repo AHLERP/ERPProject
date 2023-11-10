@@ -30,11 +30,11 @@ namespace ERPProject.API.Controllers
             Invoice invoice = _mapper.Map<Invoice>(invoiceDTORequest);
             await _invoiceService.AddAsync(invoice);
 
-            InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
+            //InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
 
-            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Eklendi. }", invoiceDTOResponse);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Eklendi. }", invoice);
 
-            return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
+            return Ok(Sonuc<Invoice>.SuccessWithData(invoice));
         }
         [HttpDelete("/RemoveInvoice/{invoiceId}")]
         public async Task<IActionResult> RemoveInvoice(int invoiceId)
@@ -63,11 +63,11 @@ namespace ERPProject.API.Controllers
             invoice = _mapper.Map(invoiceDTORequest, invoice);
             await _invoiceService.UpdateAsync(invoice);
 
-            InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
+            //InvoiceDTOResponse invoiceDTOResponse = _mapper.Map<InvoiceDTOResponse>(invoice);
 
-            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Güncellendi. }", invoiceDTOResponse);
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Fatura Güncellendi. }", invoice);
 
-            return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
+            return Ok(Sonuc<Invoice>.SuccessWithData(invoice));
         }
 
         [HttpGet("/GetInvoice/{invoiceId}")]
@@ -89,7 +89,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetInvoices")]
         public async Task<IActionResult> GetInvoices()
         {
-            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true, "Offer", "Company", "Product");
+            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true);
             if (invoices == null)
             {
                 return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
@@ -106,62 +106,66 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
 
-        [HttpGet("/GetInvoicesByOffer/{offerId}")]
-        public async Task<IActionResult> GetInvoicesByOffer(int offerId)
-        {
-            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.OfferId == offerId, "Offer", "Company","Product");
-            if (invoices == null)
-            {
-                return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
-            }
+        //[HttpGet("/GetInvoicesByOffer/{offerId}")]
+        //public async Task<IActionResult> GetInvoicesByOffer(int offerId)
+        //{
+        //    var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.OfferId == offerId, "Offer", "Company","Product");
+        //    if (invoices == null)
+        //    {
+        //        return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
+        //    }
 
-            List<InvoiceDTOResponse> invoiceDTOResponseList = new();
-            foreach (var invoice in invoices)
-            {
-                invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
-            }
+        //    List<InvoiceDTOResponse> invoiceDTOResponseList = new();
+        //    foreach (var invoice in invoices)
+        //    {
+        //        invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
+        //    }
 
-            Log.Information("Invoices => {@invoiceDTOResponse} => { Teklife Göre Faturalar Getirildi. }", invoiceDTOResponseList);
+        //    Log.Information("Invoices => {@invoiceDTOResponse} => { Teklife Göre Faturalar Getirildi. }", invoiceDTOResponseList);
 
-            return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
-        }
-        [HttpGet("/GetInvoicesByCompany/{companyId}")]
-        public async Task<IActionResult> GetInvoicesByCompany(int companyId)
-        {
-            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.CompanyId == companyId, "Offer", "Company", "Product");
-            if (invoices == null)
-            {
-                return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
-            }
+        //    return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
+        //}
+        //[HttpGet("/GetInvoicesByCompany/{userId}")]
+        //public async Task<IActionResult> GetInvoicesByCompany(int userId)
+        //{
+        //    User user = await _userService.GetAsync(x=>x.Id == userId);
+        //    Department department = await _departmentService.GetAsync(x=>x.Id == user.DepartmentId);
+        //    Company company = await _companyService.GetAsync(x=>x.Id == department.CompanyId);
 
-            List<InvoiceDTOResponse> invoiceDTOResponseList = new();
-            foreach (var invoice in invoices)
-            {
-                invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
-            }
+        //    var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.CompanyId == company.Id, "Offer", "Company", "Product");
+        //    if (invoices == null)
+        //    {
+        //        return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
+        //    }
 
-            Log.Information("Invoices => {@invoiceDTOResponse} => { Şirkete Göre Faturalar Getirildi. }", invoiceDTOResponseList);
+        //    List<InvoiceDTOResponse> invoiceDTOResponseList = new();
+        //    foreach (var invoice in invoices)
+        //    {
+        //        invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
+        //    }
 
-            return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
-        }
-        [HttpGet("/GetInvoicesByProduct/{productId}")]
-        public async Task<IActionResult> GetInvoicesByProduct(int productId)
-        {
-            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.ProductId == productId, "Offer", "Company", "Product");
-            if (invoices == null)
-            {
-                return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
-            }
+        //    Log.Information("Invoices => {@invoiceDTOResponse} => { Şirkete Göre Faturalar Getirildi. }", invoiceDTOResponseList);
 
-            List<InvoiceDTOResponse> invoiceDTOResponseList = new();
-            foreach (var invoice in invoices)
-            {
-                invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
-            }
+        //    return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
+        //}
+        //[HttpGet("/GetInvoicesByProduct/{productId}")]
+        //public async Task<IActionResult> GetInvoicesByProduct(int productId)
+        //{
+        //    var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.ProductId == productId, "Offer", "Company", "Product");
+        //    if (invoices == null)
+        //    {
+        //        return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
+        //    }
 
-            Log.Information("Invoices => {@invoiceDTOResponse} => { Ürüne Göre Faturalar Getirildi. }", invoiceDTOResponseList);
+        //    List<InvoiceDTOResponse> invoiceDTOResponseList = new();
+        //    foreach (var invoice in invoices)
+        //    {
+        //        invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
+        //    }
 
-            return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
-        }
+        //    Log.Information("Invoices => {@invoiceDTOResponse} => { Ürüne Göre Faturalar Getirildi. }", invoiceDTOResponseList);
+
+        //    return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
+        //}
     }
 }

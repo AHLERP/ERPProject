@@ -12,7 +12,5 @@ public partial class Company : BaseEntity
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
-    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
-
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }
