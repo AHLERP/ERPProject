@@ -1,4 +1,4 @@
-﻿@using ERPProject.UI.Areas.Admin.Models;
+﻿@using ERPProject.UI.Areas.Admin.Models
 @model OfferVM
 @inject IHttpContextAccessor Accessor
 
@@ -8,6 +8,7 @@
     ViewData["buttonismi"] = "Ara";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+ 
 <div class="container col col-md-9 py-3">
     <div id="example_filter" class="dataTables_filter">
         <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
@@ -125,27 +126,6 @@
                         <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="Miktar..." id="inputMiktar2" name="Quantity" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <select readonly="readonly" class="form-control" id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
-                            @if (Accessor.HttpContext.Session.GetString("Role") == "Personel")
-                            {
-                                <option value="0">Kabul Edildi</option>
-                                <option value="1">Onay Bekliyor</option>
-                                <option value="2">Satın Alındı</option>
-
-                                <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
-
-                            }
-                            else
-                            {
-                                <option value="1">Onaylandı</option>
-                                <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
-                            }
-
-
-                        </select>
-                    </div>
-                    <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
                         <textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
@@ -200,34 +180,36 @@
                                                     İşlemler
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    @{
+                                                        string rol = Accessor.HttpContext.Session.GetString("Role");
+                                                        if (rol == "Personel")
+                                                        {
 
-                                                    <li>
-                                                        <form action="/Admin/TeklifGuncelle" method="post">
-                                                            <input type="hidden" name="Id" value="@item.Id" />
-                                                            <input type="hidden" name="UserId" value="@Accessor.HttpContext.Session.GetString("User")" />
-                                                            <input type="hidden" name="RequestId" value="@item.RequestId" />
-                                                            <input type="hidden" name="PriceStatus" value="@item.PriceStatus" />
-                                                            <input type="hidden" name="Status" value="2" />
-                                                            <input type="hidden" name="Price" value="@item.Price" />
-                                                            <input type="hidden" name="SupplierName" value="@item.SupplierName" />
-                                                            <input type="hidden" name="Description" value="@item.Description" />
-                                                            <button class="dropdown-item" type="submit">Onayla</button>
-                                                        </form>
 
-                                                    </li>
-                                                    <li>
-                                                        <form action="/Admin/TeklifGuncelle" method="post">
-                                                            <input type="hidden" name="Id" value="@item.Id" />
-                                                            <input type="hidden" name="UserId" value="@Accessor.HttpContext.Session.GetString("User")" />
-                                                            <input type="hidden" name="RequestId" value="@item.RequestId" />
-                                                            <input type="hidden" name="PriceStatus" value="@item.PriceStatus" />
-                                                            <input type="hidden" name="Status" value="3" />
-                                                            <input type="hidden" name="Price" value="@item.Price" />
-                                                            <input type="hidden" name="SupplierName" value="@item.SupplierName" />
-                                                            <input type="hidden" name="Description" value="@item.Description" />
-                                                            <button class="dropdown-item" type="submit">Reddet</button>
-                                                        </form>
-                                                    </li>
+                                                                    <option value="0">Kabul1123 Edildi</option>
+                                                                    <option value="1">Onay Bekliyor</option>
+                                                                    <option value="2">Satın Alındı</option>
+
+                                                                    <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
+                                                                
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                                                                <select readonly="readonly" class="form-control" id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
+
+
+                                                                    <option value="0">Kabuasdfgsdafl Edildi</option>
+                                                                    <option value="1">Onaasdfgsday Bekliyor</option>
+                                                                    <option value="2">Satın gfasdfgasAlındı</option>
+
+                                                                    <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
+                                                                </select>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </ul>
                                             </div>
                                         </td>

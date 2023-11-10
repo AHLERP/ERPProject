@@ -102,7 +102,8 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userService.GetAllAsync(x=>x.IsActive==true,"Department","Role");
+            
+            var users = await _userService.GetAllAsync(x=>x.IsActive==true,"Department.Company","Role");
             
             if (users == null)
             {
@@ -127,7 +128,7 @@ namespace ERPProject.API.Controllers
             User user = await _userService.GetAsync(x=>x.Id == userId);
             Department department = await _departmentService.GetAsync(x=>x.Id == user.DepartmentId);
 
-            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId==department.Id, "Department", "Role");
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId==department.Id, "Department.Company", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -150,7 +151,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetUsersByRole/{roleId}")]
         public async Task<IActionResult> GetUsersByRole(int roleId)
         {
-            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId == roleId, "Department", "Role");
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId == roleId, "Department.Company", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -174,7 +175,7 @@ namespace ERPProject.API.Controllers
             Company company = await _companyService.GetAsync(x=>x.Id == department.CompanyId);
             
 
-            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.Department.CompanyId == company.Id, "Department", "Role");
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.Department.CompanyId == company.Id, "Department.Company", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -198,6 +199,7 @@ namespace ERPProject.API.Controllers
         }
 
 
-
     }
+
+
 }
