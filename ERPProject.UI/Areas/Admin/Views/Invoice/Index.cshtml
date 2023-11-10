@@ -1,0 +1,92 @@
+﻿@using ERPProject.Entity.DTO.InvoiceDTO;
+@using ERPProject.Entity.Result;
+@model ApiResponse<List<InvoiceDTOResponse>>
+@inject IHttpContextAccessor Accessor
+@{
+    ViewData["Title"] = "Faturalar";
+    ViewData["baslik"] = "Faturalar";
+    ViewData["buttonismi"] = "Fatura Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container col col-md-9 py-3">
+    <div id="example_filter" class="dataTables_filter">
+        <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+    </div>
+    
+    
+    <table id="example" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th scope="col">Satıcı Adı</th>
+                <th scope="col">Şirket Adı</th>
+                <th scope="col">Fatura Tarihi</th>
+                <th scope="col">Ürün Adı</th>
+                <th scope="col">Miktar</th>
+                <th scope="col">Fiyat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Data == null)
+            {
+                <tr>
+                    <td></td>
+                </tr>
+            }
+            else
+            {
+
+                @foreach (var item in Model.Data)
+                {
+
+                    <tr>
+                        <td>@item.SupplierName</td>
+                        <td>@item.CompanyName</td>
+                        <td>@item.InvoiceDate.ToShortDateString()</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity @item.QuantityUnit</td>
+                        <td>@item.Price</td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Fatura Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" action="/Admin/FaturaEkle" method="post">
+                    <input type="file" name="FileUpload" />
+                    <button type="submit" class="btn btn-outline-success">
+                        Ekle
+                    </button>
+
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    
+    $('#staticTeklifEkle').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        $("#inputRequestId").val(id);
+    });
+</script>
