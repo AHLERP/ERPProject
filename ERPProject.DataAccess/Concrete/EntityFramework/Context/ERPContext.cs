@@ -164,20 +164,20 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Company).WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.CompanyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Invoice_Company");
+                //entity.HasOne(d => d.Company).WithMany(p => p.Invoices)
+                //    .HasForeignKey(d => d.CompanyId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Invoice_Company");
 
-                entity.HasOne(d => d.Offer).WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.OfferId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Invoice_Offer");
+                //entity.HasOne(d => d.Offer).WithMany(p => p.Invoices)
+                //    .HasForeignKey(d => d.OfferId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Invoice_Offer");
 
-                entity.HasOne(d => d.Product).WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Invoice_Product");
+                //entity.HasOne(d => d.Product).WithMany(p => p.Invoices)
+                //    .HasForeignKey(d => d.ProductId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Invoice_Product");
             });
 
             modelBuilder.Entity<Offer>(entity =>
