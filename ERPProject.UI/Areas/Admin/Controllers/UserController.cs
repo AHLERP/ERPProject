@@ -20,8 +20,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var id = HttpContext.Session.GetString("User");
-            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-
+            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByCompany/"+id);
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            }
             if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
             {
                 val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByDepartment/" + id);
