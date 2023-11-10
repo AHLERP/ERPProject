@@ -20,7 +20,6 @@ public partial class Product : BaseEntity
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }

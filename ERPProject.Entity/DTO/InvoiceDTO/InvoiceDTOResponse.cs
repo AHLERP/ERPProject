@@ -8,8 +8,6 @@ namespace ERPProject.Entity.DTO.InvoiceDTO
 {
     public class InvoiceDTOResponse : InvoiceDTOBase
     {
-        public string SupplierName { get; set; }
-        public string CompanyName { get; set; }
-        public string ProductName { get; set; }
+
     }
 }

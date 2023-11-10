@@ -12,4 +12,6 @@ public partial class Invoice : BaseEntity
     public string SupplierName { get; set; }
     public string CompanyName { get; set; }
     public ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+
 }
+

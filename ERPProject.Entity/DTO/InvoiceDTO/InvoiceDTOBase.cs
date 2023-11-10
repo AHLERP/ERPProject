@@ -15,5 +15,6 @@ namespace ERPProject.Entity.DTO.InvoiceDTO
         public string SupplierName { get; set; }
         public string CompanyName { get; set; }
 
+
     }
 }

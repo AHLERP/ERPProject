@@ -1,28 +1,25 @@
-﻿using ERPProject.Entity.DTO.CompanyDTO;
+﻿using ClosedXML.Excel;
 using ERPProject.Entity.DTO.InvoiceDTO;
-using ERPProject.Entity.DTO.OfferDTO;
-using ERPProject.Entity.DTO.ProductDTO;
-using ERPProject.Entity.Poco;
-using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class InvoiceController : BaseController
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
         private readonly string url = "https://localhost:7075/";
-        public InvoiceController(HttpClient httpClient) : base(httpClient)
+        public InvoiceController(HttpClient httpClient, IWebHostEnvironment hostingEnvironment) : base(httpClient)
         {
+            _hostingEnvironment = hostingEnvironment;
 
         }
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
-            var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-            var val3 = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            var val4 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -31,16 +28,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            InvoiceVM invoiceVM = new InvoiceVM()
 
-            {
-                Invoices = val.Data,
-                Products = val2.Data,
-                Offers = val3.Data,
-                Companies = val4.Data,
-
-            };
-            return View(invoiceVM);
+            return View(val);
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)
@@ -63,8 +52,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     // excel dosyamızı streamden okuyoruz
                     using (var workbook = new XLWorkbook(ms))
                     {
-                        var worksheet = workbook.Worksheet(1); // sayfa 1
-
+                        var worksheet = workbook.Worksheet(1); // sayfa 
                         // sayfada kaç sütun kullanılmış onu buluyoruz ve sütunları DataTable'a ekliyoruz, ilk satırda sütun başlıklarımız var
                         int i, n = worksheet.Columns().Count();
                         for (i = 1; i <= n; i++)
@@ -120,11 +108,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                         //    return RedirectToAction("Index", "Invoice");
 
                         //}
-                        return RedirectToAction("Index", "Invoice");
-
-            }
-            return RedirectToAction("Index", "Home");
-
+                        return RedirectToAction("Index", "Invoice");                     
         }
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
