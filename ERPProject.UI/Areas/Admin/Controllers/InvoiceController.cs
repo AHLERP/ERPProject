@@ -33,8 +33,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             InvoiceVM invoiceVM = new InvoiceVM()
             {
-                Invoices=val.Data,
-                InvoiceDetail=val2.Data
+                Invoices = val.Data,
+                InvoiceDetail = val2.Data
             };
             return View(invoiceVM);
         }
@@ -84,8 +84,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                             dt.Rows.Add(dr);
                         }
                         InvoiceDTORequest dTORequest = null;
-                        long id=0;
-                        for (i = 0; i < n-1; i++)
+                        long id = 0;
+                        for (i = 0; i < n - 1; i++)
                         {
                             DataRow row = dt.Rows[i];
                             dTORequest = new InvoiceDTORequest
@@ -99,7 +99,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 >>>>>>> Stashed changes
                                 InvoiceDate = Convert.ToDateTime(row["Tarih"])
                             };
-                            
+
                         }
                         var val = await AddAsync(dTORequest, url + "AddInvoice");
                         id = val.Data.Id;
@@ -140,13 +140,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     }
 
 
-=======
                     }
->>>>>>> Stashed changes
                 }
             }
             return RedirectToAction("Index", "Invoice");
-
         }
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
@@ -174,3 +171,4 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         }
     }
 }
+
