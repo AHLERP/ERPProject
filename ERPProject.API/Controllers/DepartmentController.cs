@@ -18,7 +18,7 @@ namespace ERPProject.API.Controllers
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IMapper mapper, IDepartmentService departmentService)
+        public DepartmentController(IMapper mapper, IDepartmentService departmentService, IUserService userService, ICompanyService companyService)
         {
             _mapper = mapper;
             _departmentService = departmentService;

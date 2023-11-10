@@ -18,27 +18,46 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Teklifler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
-            if (val.StatusCode == 401)
+            var id = HttpContext.Session.GetString("User");
+            if (HttpContext.Session.GetString("DepartmentName")=="Satın Alma")
             {
-                return RedirectToAction("Unauthorized", "Home");
+                var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+                var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
+                var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+                OfferVM offerVM = null;
+                if (val == null)
+                {
+                    offerVM = new OfferVM()
+
+                    {
+                        Offers = null,
+                        Users = val2.Data,
+                        Requests = val3.Data,
+
+                    };
+                    return View(offerVM);
+                }
+
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                offerVM = new OfferVM()
+
+                {
+                    Offers = val.Data,
+                    Users = val2.Data,
+                    Requests = val3.Data,
+
+                };
+                return View(offerVM);
             }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            OfferVM offerVM = new OfferVM()
-
-            {
-
-                Offers = val.Data,
-                Users = val2.Data,
-                Requests = val3.Data,
-
-            };
-            return View(offerVM);
+            return RedirectToAction("Index", "Home");
+            
         }
         [HttpGet("/Admin/Teklif")]
         public async Task<IActionResult> Get(long id)
@@ -49,6 +68,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
+            p.UserId = 1;
             var val = await AddAsync(p, url + "AddOffer");
             if (val)
             {

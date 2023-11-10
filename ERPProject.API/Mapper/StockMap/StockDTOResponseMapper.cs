@@ -8,8 +8,17 @@ namespace ERPProject.API.Mapper.StockMap
     {
         public StockDTOResponseMapper()
         {
-            CreateMap<Stock,StockDTOResponse>();
-            CreateMap<StockDTOResponse, Stock>();
+            CreateMap<Stock, StockDTOResponse>().
+                ForMember(dest => dest.CompanyName, opt =>
+                {
+                    opt.MapFrom(src => src.Company.Name);
+                }).
+                ForMember(dest => dest.ProductName, opt =>
+                {
+                    opt.MapFrom(src => src.Product.Name);
+                })
+                .ReverseMap();
+            
         }
     }
 }
