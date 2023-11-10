@@ -52,8 +52,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     // excel dosyamızı streamden okuyoruz
                     using (var workbook = new XLWorkbook(ms))
                     {
-                        var worksheet = workbook.Worksheet(1); // sayfa 1
-
+                        var worksheet = workbook.Worksheet(1); // sayfa 
                         // sayfada kaç sütun kullanılmış onu buluyoruz ve sütunları DataTable'a ekliyoruz, ilk satırda sütun başlıklarımız var
                         int i, n = worksheet.Columns().Count();
                         for (i = 1; i <= n; i++)
@@ -85,7 +84,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                             {
                                 SupplierName = row["Tedarikci"].ToString(),
                                 CompanyName = row["Şirket"].ToString(),
-                                Price = Convert.ToInt32(row["ToplamFiyat"]),
+                                TotalPrice = Convert.ToInt32(row["ToplamFiyat"]),
                                 InvoiceDate = Convert.ToDateTime(row["Tarih"])
                             };
                             var val = await AddAsync(dTORequest, url + "AddInvoice");
@@ -98,10 +97,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                             {
                                 SupplierName = row["Tedarikci"].ToString(),
                                 CompanyName = row["Şirket"].ToString(),
-                                ProductName = row["Ürün"].ToString(),
-                                Price = Convert.ToInt32(row["Fiyat"]),
-                                Quantity = Convert.ToInt32(row["Miktar"]),
-                                QuantityUnit = Convert.ToInt16(row["Birim"]),
+                                TotalPrice = Convert.ToInt32(row["Fiyat"]), 
                                 InvoiceDate = Convert.ToDateTime(row["Tarih"])
                             };
                             var val = await AddAsync(dTORequest, url + "AddInvoice");
@@ -112,15 +108,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                         //    return RedirectToAction("Index", "Invoice");
 
                         //}
-                        return RedirectToAction("Index", "Invoice");
-
-                    }
-
-
-                }
-            }
-            return RedirectToAction("Index", "Invoice");
-
+                        return RedirectToAction("Index", "Invoice");                     
         }
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
