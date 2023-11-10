@@ -111,7 +111,6 @@ namespace ERPProject.API.Controllers
             {
                 return NotFound(Sonuc<InvoiceDetailDTOResponse>.SuccessNoDataFound());
             }
-
             List<InvoiceDetailDTOResponse> invoiceDetailDTOResponseList = new();
             foreach (var item in invoiceDetails)
             {
