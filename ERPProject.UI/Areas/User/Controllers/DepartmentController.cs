@@ -38,7 +38,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Add(DepartmentDTORequest p)
         {
             var val = await AddAsync(p, url + "AddDepartment");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Sirketler", "User");
 

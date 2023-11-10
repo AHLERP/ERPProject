@@ -52,7 +52,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddProduct");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Product");
 

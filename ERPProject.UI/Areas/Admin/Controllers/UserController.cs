@@ -19,8 +19,22 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
+            var id = HttpContext.Session.GetString("User");
+            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByCompany/"+id);
+            if (HttpContext.Session.GetString("Role") == "Admin")
+            {
+                val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            }
+            if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
+            {
+                val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByDepartment/" + id);
 
-            var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+            }
+            else if (HttpContext.Session.GetString("Role") == "Şirket Müdürü")
+            {
+                val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByCompany/" + id);
+
+            }
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
             var val4 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
@@ -60,7 +74,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddUser");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "User");
 

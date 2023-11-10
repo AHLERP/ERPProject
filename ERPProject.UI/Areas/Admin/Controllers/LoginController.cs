@@ -36,7 +36,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
                 HttpContext.Session.SetString("UserName", responseObject.Data.AdSoyad.ToString());
                 HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
-                
+             
 
             }
             else
@@ -46,6 +46,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
 
+
             if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
             {
                 return RedirectToAction("Index", "Company");
@@ -53,7 +54,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             else if (response.IsSuccessStatusCode && HttpContext.Session.GetString("Role") != "Admin")
             {
                 return RedirectToAction("Sirketler", "Kullanici");
-
             }
 
 

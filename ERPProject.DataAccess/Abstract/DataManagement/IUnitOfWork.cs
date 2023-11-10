@@ -20,6 +20,7 @@ namespace ERPProject.DataAccess.Abstract.DataManagement
         IStockRepository StockRepository { get; }
         IStockDetailRepository StockDetailRepository { get; }
         IUserRepository UserRepository { get; }
+        IInvoiceDetailRepository InvoiceDetailRepository { get; }
         Task<int> SaveChangeAsync();
     }
 }

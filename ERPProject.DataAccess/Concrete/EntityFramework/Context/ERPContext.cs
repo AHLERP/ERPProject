@@ -29,6 +29,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
         public virtual DbSet<Department> Departments { get; set; }
 
         public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
         public virtual DbSet<Offer> Offers { get; set; }
 
@@ -46,13 +47,9 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
         => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\BILAL; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Ege
-
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Brand>(entity =>
@@ -164,20 +161,30 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Company).WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.CompanyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Invoice_Company");
+                entity.HasMany(x => x.InvoiceDetails).WithOne(x => x.Invoice)
+                .HasForeignKey(x => x.InvoiceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_InvoiceDetail_Invoice");
+            });
 
-                entity.HasOne(d => d.Offer).WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.OfferId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Invoice_Offer");
+            modelBuilder.Entity<InvoiceDetail>(entity =>
+            {
+                entity.ToTable("InvoiceDetail");
 
-                entity.HasOne(d => d.Product).WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Invoice_Product");
+                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.AddedIPV4Address)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("AddedIP4VAdress");
+                entity.Property(e => e.AddedTime).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedIPV4Address)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("UpdatedIP4VAdress");
+                entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+
             });
 
             modelBuilder.Entity<Offer>(entity =>
@@ -263,7 +270,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("AddedIP4VAdress");
                 entity.Property(e => e.AddedTime).HasColumnType("datetime");
                 entity.Property(e => e.Description).HasMaxLength(511);
-                entity.Property(e=>e.AcceptedId).HasDefaultValue(0);
+                entity.Property(e => e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.Title).HasMaxLength(50);
                 entity.Property(e => e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.UpdatedIPV4Address)
@@ -280,7 +287,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
             });
 
-            
+
 
             modelBuilder.Entity<Role>(entity =>
             {
