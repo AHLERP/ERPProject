@@ -1,4 +1,8 @@
-﻿using ERPProject.Entity.DTO.StockDTO;
+﻿using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.StockDetailDTO;
+using ERPProject.Entity.DTO.StockDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 
 namespace ERPProject.UI.Areas.User.Models

@@ -5,7 +5,7 @@ namespace ERPProject.UI.Areas.User.Models
 {
     public class CategoryVM
     {
-        public virtual ICollection<CategoryDTOResponse> Companies { get; set; } = new List<CategoryDTOResponse>();
+        public virtual ICollection<CategoryDTOResponse> Categories { get; set; } = new List<CategoryDTOResponse>();
 
     }
 }

@@ -84,7 +84,7 @@ namespace ERPProject.API.Controllers
                     DepartmentId =user.DepartmentId
                 };
 
-                Log.Information("LoginResponse => {@loginResponseDTO}", loginResponseDTO);
+                Log.Information("LoginResponse => {@loginResponseDTO} => { Giriş Yapıldı. }", loginResponseDTO);
                 return Ok(Sonuc<LoginResponseDTO>.SuccessWithData(loginResponseDTO));
             }
 

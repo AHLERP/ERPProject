@@ -45,8 +45,6 @@ namespace ERPProject.API.Controllers
             {
                 return NotFound("Stokta Yeterli Ürün Yok!!");
             }
-            
-            
         }
 
 
@@ -62,7 +60,7 @@ namespace ERPProject.API.Controllers
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
 
-            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+            Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stok Detayı Silindi. }", stockDetailDTOResponse);
 
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
@@ -81,7 +79,7 @@ namespace ERPProject.API.Controllers
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
 
-            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+            Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stok Detayı Güncellendi. }", stockDetailDTOResponse);
 
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
@@ -97,7 +95,7 @@ namespace ERPProject.API.Controllers
 
             StockDetailDTOResponse stockDetailDTOResponse = _mapper.Map<StockDetailDTOResponse>(stockDetail);
 
-            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponse);
+            Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stok Detayı Getirildi. }", stockDetailDTOResponse);
 
             return Ok(Sonuc<StockDetailDTOResponse>.SuccessWithData(stockDetailDTOResponse));
         }
@@ -117,7 +115,7 @@ namespace ERPProject.API.Controllers
                 stockDetailDTOResponseList.Add(_mapper.Map<StockDetailDTOResponse>(stockdetail));
             }
 
-            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponseList);
+            Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stok Detayları Getirildi. }", stockDetailDTOResponseList);
 
             return Ok(Sonuc<List<StockDetailDTOResponse>>.SuccessWithData(stockDetailDTOResponseList));
         }
@@ -137,7 +135,7 @@ namespace ERPProject.API.Controllers
                 stockDetailDTOResponseList.Add(_mapper.Map<StockDetailDTOResponse>(stockdetail));
             }
 
-            Log.Information("StockDetails => {@stockDetailDTOResponse}", stockDetailDTOResponseList);
+            Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stoğa Göre Stok Detayları Getirildi. }", stockDetailDTOResponseList);
 
             return Ok(stockDetailDTOResponseList);
         }

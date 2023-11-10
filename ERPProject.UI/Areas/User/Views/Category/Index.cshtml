@@ -1,0 +1,110 @@
+﻿@using ERPProject.Entity.DTO.CategoryDTO;
+@using ERPProject.Entity.Result;
+@model ApiResponse<List<CategoryDTOResponse>>
+
+@{
+    ViewData["Title"] = "Kategoriler";
+    ViewData["baslik"] = "Kategoriler";
+    ViewData["buttonismi"] = "Kategori Ekle";
+    Layout = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
+}
+<br></br>
+<div class="container col col-md-9 py-3">
+    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+    <table class="table table-bordered border-dark" id="example">
+        <thead>
+            <tr>
+                <th scope="col">Kategori Adı</th>
+                <th scope="col" style="width:100px ">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Data)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                İşlemler
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name-id="@item.Name">Düzenle</a></li>
+                                <li><hr class="dropdown-divider text-danger"></li>
+                                <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Kategori Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/User/KategoriEkle" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Kategori İsmi</span>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Kategori İsmi..." id="inputRolAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static1" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Kategori Düzenle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/User/KategoriGuncelle" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="hidden" class="form-control" id="inputKategoriId" name="Id" value="" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Kategori İsmi</span>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputKategoriAd" name="Name" aria-describedby="basic-addon1">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmRolDelete(id) {
+        var result = confirm("Bu kategoriyi silmek istediğinizden emin misiniz?");
+        if (result) {
+            window.location.href = 'KategoriSil/' + id;
+        }
+    }
+    $('#staticBackdrop1').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var CompanyId = button.data('id');
+        var KategoriAd = button.data('nameId');
+        $("#inputKategoriId").val(CompanyId);
+        $("#inputKategoriAd").val(KategoriAd);
+
+    });
+</script>
+

@@ -14,6 +14,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
+
         [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {

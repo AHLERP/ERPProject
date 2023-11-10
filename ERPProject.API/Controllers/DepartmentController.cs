@@ -21,7 +21,7 @@ namespace ERPProject.API.Controllers
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IMapper mapper, IDepartmentService departmentService)
+        public DepartmentController(IMapper mapper, IDepartmentService departmentService, IUserService userService, ICompanyService companyService)
         {
             _mapper = mapper;
             _departmentService = departmentService;
@@ -37,7 +37,7 @@ namespace ERPProject.API.Controllers
 
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
 
-            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponse);
+            Log.Information("Departments => {@departmentDTOResponse} => { Departman Eklendi. }", departmentDTOResponse);
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
@@ -55,7 +55,7 @@ namespace ERPProject.API.Controllers
             
             await _departmentService.RemoveAsync(department);
 
-            Log.Information("Departments => {@department}", department);
+            Log.Information("Departments => {@department} => { Departman Silindi. }", department);
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithoutData());
         }
@@ -76,7 +76,7 @@ namespace ERPProject.API.Controllers
 
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
 
-            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponse);
+            Log.Information("Departments => {@departmentDTOResponse} => { Departman Güncellendi. }", departmentDTOResponse);
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
@@ -93,7 +93,7 @@ namespace ERPProject.API.Controllers
             }
             DepartmentDTOResponse departmentDTOResponse = _mapper.Map<DepartmentDTOResponse>(department);
 
-            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponse);
+            Log.Information("Departments => {@departmentDTOResponse} => { Department Getirildi. }", departmentDTOResponse);
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
@@ -113,7 +113,7 @@ namespace ERPProject.API.Controllers
                 departmentDTOResponseList.Add(_mapper.Map<DepartmentDTOResponse>(department));
             }
 
-            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponseList);
+            Log.Information("Departments => {@departmentDTOResponse} => { Departmanlar Getirildi. }", departmentDTOResponseList);
 
             return Ok(Sonuc<List<DepartmentDTOResponse>>.SuccessWithData(departmentDTOResponseList));
         }
@@ -135,7 +135,7 @@ namespace ERPProject.API.Controllers
                 departmentDTOResponseList.Add(_mapper.Map<DepartmentDTOResponse>(department));
             }
 
-            Log.Information("Departments => {@departmentDTOResponse}", departmentDTOResponseList);
+            Log.Information("Departments => {@departmentDTOResponse} => { Şirketlere Göre Departmanlar Getirildi. }", departmentDTOResponseList);
 
             return Ok(departmentDTOResponseList);
         }

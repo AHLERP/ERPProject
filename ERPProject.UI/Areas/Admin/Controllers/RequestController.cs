@@ -17,7 +17,9 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
+            var id = HttpContext.Session.GetString("User");
+
+            var val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/"+id);
             var val1 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
             if (val.StatusCode == 401)
@@ -40,7 +42,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Talep")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<RequestDTOResponse>(url + "GetRequest/" + id);
+            var val = await GetAsync<RequestDTOResponse>(url + "Request/" + id);
             return View(val);
         }
         [HttpPost("/Admin/TalepEkle")]

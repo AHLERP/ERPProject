@@ -19,6 +19,6 @@ namespace ERPProject.Entity.DTO.OfferDTO
 
         public string PriceStatus { get; set; } = null!;
 
-        public string Status { get; set; } = null!;
+        public int Status { get; set; }
     }
 }

@@ -22,8 +22,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
             var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
             var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var val3 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
-            var val4 = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+            var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -35,22 +34,19 @@ namespace ERPProject.UI.Areas.User.Controllers
             OfferVM offerVM = new OfferVM()
 
             {
-
                 Offers = val.Data,
                 Users = val2.Data,
                 Requests = val3.Data,
-                Invoices = val4.Data,
-
             };
             return View(offerVM);
         }
-        [HttpGet("/User/Teklif")]
+        [HttpGet("/Kullanici/Teklif")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
             return View(val);
         }
-        [HttpPost("/User/TeklifEkle")]
+        [HttpPost("/Kullanici/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
         {
             var val = await AddAsync(p, url + "AddOffer");
@@ -62,7 +58,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/TeklifGuncelle")]
+        [HttpPost("/Kullanici/TeklifGuncelle")]
         public async Task<IActionResult> Update(OfferDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateOffer");
@@ -74,7 +70,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/TeklifSil")]
+        [HttpPost("/Kullanici/TeklifSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveOffer/" + id);
