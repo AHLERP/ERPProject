@@ -126,7 +126,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-//app.UseApiAuthorizationMiddleware();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

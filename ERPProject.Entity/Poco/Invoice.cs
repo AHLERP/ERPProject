@@ -7,12 +7,11 @@ namespace ERPProject.Entity.Poco;
 public partial class Invoice : BaseEntity
 {
     public DateTime InvoiceDate { get; set; }
-    public int Id { get; set; }
-    public decimal Quantity { get; set; }
-    public decimal Price { get; set; }
-    public short QuantityUnit { get; set; }
+    public long Id { get; set; }
+    public decimal TotalPrice { get; set; }
     public string SupplierName { get; set; }
-    public string ProductName { get; set; }
     public string CompanyName { get; set; }
+    public ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+
 }
 
