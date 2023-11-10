@@ -37,7 +37,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(CategoryDTORequest p)
         {
             var val = await AddAsync(p, url + "AddCategory");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Category");
 

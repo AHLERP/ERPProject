@@ -43,7 +43,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(StockDetailDTORequest p)
         {
             var val = await AddAsync(p, url + "AddStockDetail");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Stock");
 
