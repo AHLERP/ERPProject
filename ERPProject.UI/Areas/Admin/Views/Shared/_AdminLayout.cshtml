@@ -7,13 +7,17 @@
     <title>@ViewData["Title"] - ERP Project</title>
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/site.css?v=sddPGMKhbj9Qy_U3vejzGfNaVHnfi1187WI71TelVvo">
+    <link rel="stylesheet" type="text/css" href="~/Admin/Files/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/Files/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/Files/main.css">
+    <script src="~/Admin/Files/perfect-scrollbar.min.js"></script>
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body>
+<body style="background-color:#dce9fa">
     <header>
         <input id="token" type="hidden" value="@Accessor.HttpContext.Session.GetString("Token")">
-        <nav class="navbar navbar-expand-sm fixed-top navbar-toggleable-sm navbar-dark bg-dark opacity-75">
+        <nav class="navbar navbar-expand-sm fixed-top navbar-toggleable-sm" style="background-color:#0f6bae;">
             <div class="container-fluid">
                 <button class="btn text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
                     <i class="bi bi-list fs-3 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
@@ -39,10 +43,12 @@
 
     </header>
     <div class="offcanvas offcanvas-start w-25 bg-dark opacity-75" style="max-width:250px;" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
-        <div class="offcanvas-header">
+        <button type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+            <div class="offcanvas-header">
             <h6 class="offcanvas-title d-none d-sm-block text-light" id="offcanvas">Menu</h6>
-            <button type="button" class="btn-light text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <i class="bi bi-x-circle" style="font-size: 2rem; color: red;"></i>
         </div>
+        </button>
         <div class="offcanvas-body px-0">
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
 
@@ -104,21 +110,22 @@
                 </li>
             </ul>
         </div>
+        
     </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col min-vh-80 py-3">
                 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="bi bi-arrow-up fs-3 text-light"></i></button>
                 <div class="container">
-                    <br >
-                    <br />
+                    <br>
+                    <br/>
                     <br>
                     <div class="container mb-2" id="SearchBtn" style="width: 80%;">
-                        <div class="input-group input-group-lg">
-                            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <div class="input-group input-group-lg" style="border-style: solid;border-width: 1px; border-radius:5px;">
+                            <button type="button" class="btn" style=" background-color:#248bd6;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 @ViewData["buttonismi"]
                             </button>
-                            <input autocomplete="off" type="text" class="form-control" id="myInput" placeholder="Arama Yap...">
+                            <input autocomplete="off" type="text" class="form-control" style="" id="myInput" placeholder="Arama Yap...">
                             
                         </div>
                     </div>

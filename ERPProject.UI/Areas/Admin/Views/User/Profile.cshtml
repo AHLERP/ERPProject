@@ -11,7 +11,9 @@
 <script>
     document.getElementById('SearchBtn').style.display = 'none';
 </script>
-<section class="bg-light">
+<section class="bg-light" style="border-radius:15px;">
+    <br />
+    <br />
     <div class="container">
         <div class="row">
             <div class="col-lg-12 mb-4 mb-sm-5">
@@ -27,7 +29,7 @@
                                     <span class="text-dark">Pozisyon: @Model.RoleName</span>
                                 </div>
                                 <ul class="list-unstyled mb-1-9">
-                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Şirket:</span>Şirket Gelecek</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Şirket:</span>@Model.CompanyName</li>
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Departman:</span> @Model.DepartmentName</li>
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email:</span> @Model.Email</li>
                                     <li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> 0 @Model.Phone</li>
