@@ -19,40 +19,45 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var id = HttpContext.Session.GetString("User");
-            var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-            var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/"+id);
-            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-            OfferVM offerVM = null;
-            if (val == null)
+            if (HttpContext.Session.GetString("DepartmentName")=="Satın Alma")
             {
-                 offerVM = new OfferVM()
+                var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+                var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
+                var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+                OfferVM offerVM = null;
+                if (val == null)
+                {
+                    offerVM = new OfferVM()
+
+                    {
+                        Offers = null,
+                        Users = val2.Data,
+                        Requests = val3.Data,
+
+                    };
+                    return View(offerVM);
+                }
+
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                offerVM = new OfferVM()
 
                 {
-                    Offers = null,
+                    Offers = val.Data,
                     Users = val2.Data,
                     Requests = val3.Data,
 
                 };
                 return View(offerVM);
             }
-
-            if (val.StatusCode == 401)
-            {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            offerVM = new OfferVM()
-
-            {
-                Offers = val.Data,
-                Users = val2.Data,
-                Requests = val3.Data,
-
-            };
-            return View(offerVM);
+            return RedirectToAction("Index", "Home");
+            
         }
         [HttpGet("/Admin/Teklif")]
         public async Task<IActionResult> Get(long id)
@@ -66,7 +71,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddOffer");
-            if (val)
+            if (val.Data!=null)
             {
                 return RedirectToAction("Index", "Offer");
 

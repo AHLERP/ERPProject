@@ -30,6 +30,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/" + id);
 
             }
+
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             if (val.StatusCode == 401)
             {
@@ -64,7 +65,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddCompany");
 
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Company");
 

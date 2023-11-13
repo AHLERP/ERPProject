@@ -3,6 +3,7 @@ using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -18,8 +19,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var id = HttpContext.Session.GetString("User");
+            var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
 
-            var val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/"+id);
+            if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
+            {
+                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByDepartment/" + id);
+
+            }
+            else if (HttpContext.Session.GetString("Role") == "Şirket Müdürü")
+            {
+                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
+
+            }
+            
             var val1 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
             if (val.StatusCode == 401)
@@ -51,7 +63,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddRequest");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 

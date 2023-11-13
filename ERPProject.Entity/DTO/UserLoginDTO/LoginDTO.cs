@@ -17,5 +17,6 @@ namespace ERPProject.Entity.DTO.UserLoginDTO
         public long UserId { get; set; }
         public int CompanyId { get; set; }
         public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
     }
 }

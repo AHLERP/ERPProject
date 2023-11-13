@@ -52,7 +52,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Add(InvoiceDTORequest p)
         {
             var val = await AddAsync(p, url + "AddInvoice");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Invoice");
 

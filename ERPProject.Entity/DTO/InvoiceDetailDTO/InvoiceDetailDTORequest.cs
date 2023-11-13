@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPProject.Entity.DTO.InvoiceDTO
+namespace ERPProject.Entity.DTO.InvoiceDetailDTO
 {
-    public class InvoiceDTOResponse : InvoiceDTOBase
+    public class InvoiceDetailDTORequest:InvoiceDetailDTOBase
     {
-
     }
 }

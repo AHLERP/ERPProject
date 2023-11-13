@@ -96,6 +96,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetOffers")]
         public async Task<IActionResult> GetOffers()
         {
+
             var offers = await _offerService.GetAllAsync(x=>x.IsActive==true);
             if (offers == null)
             {

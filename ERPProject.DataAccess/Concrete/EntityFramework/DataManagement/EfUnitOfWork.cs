@@ -35,6 +35,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
             StockRepository = new EfStockRepository(_context);
             StockDetailRepository = new EfStockDetailRepository(_context);
             UserRepository = new EfUserRepository(_context);
+            InvoiceDetailRepository = new EfInvoiceDetailRepository(_context);
         }
 
         public IBrandRepository BrandRepository { get; }
@@ -60,6 +61,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
         public IStockDetailRepository StockDetailRepository { get; }
 
         public IUserRepository UserRepository { get; }
+        public IInvoiceDetailRepository InvoiceDetailRepository { get; }
 
         public Task<int> SaveChangeAsync()
         {
