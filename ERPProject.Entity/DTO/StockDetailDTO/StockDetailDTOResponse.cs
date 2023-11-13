@@ -9,9 +9,9 @@ namespace ERPProject.Entity.DTO.StockDetailDTO
     public class StockDetailDTOResponse:StockDetailDTOBase
     {
         public string StockName { get; set; }
+        public string ProductName { get; set; }
+        public DateTime? AddedTime { get; set; }
 
-        public string RecieverName { get; set; }
-
-        public string DelivererName { get; set; }
+        public DateTime? UpdatedTime { get; set; }
     }
 }

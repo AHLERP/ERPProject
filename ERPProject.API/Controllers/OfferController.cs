@@ -6,6 +6,7 @@ using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -15,7 +16,6 @@ namespace ERPProject.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;

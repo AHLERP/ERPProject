@@ -1,6 +1,6 @@
 ﻿@using ERPProject.UI.Areas.Admin.Models;
 @model RequestVM
-
+@inject IHttpContextAccessor Accessor
 @{
     ViewData["Title"] = "İstekler";
     ViewData["baslik"] = "İstekler";
@@ -24,7 +24,7 @@
                     <table id="example" class="table table-bordered border-dark">
                         <thead>
                             <tr>
-                                <th scope="col">Kullanıcı Adı</th>
+                                <th scope="col">Talep Eden</th>
                                 <th scope="col">Talep Adı</th>
                                 <th scope="col">Ürün</th>
                                 <th scope="col">Açıklama</th>
@@ -196,7 +196,7 @@
                     <table id="example" class="table table-bordered border-dark">
                         <thead>
                             <tr>
-                                <th scope="col">Kullanıcı Adı</th>
+                                <th scope="col">Telep Eden</th>
                                 <th scope="col">Onaylayan Kullanıcı</th>
                                 <th scope="col">Talep Adı</th>
                                 <th scope="col">Ürün</th>
@@ -220,7 +220,7 @@
                                     {
                                         <tr>
                                             <td>@item.UserName</td>
-                                            <td>@item.AcceptedId</td>
+                                            <td>@item.AcceptedName</td>
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
                                             @if (@item.RequestStatus == 0)
@@ -285,8 +285,8 @@
                     <table id="example" class="table table-bordered border-dark">
                         <thead>
                             <tr>
-                                <th scope="col">Kullanıcı Adı</th>
-                                <th scope="col">Onaylayan Kullanıcı</th>
+                                <th scope="col">Talep Eden</th>
+                                <th scope="col">Reddeden Kullanıcı</th>
                                 <th scope="col">Talep Adı</th>
                                 <th scope="col">Ürün</th>
                                 <th scope="col">Durum</th>
@@ -308,7 +308,7 @@
                                     {
                                         <tr>
                                             <td>@item.UserName</td>
-                                            <td>@item.AcceptedId</td>
+                                            <td>@item.AcceptedName</td>
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
                                             @if (@item.RequestStatus == 0)
@@ -373,7 +373,7 @@
                     <table id="example" class="table table-bordered border-dark">
                         <thead>
                             <tr>
-                                <th scope="col">Kullanıcı Adı</th>
+                                <th scope="col">Talep Eden</th>
                                 <th scope="col">Onaylayan Kullanıcı</th>
                                 <th scope="col">Talep Adı</th>
                                 <th scope="col">Ürün</th>
@@ -396,7 +396,7 @@
                                     {
                                         <tr>
                                             <td>@item.UserName</td>
-                                            <td>@item.AcceptedId</td>
+                                            <td>@item.AcceptedName</td>
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
                                             @if (@item.RequestStatus == 0)
@@ -458,9 +458,7 @@
             <form action="/Admin/TalepEkle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-
                         <input class="form-control" type="hidden" id="inputTalepAd" name="UserId" value="@Accessor.HttpContext.Session.GetString("User")" aria-describedby="basic-addon1" required>
-
                     </div>
 
                     <div class="input-group mb-3">
@@ -681,7 +679,6 @@
                 <div class="modal-body">
                     <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputIdonay" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
-
                         <input class="form-control" id="inputUserIdonay" hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId" aria-describedby="basic-addon1">
                     </div>
 
@@ -691,35 +688,32 @@
                         <input autocomplete="off" type="text" class="form-control" value="@Accessor.HttpContext.Session.GetString("User")" id="inputTalepAdo" name="AcceptedId" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <select class="form-control" disabled="disabled" id="inputProductonay" name="ProductId" aria-describedby="basic-addon1" required>
+                        <select class="form-control" hidden="hidden" id="inputProductonay" name="ProductId" aria-describedby="basic-addon1" required>
                             <option value="">Ürün Seçiniz...</option>
                             @foreach (var item in Model.Products)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </select>
-                        <select class="form-control" disabled="disabled" id="inputBirimonay" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                        <select class="form-control" hidden="hidden" id="inputBirimonay" name="QuantityUnit" aria-describedby="basic-addon1" required>
                             <option value="">Birim Seçiniz...</option>
-                            <option value="1,00">Metre</option>
-                            <option value="2,00">Kilometre</option>
-                            <option value="3,00">Mililitre</option>
-                            <option value="4,00">Litre</option>
-                            <option value="5,00">Kilogram</option>
-                            <option value="6,00">Ton</option>
-                            <option value="7,00">Adet</option>
-                            <option value="8,00">Koli</option>
-                            <option value="9,00">m²</option>
-                            <option value="10,00">m³</option>
+                            <option value="1">Metre</option>
+                            <option value="2">Kilometre</option>
+                            <option value="3">Mililitre</option>
+                            <option value="4">Litre</option>
+                            <option value="5">Kilogram</option>
+                            <option value="6">Ton</option>
+                            <option value="7">Adet</option>
+                            <option value="8">Koli</option>
+                            <option value="9">m²</option>
+                            <option value="10">m³</option>
                         </select>
 
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" disabled="disabled" type="text" class="form-control" placeholder="Miktar..." id="inputMiktaronay" name="Quantity" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" hidden="hidden" type="text" class="form-control" placeholder="Miktar..." id="inputMiktaronay" name="Quantity" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <select class="form-control" id="inputRequestStatusonay" name="RequestStatus" aria-describedby="basic-addon1" required>
                             <option value="0">Onay Bekliyor</option>
                             <option value="1">Onaylandı</option>
@@ -728,8 +722,7 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" disabled="disabled" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklamaonay" name="Description" aria-describedby="basic-addon1" required></textarea>
+                        <textarea autocomplete="off" hidden="hidden" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklamaonay" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 

@@ -11,14 +11,14 @@ public partial class StockDetail : BaseEntity
     public long StockId { get; set; }
 
     public int Quantity { get; set; }
+    public string RecieverName { get; set; }
+    public string DelivererName { get; set; }
 
     public long RecieverId { get; set; }
 
     public long DelivererId { get; set; }
 
-    public virtual User Deliverer { get; set; } = null!;
-
-    public virtual User Reciever { get; set; } = null!;
+    public User User { get; set; }
 
     public virtual Stock Stock { get; set; } = null!;
 }

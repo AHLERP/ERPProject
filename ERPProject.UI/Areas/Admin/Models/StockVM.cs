@@ -14,5 +14,7 @@ namespace ERPProject.UI.Areas.Admin.Models
         public virtual ICollection<StockDTOResponse> Stocks { get; set; } = new List<StockDTOResponse>();
         public virtual ICollection<ProductDTOResponse> Products { get; set; } = new List<ProductDTOResponse>();
         public virtual ICollection<CompanyDTOResponse> Companies { get; set; } = new List<CompanyDTOResponse>();
+        public virtual ICollection<StockDetailDTOResponse> StockDetails { get; set; } = new List<StockDetailDTOResponse>();
+        public virtual ICollection<UserDTOResponse> Users { get; set; } = new List<UserDTOResponse>();
     }
 }

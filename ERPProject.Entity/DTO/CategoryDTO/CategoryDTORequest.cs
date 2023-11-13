@@ -8,5 +8,8 @@ namespace ERPProject.Entity.DTO.CategoryDTO
 {
     public class CategoryDTORequest :CategoryDTOBase
     {
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }

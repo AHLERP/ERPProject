@@ -8,5 +8,8 @@ namespace ERPProject.Entity.DTO.StockDetailDTO
 {
     public class StockDetailDTORequest:StockDetailDTOBase
     {
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }

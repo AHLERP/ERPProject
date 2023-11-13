@@ -13,6 +13,7 @@ namespace ERPProject.Entity.DTO.RequestDTO
         public long UserId { get; set; }
 
         public long? AcceptedId { get; set; }
+        
         public int ProductId { get; set; }
 
         public string Title { get; set; } = null!;
