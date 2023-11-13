@@ -15,8 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
-
+    [Authorize]
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;

@@ -8,8 +8,5 @@ namespace ERPProject.Entity.DTO.OfferDTO
 {
     public class OfferDTORequest : OfferDTOBase
     {
-        public long? AddedUser { get; set; }
-
-        public long? UpdatedUser { get; set; }
     }
 }

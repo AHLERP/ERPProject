@@ -10,6 +10,7 @@ namespace ERPProject.Entity.DTO.OfferDTO
     {
         public long Id { get; set; }
         public long RequestId { get; set; }
+        public long UserId { get; set; }
 
         public string SupplierName { get; set; } = null!;
 
@@ -20,5 +21,8 @@ namespace ERPProject.Entity.DTO.OfferDTO
         public string PriceStatus { get; set; } = null!;
 
         public int Status { get; set; }
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }
