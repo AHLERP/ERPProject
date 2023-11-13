@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ERPProject.Entity.DTO.OfferDTO
 {
     public class OfferDTORequest : OfferDTOBase
-    { 
+    {
+        
     }
 }

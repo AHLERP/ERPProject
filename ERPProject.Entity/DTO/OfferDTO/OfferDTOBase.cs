@@ -21,5 +21,8 @@ namespace ERPProject.Entity.DTO.OfferDTO
         public string PriceStatus { get; set; } = null!;
 
         public int Status { get; set; }
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }
