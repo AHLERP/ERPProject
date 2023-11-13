@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
 
     public class InvoiceController : ControllerBase
     {

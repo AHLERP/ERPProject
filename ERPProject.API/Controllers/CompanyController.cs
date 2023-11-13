@@ -15,8 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-
-
+    [Authorize(Roles = "Admin,Şirket Müdürü")]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
