@@ -15,7 +15,8 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Şirket Müdürü")]
+
 
     public class CategoryController : ControllerBase
     {
