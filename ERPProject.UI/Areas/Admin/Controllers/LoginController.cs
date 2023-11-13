@@ -49,7 +49,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
             if (responseObject!=null)
             {
-                return RedirectToAction("Index", "Company");
+                return RedirectToAction("Index", "UserHome");
             }
             
 
