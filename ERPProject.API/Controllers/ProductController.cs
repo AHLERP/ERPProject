@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("[action]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
 
     public class ProductController : ControllerBase
     {

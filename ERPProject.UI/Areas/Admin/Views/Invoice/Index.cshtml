@@ -70,12 +70,10 @@
                     <table id="example" class="table table-bordered border-dark">
                         <thead>
                             <tr>
-                                <th scope="col">Kullanıcı Adı</th>
-                                <th scope="col">Onaylayan Kullanıcı</th>
-                                <th scope="col">Talep Adı</th>
-                                <th scope="col">Ürün</th>
-                                <th scope="col">Durum</th>
-                                <th scope="col" style="width:100px ">İşlemler</th>
+                                <th scope="col">Ürün Adı</th>
+                                <th scope="col">Miktar</th>
+                                <th scope="col">Birim</th>
+                                <th scope="col">Fiyat</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,21 +87,7 @@
                                         <td>@a.Quantity</td>
                                         <td>@a.QuantityUnit</td>
                                         <td>@a.Price</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    İşlemler
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li>
-                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                                           data-id1="@a.Id"
-                                                           data-title1="@a.ProductName"
-                                                           data-status1="@a.Id">Detay</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
+
                                     </tr>
                                 }}
 

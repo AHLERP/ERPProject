@@ -216,7 +216,7 @@
                                                             if (rol == "Departman Müdürü" && item.Price <= 500000)
                                                             {
                                                                 <li>
-                                                                    <form method="post" action="/Admin/TeklifGuncelle">
+                                                                    <form method="post" action="/Admin/TeklifTopluGuncelle">
                                                                         <input hidden="hidden" value="@item.Id" name="Id">
                                                                         <input hidden="hidden" value="@item.Price" name="Price">
                                                                         <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
@@ -235,7 +235,7 @@
                                                             {
 
                                                                 <li>
-                                                                    <form method="post" action="/Admin/TeklifGuncelle">
+                                                                    <form method="post" action="/Admin/TeklifTopluGuncelle">
                                                                         <input hidden="hidden" value="@item.Id" name="Id">
                                                                         <input hidden="hidden" value="@item.Price" name="Price">
                                                                         <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
@@ -262,6 +262,7 @@
                                                                         <button class="dropdown-item" type="submit">Reddet</button>
                                                                     </form>
                                                                 </li>
+                                                                
                                                             }
                                                         }
                                                     </ul>
