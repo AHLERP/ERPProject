@@ -8,6 +8,7 @@ namespace ERPProject.Entity.DTO.StockDTO
 {
     public class StockDTOResponse:StockDTOBase
     {
+
         public string CompanyName { get; set; }
         public string ProductName { get; set; }
     }

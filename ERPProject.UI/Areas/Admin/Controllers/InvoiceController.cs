@@ -47,6 +47,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/FaturaEkle")]
         public async Task<IActionResult> Add(IFormFile FileUpload)
         {
+
             if (FileUpload != null)
             {
                 System.Data.DataTable dt = new System.Data.DataTable();
@@ -120,6 +121,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                         //}
                         return RedirectToAction("Index", "Invoice");
 
+                    }
                 }
             }
             return RedirectToAction("Index", "Invoice");
@@ -127,6 +129,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateInvoice");
             if (val)
             {

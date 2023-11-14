@@ -1,5 +1,6 @@
 ﻿@using ERPProject.UI.Areas.Admin.Models;
 @model StockVM
+@inject IHttpContextAccessor Accessor
 @{
     ViewData["Title"] = "Stok";
     ViewData["baslik"] = "Stoklar";
@@ -10,7 +11,7 @@
 
 <div class="container col col-md-9 py-3">
     <h2 class="text-danger">@name1</h2>
-    
+
     <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
     <table class="table table-bordered border-dark" id="example">
         <thead>
@@ -31,63 +32,43 @@
                     <td>@item.Description</td>
                     @if (@item.QuantityUnit == 1)
                     {
-                        <td>
-                            @item.Quantity Metre
-                        </td>
+                        <td> @item.Quantity Metre</td>
                     }
                     else if (@item.QuantityUnit == 2)
                     {
-                        <td>
-                            @item.Quantity Kilometre
-                        </td>
+                        <td>@item.Quantity Kilometre</td>
                     }
                     else if (@item.QuantityUnit == 3)
                     {
-                        <td>
-                            @item.Quantity Mililitre
-                        </td>
+                        <td>@item.Quantity Mililitre</td>
                     }
                     else if (@item.QuantityUnit == 4)
                     {
-                        <td>
-                            @item.Quantity Litre
-                        </td>
+                        <td>@item.Quantity Litre</td>
                     }
                     else if (@item.QuantityUnit == 5)
                     {
-                        <td>
-                            @item.Quantity Kilogram
-                        </td>
+                        <td>@item.Quantity Kilogram</td>
                     }
                     else if (@item.QuantityUnit == 6)
                     {
-                        <td>
-                            @item.Quantity Ton
-                        </td>
+                        <td>@item.Quantity Ton</td>
                     }
                     else if (@item.QuantityUnit == 7)
                     {
-                        <td>
-                            @item.Quantity Adet
-                        </td>
+                        <td>@item.Quantity Adet</td>
                     }
                     else if (@item.QuantityUnit == 8)
                     {
-                        <td>
-                            @item.Quantity Koli
-                        </td>
+                        <td> @item.Quantity Koli</td>
                     }
                     else if (@item.QuantityUnit == 9)
                     {
-                        <td>
-                            @item.Quantity m²
-                        </td>
+                        <td>@item.Quantity m²</td>
                     }
                     else if (@item.QuantityUnit == 10)
                     {
-                        <td>
-                            @item.Quantity m³
-                        </td>
+                        <td>@item.Quantity m³</td>
                     }
                     <td>
                         <div class="dropdown">
@@ -106,8 +87,11 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                       data-stokid="@item.Id"
-                                       >Stok Ekle/Çıkar</a>
+                                       data-stokid="@item.Id">Stok Ekle/Çıkar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticDetay"
+                                       data-stokid1="@item.Id">Stok Detay</a>
                                 </li>
                                 <li><hr class="dropdown-divider text-danger"></li>
                                 <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
@@ -187,7 +171,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Stok Düzenle</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Stok Ürünü Düzenle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="/Admin/StokGuncelle" method="post">
@@ -246,29 +230,27 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Stok Düzenle</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Stok Ekle/Çıkar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="/Admin/StokDetayEkle" method="post">
                 <div class="modal-body">
-                    <input class="form-control" id="inputStokId" type="text" name="StockId" aria-describedby="basic-addon1" required>
+                    <input class="form-control" id="inputStokId" type="hidden" name="StockId" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <select class="form-control" id="inputTeslimatId" name="DelivererId" aria-describedby="basic-addon1" required>
-                            <option value="">Teslim Eden Kişiyi Seçiniz...</option>
-                            @foreach (var item in Model.Companies)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
+
+                            <option value="@Accessor.HttpContext.Session.GetString("User")">@Accessor.HttpContext.Session.GetString("UserName")</option>
+
                         </select>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <select class="form-control" id="inputAliciId" name="RecieverId" aria-describedby="basic-addon1" required>
                             <option value="">Teslim Alan Kişiyi Seçiniz...</option>
-                            @foreach (var item in Model.Companies)
+                            @foreach (var item in Model.Users)
                             {
-                                <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id">@item.Name @item.LastName</option>
                             }
                         </select>
                     </div>
@@ -282,6 +264,21 @@
                     <button type="submit" class="btn btn-primary">Kaydet</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticDetay" data-bs-backdrop="static1" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Stok Detay</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="stokidtable" type="hidden">
+                <div id="tabledetail">
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -311,6 +308,39 @@
         var button = $(event.relatedTarget);
         var Id = button.data('stokid');
         $("#inputStokId").val(Id);
+    });
+    $('#staticDetay').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var Id = button.data('stokid1');
+        $("#stokidtable").val(Id);
+        $.ajax({
+            url: "https://localhost:7075/StockDetailsByStock/" + Id,
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+            },
+            success: function (data) {
+
+                var html = `<table class="table table-hover table-responsive">` +
+                    `<tr><th>Açıklama</th></tr>`;
+                var arr = data;
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].quantity < 0) {
+                        html += `<tr><td>`;
+                        html += `${arr[i].productName} ürünü "${arr[i].recieverName}" adlı personele "${arr[i].delivererName}" tarafından ${Math.abs(arr[i].quantity)} adet verildi. Tarih: (${arr[i].addedTime})`
+                        html += `</td></tr>`;
+                    } else {
+                        html += `<tr><td>`;
+                        html += `${arr[i].productName} ürünü "${arr[i].recieverName}"adlı personele  "${arr[i].delivererName}" tarafından ${Math.abs(arr[i].quantity)} adet stoğa eklendi. Tarih: (${arr[i].addedTime})`
+                        html += `</td></tr>`;
+                    }
+
+
+                }
+                html += `</table>`;
+                $("#tabledetail").html(html);
+            }
+        });
     });
 </script>
 

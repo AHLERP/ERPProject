@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [AllowAnonymous]
+    //[Authorize(Roles ="Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

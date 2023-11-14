@@ -8,5 +8,8 @@ namespace ERPProject.Entity.DTO.RoleDTO
 {
     public class RoleDTORequest:RoleDTOBase
     {
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }

@@ -35,6 +35,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/RolEkle")]
         public async Task<IActionResult> Add(RoleDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddRole");
             if (val.Data != null)
             {
@@ -47,6 +49,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/RolGuncelle")]
         public async Task<IActionResult> Update(RoleDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateRole");
             if (val)
             {

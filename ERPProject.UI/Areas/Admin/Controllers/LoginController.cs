@@ -37,29 +37,31 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 HttpContext.Session.SetString("DepartmentName", responseObject.Data.DepartmentName);
                 HttpContext.Session.SetString("UserName", responseObject.Data.AdSoyad.ToString());
                 HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
-             
-
 
             }
             else
             {
                 TempData["HATA"] = "Hatalı Giriş Yaptınız";
-                return RedirectToAction("","");
+                return RedirectToAction("", "");
             }
             HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
 
 
-            if (response.IsSuccessStatusCode&& HttpContext.Session.GetString("Role")=="Admin")
+            if (responseObject!=null)
             {
-                return RedirectToAction("Index","Company");
+                return RedirectToAction("Index", "UserHome");
             }
-            else if (response.IsSuccessStatusCode && HttpContext.Session.GetString("Role") != "Admin")
-            {
-                return RedirectToAction("Sirketler", "Kullanici");
-            }
+            
 
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("/Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("", "");
         }
     }
 }

@@ -4,6 +4,7 @@ using ERPProject.Entity.DTO.StockDetailDTO;
 using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -11,13 +12,14 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    //[Authorize(Roles = "Admin")]
+
     public class StockDetailController : Controller
     {
         private readonly IStockDetailService _stockDetailService;
         private readonly IStockService _stockService;
         private readonly IMapper _mapper;
-
-        public StockDetailController(IMapper mapper, IStockDetailService stockDetailService, IStockService stockService)
+        public StockDetailController(IMapper mapper, IStockDetailService stockDetailService, IStockService stockService, IUserService userService)
         {
             _mapper = mapper;
             _stockDetailService = stockDetailService;
@@ -85,7 +87,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/StockDetail/{stockDetailId}")]
         public async Task<IActionResult> GetStockDetail(long stockDetailId)
         {
-            StockDetail stockDetail = await _stockDetailService.GetAsync(x=>x.Id == stockDetailId,"Stock","User");
+            StockDetail stockDetail = await _stockDetailService.GetAsync(x=>x.Id == stockDetailId,"Stock.Product","User");
             if(stockDetail == null)
             {
                 return NotFound(Sonuc<StockDetailDTOResponse>.SuccessNoDataFound());
@@ -101,7 +103,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/StockDetails")]
         public async Task<IActionResult> GetStockDetails()
         {
-            var stockDetails = await _stockDetailService.GetAllAsync(x=>x.IsActive == true , "Stock","User");
+            var stockDetails = await _stockDetailService.GetAllAsync(x=>x.IsActive == true , "Stock.Product", "User");
             if (stockDetails == null)
             {
                 return NotFound(Sonuc<StockDetailDTOResponse>.SuccessNoDataFound());
@@ -121,7 +123,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/StockDetailsByStock/{stockId}")]
         public async Task<IActionResult> GetStockDetailsByStock(long stockId)
         {
-            var stockDetails = await _stockDetailService.GetAllAsync(x => x.IsActive == true && x.StockId == stockId, "Stock", "User");
+            var stockDetails = await _stockDetailService.GetAllAsync(x => x.IsActive == true && x.StockId == stockId, "Stock.Product", "User");
             if (stockDetails == null)
             {
                 return NotFound(Sonuc<StockDetailDTOResponse>.SuccessNoDataFound());
@@ -135,7 +137,7 @@ namespace ERPProject.API.Controllers
 
             Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stoğa Göre Stok Detayları Getirildi. }", stockDetailDTOResponseList);
 
-            return Ok(Sonuc<List<StockDetailDTOResponse>>.SuccessWithData(stockDetailDTOResponseList));
+            return Ok(stockDetailDTOResponseList);
         }
 
         // StockDetailsByUser ???

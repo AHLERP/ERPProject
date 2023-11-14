@@ -5,6 +5,7 @@ using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.ProductDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -13,6 +14,8 @@ namespace ERPProject.API.Controllers
 {
     [Route("[action]")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
+
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;

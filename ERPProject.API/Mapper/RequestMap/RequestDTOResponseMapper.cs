@@ -11,12 +11,16 @@ namespace ERPProject.API.Mapper.RequestMap
             CreateMap<Request, RequestDTOResponse>().
                 ForMember(dest => dest.UserName, opt =>
                 {
-                    opt.MapFrom(src => src.User.Name);
+                    opt.MapFrom(src => src.User.Name + " " + src.User.LastName);
                 }).
                 ForMember(dest => dest.ProductName, opt =>
                 {
                     opt.MapFrom(src => src.Product.Name);
-                }).ReverseMap();
+                }).ForMember(dest=>dest.AcceptedName, opt =>
+                {
+                    opt.MapFrom(src => src.User.Name+" "+src.User.LastName);
+                })
+                .ReverseMap();
             
         }
     }

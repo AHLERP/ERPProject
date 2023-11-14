@@ -9,8 +9,8 @@ namespace ERPProject.Entity.DTO.OfferDTO
     public class OfferDTOBase
     {
         public long Id { get; set; }
-        public long UserId { get; set; }
         public long RequestId { get; set; }
+        public long UserId { get; set; }
 
         public string SupplierName { get; set; } = null!;
 
