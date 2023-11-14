@@ -29,29 +29,29 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 {
                     offerVM = new OfferVM()
 
+                        {
+                            Offers = null,
+                            Users = val2.Data,
+                            Requests = val3.Data,
+
+                        };
+                        return View(offerVM);
+                    }
+
+                    if (val.StatusCode == 401)
                     {
-                        Offers = null,
+                        return RedirectToAction("Unauthorized", "Home");
+                    }
+                    else if (val.StatusCode == 403)
+                    {
+                        return RedirectToAction("Forbidden", "Home");
+                    }
+                    offerVM = new OfferVM()
+
+                    {
+                        Offers = val.Data,
                         Users = val2.Data,
                         Requests = val3.Data,
-
-                    };
-                    return View(offerVM);
-                }
-
-                if (val.StatusCode == 401)
-                {
-                    return RedirectToAction("Unauthorized", "Home");
-                }
-                else if (val.StatusCode == 403)
-                {
-                    return RedirectToAction("Forbidden", "Home");
-                }
-                offerVM = new OfferVM()
-
-                {
-                    Offers = val.Data,
-                    Users = val2.Data,
-                    Requests = val3.Data,
 
                 };
                 return View(offerVM);

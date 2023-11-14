@@ -20,25 +20,30 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Urunler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-            var val2 = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            var val3 = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
-            if (val.StatusCode == 401)
+            if (HttpContext.Session.GetString("Department") == "Satın Alma" || HttpContext.Session.GetString("Role") == "Admin")
             {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            ProductVM productVM = new ProductVM()
+                var val = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+                var val2 = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+                var val3 = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                ProductVM productVM = new ProductVM()
 
-            {
-                Products = val.Data,
-                Brands= val2.Data,
-                Categories= val3.Data,
-            };
-            return View(productVM);
+                {
+                    Products = val.Data,
+                    Brands = val2.Data,
+                    Categories = val3.Data,
+                };
+                return View(productVM);
+            }
+            return RedirectToAction("Index", "UserHome");
+
         }
         [HttpGet("/Admin/Urun")]
         public async Task<IActionResult> Get(long id)
