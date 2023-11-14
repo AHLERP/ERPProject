@@ -89,7 +89,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetUser/{userId}")]
         public async Task<IActionResult> GetUser(long userId)
         {
-            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department");
+            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department","Department.Company");
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());

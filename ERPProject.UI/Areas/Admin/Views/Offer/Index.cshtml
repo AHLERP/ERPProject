@@ -8,7 +8,7 @@
     ViewData["buttonismi"] = "Ara";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
- 
+
 <div class="container col col-md-9 py-3">
     <div id="example_filter" class="dataTables_filter">
         <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
@@ -150,10 +150,8 @@
                             }
                             else
                             {
-
                                 @foreach (var item in Model.Offers)
                                 {
-
                                     <tr>
                                         <td>@item.SupplierName</td>
                                         <td>@item.Price @item.PriceStatus</td>
@@ -175,46 +173,105 @@
                                             <td> Onaylandı... </td>
                                         }
                                         <td>
-                                            <div class="dropdown">
+                                            <div>
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                     İşlemler
                                                 </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    @{
-                                                        string rol = Accessor.HttpContext.Session.GetString("Role");
-                                                        if (rol == "Personel")
+
+                                                @{
+                                                    string rol = Accessor.HttpContext.Session.GetString("Role");
+                                                    <ul class="dropdown-menu">
+
+                                                        @if (rol == "Personel" || rol == "Departman Müdürü")
                                                         {
+                                                            <li>
+                                                                <form method="post" action="/Admin/TeklifGuncelle">
+                                                                    <input hidden="hidden" value="@item.Id" name="Id">
+                                                                    <input hidden="hidden" value="@item.Price" name="Price">
+                                                                    <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
+                                                                    <input hidden="hidden" value="@item.Description" name="Description">
+                                                                    <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
+                                                                    <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                    <input hidden="hidden" value="@item.RequestId" name="RequestId">
 
+                                                                    <input hidden="hidden" value="2" name="Status">
+                                                                    <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                                                                    <button class="dropdown-item" type="submit">Kabul Et</button>
+                                                                </form>
+                                                            </li>
+                                                            <li>
+                                                                <form method="post" action="/Admin/TeklifGuncelle">
+                                                                    <input hidden="hidden" value="@item.Id" name="Id">
+                                                                    <input hidden="hidden" value="@item.Price" name="Price">
+                                                                    <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
+                                                                    <input hidden="hidden" value="@item.Description" name="Description">
+                                                                    <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
+                                                                    <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                    <input hidden="hidden" value="@item.RequestId" name="RequestId">
+                                                                    <input hidden="hidden" value="3" name="Status">
+                                                                    <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                                                                    <button class="dropdown-item" type="submit">Reddet</button>
+                                                                </form>
+                                                            </li>
+                                                            if (rol == "Departman Müdürü" && item.Price <= 500000)
+                                                            {
+                                                                <li>
+                                                                    <form method="post" action="/Admin/TeklifTopluGuncelle">
+                                                                        <input hidden="hidden" value="@item.Id" name="Id">
+                                                                        <input hidden="hidden" value="@item.Price" name="Price">
+                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
+                                                                        <input hidden="hidden" value="@item.Description" name="Description">
+                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
+                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
+                                                                        <input hidden="hidden" value="4" name="Status">
+                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                                                                        <button class="dropdown-item" type="submit">Onayla</button>
+                                                                    </form>
+                                                                </li>
 
-                                                                    <option value="0">Kabul1123 Edildi</option>
-                                                                    <option value="1">Onay Bekliyor</option>
-                                                                    <option value="2">Satın Alındı</option>
+                                                            }
+                                                            else if (rol == "Yönetim Kurulu Başkanı" && item.Price > 500000)
+                                                            {
 
-                                                                    <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
+                                                                <li>
+                                                                    <form method="post" action="/Admin/TeklifTopluGuncelle">
+                                                                        <input hidden="hidden" value="@item.Id" name="Id">
+                                                                        <input hidden="hidden" value="@item.Price" name="Price">
+                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
+                                                                        <input hidden="hidden" value="@item.Description" name="Description">
+                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
+                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
+                                                                        <input hidden="hidden" value="4" name="Status">
+                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                                                                        <button class="dropdown-item" type="submit">Onayla</button>
+                                                                    </form>
+                                                                </li>
+                                                                <li>
+                                                                    <form method="post" action="/Admin/TeklifGuncelle">
+                                                                        <input hidden="hidden" value="@item.Id" name="Id">
+                                                                        <input hidden="hidden" value="@item.Price" name="Price">
+                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
+                                                                        <input hidden="hidden" value="@item.Description" name="Description">
+                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
+                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
+                                                                        <input hidden="hidden" value="3" name="Status">
+                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                                                                        <button class="dropdown-item" type="submit">Reddet</button>
+                                                                    </form>
+                                                                </li>
                                                                 
+                                                            }
                                                         }
-                                                        else
-                                                        {
+                                                    </ul>
 
-                                                            <div class="input-group mb-3">
-                                                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                                                                <select readonly="readonly" class="form-control" id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                                                }
 
-
-                                                                    <option value="0">Kabuasdfgsdafl Edildi</option>
-                                                                    <option value="1">Onaasdfgsday Bekliyor</option>
-                                                                    <option value="2">Satın gfasdfgasAlındı</option>
-
-                                                                    <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
-                                                                </select>
-                                                            </div>
-                                                        }
-                                                    }
-                                                </ul>
                                             </div>
                                         </td>
                                     </tr>
-
                                 }
                             }
                         </tbody>
@@ -267,6 +324,7 @@
                     <div hidden="true" class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <input class="form-control" value="1" id="inputOfferStatus" name="Status" aria-describedby="basic-addon1" required>
+                        <input class="form-control" id="inputOfferStatus" name="UserId" aria-describedby="basic-addon1" value="@Accessor.HttpContext.Session.GetString("User")">
 
 
                     </div>

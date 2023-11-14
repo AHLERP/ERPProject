@@ -6,7 +6,6 @@ using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -15,8 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
-
+    //[Authorize]
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;
@@ -58,7 +56,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateOffer")]
-        [ValidationFilter(typeof(OfferValidator))]
+        //[ValidationFilter(typeof(OfferValidator))]
         public async Task<IActionResult> UpdateOffer(OfferDTORequest offerDTORequest)
         {
             Offer offer = await _offerService.GetAsync(x => x.Id == offerDTORequest.Id);
@@ -110,6 +108,24 @@ namespace ERPProject.API.Controllers
 
             Log.Information("Offers => {@offerDTOResponse} => { Teklifleri Getir. }", offerDTOResponseList);
             return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponseList));
+        }
+        [HttpPost("/UpdateAllOffer")]
+        public async Task<IActionResult> UpdateAll(OfferDTORequest offerDTORequest)
+        {
+            var offer = _mapper.Map<Offer>(offerDTORequest);
+            var response = await _offerService.UpdateAllAsync(offer);
+
+            List<OfferDTOResponse> offerDTOResponse = new();
+            foreach (var item in response) 
+            {
+
+                offerDTOResponse.Add(_mapper.Map<OfferDTOResponse>(item));
+            }
+            Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse);
+
+
+            return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
+
         }
     }
 }

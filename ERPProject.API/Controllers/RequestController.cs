@@ -60,7 +60,7 @@ namespace ERPProject.API.Controllers
         [ValidationFilter(typeof(RequestValidator))]
         public async Task<IActionResult> UpdateRequest(RequestDTORequest requestDTORequest)
         {
-            var request = await _requestService.GetAsync(e => e.Id == requestDTORequest.Id);
+            var request = await _requestService.GetAsync(e => e.Id == requestDTORequest.Id,"User");
             if (request == null) 
             {
                 return NotFound(Sonuc<RequestDTOResponse>.SuccessNoDataFound());
@@ -68,6 +68,19 @@ namespace ERPProject.API.Controllers
 
             _mapper.Map(requestDTORequest, request);
             await _requestService.UpdateAsync(request);
+
+            string AcceptRequestMessage = request.User.Name +" "+ request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz tamamlanmıştır.";
+            string RefuseRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz reddedildi";
+
+            if (request.RequestStatus == 2)
+            {
+                SendMail(request.User.Email, AcceptRequestMessage);
+
+            }
+            if (request.RequestStatus==3)
+            {
+                SendMail(request.User.Email, RefuseRequestMessage);
+            }
 
             RequestDTOResponse requestDTOResponse = _mapper.Map<RequestDTOResponse>(request);
 
@@ -197,6 +210,51 @@ namespace ERPProject.API.Controllers
             }
 
             Log.Information("Requests => {@requestDTOResponse} => { İstekler Kullanıcıya Göre Getirildi. }", requestDTOResponseList);
+
+            return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
+
+        }
+        private void SendMail(string mail, string body)
+        {
+
+            MailMessage mesaj = new MailMessage();
+            mesaj.From = new MailAddress("stokbilgilendirmeahl@hotmail.com");
+            mesaj.To.Add(mail);
+            mesaj.Subject = "İstek Sonuçlandı";
+            mesaj.Body = body;
+
+            SmtpClient a = new SmtpClient();
+            a.Credentials = new System.Net.NetworkCredential("stokbilgilendirmeahl@hotmail.com", "HakanC19/");
+            a.Port = 587;
+            a.Host = "smtp.office365.com";
+            a.EnableSsl = true;
+            object userState = mesaj;
+
+
+            a.Send(mesaj);
+        }
+
+        [HttpGet("/RequestsByDepartment/{userId}")]
+        public async Task<IActionResult> GetRequestsByDepartment(long userId)
+        {
+            User user = await _userService.GetAsync(x => x.Id == userId);
+            Department department = await _departmentService.GetAsync(x => x.Id == user.DepartmentId);
+
+            var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.DepartmentId == department.Id, "User", "Product");
+
+            if (requests == null)
+            {
+                return NotFound(Sonuc<List<RequestDTOResponse>>.SuccessNoDataFound());
+            }
+
+            List<RequestDTOResponse> requestDTOResponseList = new();
+
+            foreach (var request in requests)
+            {
+                requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
+            }
+
+            Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
 
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
