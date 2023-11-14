@@ -22,7 +22,7 @@ namespace ERPProject.UI.Areas
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("token"));
             var jsonData = JsonConvert.SerializeObject(p);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, stringContent);
+            var responseMessage = await _httpClient.PostAsync(url, stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 _httpClient.DefaultRequestHeaders.Remove("Authorization");

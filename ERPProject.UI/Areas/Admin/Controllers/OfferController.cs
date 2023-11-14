@@ -4,17 +4,21 @@ using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Remotion.Configuration.TypeDiscovery;
+using System.Net.Http;
+using System.Text;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class OfferController : BaseController
     {
+        private readonly HttpClient _httpClient;
         private readonly string url = "https://localhost:7075/";
         public OfferController(HttpClient httpClient) : base(httpClient)
         {
-
+            _httpClient = httpClient;
         }
         [HttpGet("/Admin/Teklifler")]
         public async Task<IActionResult> Index()
@@ -137,6 +141,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveOffer/" + id);
+            if (val)
+            {
+                return RedirectToAction("Index", "Offer");
+
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
+        [HttpPost("/Admin/TeklifTopluGuncelle")]
+        public async Task<IActionResult> UpdateAll(OfferDTORequest p)
+        {       
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            var val = await UpdateAsync(p, url + "UpdateAllOffer");
             if (val)
             {
                 return RedirectToAction("Index", "Offer");

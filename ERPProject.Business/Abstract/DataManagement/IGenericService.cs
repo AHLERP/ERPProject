@@ -18,5 +18,6 @@ namespace ERPProject.Business.Abstract.DataManagement
         Task UpdateAsync(T Entity);
 
         Task RemoveAsync(T Entity);
+
     }
 }
