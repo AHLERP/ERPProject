@@ -52,11 +52,10 @@
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
                                             <td>@item.Description</td>
-                                            @if (@item.QuantityUnit == 1)
-                                            {
-                                                <td>
-                                                    @item.Quantity Metre
-                                                </td>
+                                            @if(@item.QuantityUnit == 1){
+                                            <td>
+                                                @item.Quantity Metre
+                                            </td>
                                             }
                                             else if (@item.QuantityUnit == 2)
                                             {
@@ -188,9 +187,6 @@
                                                 </td>
                                             }
                                             }
-
-
-                                           
                                         </tr>
                                     }
 
@@ -216,7 +212,7 @@
                     <div id="example_filter" class="dataTables_filter">
                         <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
                     </div>
-                    <table id="example" class="table table-bordered border-dark">
+                    <table id="example" class="table table-bordered border-dark" >
                         <thead>
                             <tr>
                                 <th scope="col">Telep Eden</th>
@@ -368,7 +364,7 @@
                                                                data-miktar1="@item.Quantity"
                                                                data-status1="@item.RequestStatus">Detay</a>
                                                         </li>
-                                      
+
                                                     </ul>
                                                 </div>
                                             </td>
@@ -422,22 +418,22 @@
                                             <td>@item.AcceptedName</td>
                                             <td>@item.Title</td>
                                             <td>@item.ProductName</td>
-                                            @if (@item.RequestStatus == 0)
-                                            {
+                                                @if (@item.RequestStatus == 0)
+                                                {
                                                 <td> Beklemede... </td>
-                                            }
-                                            else if (@item.RequestStatus == 1)
-                                            {
+                                                }
+                                                else if (@item.RequestStatus == 1)
+                                                {
                                                 <td> Onaylandı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 2)
-                                            {
+                                                }
+                                                else if (@item.RequestStatus == 2)
+                                                {
                                                 <td> Satın Alındı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 3)
-                                            {
+                                                }
+                                                else if (@item.RequestStatus == 3)
+                                                {
                                                 <td> Reddedildi... </td>
-                                            }
+                                                }
                                             <td>
                                                 <div class="dropdown">
                                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -468,9 +464,9 @@
 
                 </div>.
             </div>
+            </div>
         </div>
     </div>
-</div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -481,7 +477,9 @@
             <form action="/Admin/TalepEkle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
+                        
                         <input class="form-control" type="hidden" id="inputTalepAd" name="UserId" value="@Accessor.HttpContext.Session.GetString("User")" aria-describedby="basic-addon1" required>
+                        
                     </div>
 
                     <div class="input-group mb-3">
@@ -580,16 +578,16 @@
                         </select>
                         <select class="form-control" id="inputBirim1" name="QuantityUnit" aria-describedby="basic-addon1" required>
                             <option value="">Birim Seçiniz...</option>
-                            <option value="1">Metre</option>
-                            <option value="2">Kilometre</option>
-                            <option value="3">Mililitre</option>
-                            <option value="4">Litre</option>
-                            <option value="5">Kilogram</option>
-                            <option value="6">Ton</option>
-                            <option value="7">Adet</option>
-                            <option value="8">Koli</option>
-                            <option value="9">m²</option>
-                            <option value="10">m³</option>
+                            <option value="1,00">Metre</option>
+                            <option value="2,00">Kilometre</option>
+                            <option value="3,00">Mililitre</option>
+                            <option value="4,00">Litre</option>
+                            <option value="5,00">Kilogram</option>
+                            <option value="6,00">Ton</option>
+                            <option value="7,00">Adet</option>
+                            <option value="8,00">Koli</option>
+                            <option value="9,00">m²</option>
+                            <option value="10,00">m³</option>
                         </select>
 
                     </div>
@@ -600,8 +598,10 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
                         <select class="form-control" id="inputRequestStatus1" name="RequestStatus" aria-describedby="basic-addon1" required>
+                            <option>Durum Seçiniz...</option>
                             <option value="0">Onay Bekliyor</option>
                             <option value="1">Onaylandı</option>
+                            <option value="2">Satın Alındı</option>
                             <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
 
                         </select>
@@ -666,16 +666,16 @@
                     </select>
                     <select class="form-control" id="inputBirim2" name="QuantityUnit" aria-describedby="basic-addon1" required>
                         <option value="">Birim Seçiniz...</option>
-                        <option value="1">Metre</option>
-                        <option value="2">Kilometre</option>
-                        <option value="3">Mililitre</option>
-                        <option value="4">Litre</option>
-                        <option value="5">Kilogram</option>
-                        <option value="6">Ton</option>
-                        <option value="7">Adet</option>
-                        <option value="8">Koli</option>
-                        <option value="9">m²</option>
-                        <option value="10">m³</option>
+                        <option value="1,00">Metre</option>
+                        <option value="2,00">Kilometre</option>
+                        <option value="3,00">Mililitre</option>
+                        <option value="4,00">Litre</option>
+                        <option value="5,00">Kilogram</option>
+                        <option value="6,00">Ton</option>
+                        <option value="7,00">Adet</option>
+                        <option value="8,00">Koli</option>
+                        <option value="9,00">m²</option>
+                        <option value="10,00">m³</option>
                     </select>
 
                 </div>
@@ -685,7 +685,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                    <select class="form-control" id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                    <select class="form-control"  id="inputStatus2" name="QuantityUnit" aria-describedby="basic-addon1" required>
                         <option value="">Durum Seçiniz...</option>
                         <option value="0">Onay Bekliyor</option>
                         <option value="1">Onaylandı</option>
@@ -718,13 +718,14 @@
                 <div class="modal-body">
                     <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputIdonay" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
-                        <input class="form-control" id="inputUserIdonay" hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId" aria-describedby="basic-addon1">
+                        
+                        <input class="form-control"  id="inputUserIdonay" hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId" aria-describedby="basic-addon1"> 
                     </div>
 
                     <div class="input-group mb-3">
-
+                        
                         <input autocomplete="off" hidden="hidden" type="text" class="form-control" placeholder="İstek..." id="inputTalepAdonay" name="Title" aria-describedby="basic-addon1" required>
-                        <input autocomplete="off" type="text" class="form-control" value="@Accessor.HttpContext.Session.GetString("User")" id="inputTalepAdo" name="AcceptedId" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off"  type="text" class="form-control" value="@Accessor.HttpContext.Session.GetString("User")" id="inputTalepAdo" name="AcceptedId" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <select class="form-control" hidden="hidden" id="inputProductonay" name="ProductId" aria-describedby="basic-addon1" required>
@@ -754,8 +755,10 @@
                     </div>
                     <div class="input-group mb-3">
                         <select class="form-control" id="inputRequestStatusonay" name="RequestStatus" aria-describedby="basic-addon1" required>
+                            <option value="">Durum Seçiniz...</option>
                             <option value="0">Onay Bekliyor</option>
                             <option value="1">Onaylandı</option>
+                            <option value="2">Satın Alındı</option>
                             <option style="background:Red;opacity:50%;" value="3">Reddedildi</option>
 
                         </select>
@@ -792,8 +795,6 @@
         var brim = button.data('brim');
         var miktar = button.data('miktar');
         var status = button.data('status');
-        var addeduser = button.data('addeduser');
-        $("#inputaddeduser1").val(addeduser);
         $("#inputId1").val(id);
         $("#inputTalepAd1").val(title);
         $("#inputAciklama1").val(description);
@@ -813,8 +814,6 @@
         var brim = button.data('brim1');
         var miktar = button.data('miktar1');
         var status = button.data('status1');
-        var addeduser = button.data('addeduserq');
-        $("#inputaddeduser2").val(addeduser);
         $("#inputId2").val(id);
         $("#inputTalepAd2").val(title);
         $("#inputAciklama2").val(description);
@@ -834,8 +833,6 @@
         var brim = button.data('brim');
         var miktar = button.data('miktar');
         var status = button.data('status');
-        var addeduser = button.data('addeduser');
-        $("#inputaddeduseronay").val(addeduser);
         $("#inputIdonay").val(id);
         $("#inputTalepAdonay").val(title);
         $("#inputAciklamaonay").val(description);

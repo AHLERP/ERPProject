@@ -8,101 +8,109 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     var name1 = TempData["stok"] as string;
 }
-
-<div class="container col col-md-9 py-3">
-    <h2 class="text-danger">@name1</h2>
-
-    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
-    <table class="table table-bordered border-dark" id="example">
-        <thead>
-            <tr>
-                <th scope="col">Şirket Adı</th>
-                <th scope="col">Ürün Adı</th>
-                <th scope="col">Ürün Açıklaması</th>
-                <th scope="col">Miktar</th>
-                <th scope="col" style="width:100px ">İşlemler</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Stocks)
-            {
-                <tr>
-                    <td>@item.CompanyName</td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Description</td>
-                    @if (@item.QuantityUnit == 1)
-                    {
-                        <td> @item.Quantity Metre</td>
-                    }
-                    else if (@item.QuantityUnit == 2)
-                    {
-                        <td>@item.Quantity Kilometre</td>
-                    }
-                    else if (@item.QuantityUnit == 3)
-                    {
-                        <td>@item.Quantity Mililitre</td>
-                    }
-                    else if (@item.QuantityUnit == 4)
-                    {
-                        <td>@item.Quantity Litre</td>
-                    }
-                    else if (@item.QuantityUnit == 5)
-                    {
-                        <td>@item.Quantity Kilogram</td>
-                    }
-                    else if (@item.QuantityUnit == 6)
-                    {
-                        <td>@item.Quantity Ton</td>
-                    }
-                    else if (@item.QuantityUnit == 7)
-                    {
-                        <td>@item.Quantity Adet</td>
-                    }
-                    else if (@item.QuantityUnit == 8)
-                    {
-                        <td> @item.Quantity Koli</td>
-                    }
-                    else if (@item.QuantityUnit == 9)
-                    {
-                        <td>@item.Quantity m²</td>
-                    }
-                    else if (@item.QuantityUnit == 10)
-                    {
-                        <td>@item.Quantity m³</td>
-                    }
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                İşlemler
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
-                                       data-id="@item.Id"
-                                       data-company="@item.CompanyId"
-                                       data-product="@item.ProductId"
-                                       data-description="@item.Description"
-                                       data-quantity="@item.Quantity"
-                                       data-quantityunit="@item.QuantityUnit">Stok Düzenle</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                       data-stokid="@item.Id">Stok Ekle/Çıkar</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticDetay"
-                                       data-stokid1="@item.Id">Stok Detay</a>
-                                </li>
-                                <li><hr class="dropdown-divider text-danger"></li>
-                                <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+ <div class="container-table100" style="border-radius:8px;">
+        <div class="wrap-table100">
+            <div class="table100 ver5 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                            <tr class="row100 head bg-secondary bg-opacity-75">
+                            <th class="cell100 column2 text-light" style="padding-left:5px;">Şirket Adı</th>
+                            <th class="cell100 column3 text-light">Ürün Adı</th>
+                            <th class="cell100 column4 text-light">Ürün Açıklaması</th>
+                            <th class="cell100 column5 text-light">Miktar</th>
+                                <th class="cell100 column8 text-light">İşlemler</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="table100-body js-pscroll ps ps--active-y">
+                <table id="example" style="min-height:350px;">
+                        <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
+                        <tbody>
+                        @foreach (var item in Model.Stocks)
+                        {
+                                <tr class="row100 body">
+                                <td class="cell100 column2" style="padding-left:5px;">@item.CompanyName</td>
+                                <td class="cell100 column2">@item.ProductName</td>
+                                <td class="cell100 column2">@item.Description</td>
+                                @if (@item.QuantityUnit == 1)
+                                {
+                                    <td> @item.Quantity Metre</td>
+                                }
+                                else if (@item.QuantityUnit == 2)
+                                {
+                                    <td>@item.Quantity Kilometre</td>
+                                }
+                                else if (@item.QuantityUnit == 3)
+                                {
+                                    <td>@item.Quantity Mililitre</td>
+                                }
+                                else if (@item.QuantityUnit == 4)
+                                {
+                                    <td>@item.Quantity Litre</td>
+                                }
+                                else if (@item.QuantityUnit == 5)
+                                {
+                                    <td>@item.Quantity Kilogram</td>
+                                }
+                                else if (@item.QuantityUnit == 6)
+                                {
+                                    <td>@item.Quantity Ton</td>
+                                }
+                                else if (@item.QuantityUnit == 7)
+                                {
+                                    <td>@item.Quantity Adet</td>
+                                }
+                                else if (@item.QuantityUnit == 8)
+                                {
+                                    <td> @item.Quantity Koli</td>
+                                }
+                                else if (@item.QuantityUnit == 9)
+                                {
+                                    <td>@item.Quantity m²</td>
+                                }
+                                else if (@item.QuantityUnit == 10)
+                                {
+                                    <td>@item.Quantity m³</td>
+                                }
+                                    <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            İşlemler
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+                                                   data-id="@item.Id"
+                                                   data-company="@item.CompanyId"
+                                                   data-product="@item.ProductId"
+                                                   data-description="@item.Description"
+                                                   data-quantity="@item.Quantity"
+                                                   data-quantityunit="@item.QuantityUnit">Stok Düzenle</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                   data-stokid="@item.Id">Stok Ekle/Çıkar</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticDetay"
+                                                   data-stokid1="@item.Id">Stok Detay</a>
+                                            </li>
+                                            <li><hr class="dropdown-divider text-danger"></li>
+                                            <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
+                                        </ul>
+                                    </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -289,6 +297,12 @@
             window.location.href = 'StokSil/' + id;
         }
     }
+    $('.js-pscroll').each(function () {
+        var ps = new PerfectScrollbar(this);
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var Id = button.data('id');

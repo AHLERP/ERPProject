@@ -102,7 +102,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                             };
 
                         }
+                        dTORequest.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                        dTORequest.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
                         var val = await AddAsync(dTORequest, url + "AddInvoice");
+                        
                         id = val.Data.Id;
                         InvoiceDetailDTORequest ınvoiceDetailDTORequest = null;
                         for (i = 0; i < n - 2; i++)
