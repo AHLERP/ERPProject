@@ -18,6 +18,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
+
             var id = HttpContext.Session.GetString("User");
 
             if (HttpContext.Session.GetString("Role") == "Personel")
