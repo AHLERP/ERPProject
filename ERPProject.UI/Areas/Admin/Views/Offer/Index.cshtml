@@ -182,8 +182,6 @@
                                                     string rol = Accessor.HttpContext.Session.GetString("Role");
                                                     <ul class="dropdown-menu">
 
-                                                        @if (rol == "Personel" || rol == "Departman Müdürü")
-                                                        {
                                                             <li>
                                                                 <form method="post" action="/Admin/TeklifGuncelle">
                                                                     <input hidden="hidden" value="@item.Id" name="Id">
@@ -193,7 +191,6 @@
                                                                     <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
                                                                     <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
                                                                     <input hidden="hidden" value="@item.RequestId" name="RequestId">
-
                                                                     <input hidden="hidden" value="2" name="Status">
                                                                     <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
                                                                     <button class="dropdown-item" type="submit">Kabul Et</button>
@@ -213,7 +210,7 @@
                                                                     <button class="dropdown-item" type="submit">Reddet</button>
                                                                 </form>
                                                             </li>
-                                                            if (rol == "Departman Müdürü" && item.Price <= 500000)
+                                                            @if (rol != "Personel" && item.Price <= 500000)
                                                             {
                                                                 <li>
                                                                     <form method="post" action="/Admin/TeklifTopluGuncelle">
@@ -231,7 +228,7 @@
                                                                 </li>
 
                                                             }
-                                                            else if (rol == "Yönetim Kurulu Başkanı" && item.Price > 500000)
+                                                            else if ((rol == "Yönetim Kurulu Başkanı" && item.Price > 500000) || rol == "Admin")
                                                             {
 
                                                                 <li>
@@ -248,23 +245,8 @@
                                                                         <button class="dropdown-item" type="submit">Onayla</button>
                                                                     </form>
                                                                 </li>
-                                                                <li>
-                                                                    <form method="post" action="/Admin/TeklifGuncelle">
-                                                                        <input hidden="hidden" value="@item.Id" name="Id">
-                                                                        <input hidden="hidden" value="@item.Price" name="Price">
-                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
-                                                                        <input hidden="hidden" value="@item.Description" name="Description">
-                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
-                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
-                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
-                                                                        <input hidden="hidden" value="3" name="Status">
-                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                                                        <button class="dropdown-item" type="submit">Reddet</button>
-                                                                    </form>
-                                                                </li>
-                                                                
                                                             }
-                                                        }
+                                                        
                                                     </ul>
 
                                                 }
