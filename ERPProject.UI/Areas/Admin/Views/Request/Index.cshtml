@@ -128,46 +128,69 @@
                                             {
                                                 <td> Reddedildi... </td>
                                             }
+                                            @{
+                                            if (Accessor.HttpContext.Session.GetString("Role") == "Personel")
+                                            {
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <div class="dropdown">
 
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        İşlemler
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
-                                                               data-id="@item.Id"
-                                                               data-title="@item.Title"
-                                                               data-description="@item.Description"
-                                                               data-username="@item.UserId"
-                                                               data-product="@item.ProductId"
-                                                               data-brim="@item.QuantityUnit"
-                                                               data-miktar="@item.Quantity"
-                                                               data-status="@item.RequestStatus">Düzenle</a>
-                                                        </li>
-                                                        <li>
-                                                            <form method="post" action="/Admin/TalepGuncelle">
-                                                                <input hidden="hidden" value="@item.Id" name="Id">
-                                                                <input hidden="hidden" value="1" name="RequestStatus">
-                                                                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="AcceptedId">
-                                                                <button class="dropdown-item" type="submit">Onayla</button>
-                                                            </form>
-                                                        </li>
-                                                        <li>
-                                                            <form method="post" action="/Admin/TalepGuncelle">
-                                                                <input hidden="hidden" value="@item.Id" name="Id">
-                                                                <input hidden="hidden" value="1" name="RequestStatus">
-                                                                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="AcceptedId">
-                                                                <button class="dropdown-item" type="submit">Reddet</button>
-                                                            </form>
-                                                        </li>
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs- toggle="dropdown" aria-expanded="false">
+                                                            İşlemler
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                            <li>
+                                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+                                                                    data-id="@item.Id"
+                                                                    data-title="@item.Title"
+                                                                    data-description="@item.Description"
+                                                                    data-username="@item.UserId"
+                                                                    data-product="@item.ProductId"
+                                                                    data-brim="@item.QuantityUnit"
+                                                                    data-miktar="@item.Quantity"
+                                                                    data-status="@item.RequestStatus">Düzenle</a>
+                                                            </li>
+                                                            <li>
+                                                                <form method="post" action="/Admin/TalepGuncelle">
+                                                                    <input hidden="hidden" value="@item.Id" name="Id">
+                                                                    <input hidden="hidden" value="@item.Title" name="Title">
+                                                                    <input hidden="hidden" value="@item.Description" name="Description">
+                                                                    <input hidden="hidden" value="@item.ProductId" name="ProductId">
+                                                                    <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                    <input hidden="hidden" value="@item.UserId" name="UserId">
+                                                                    <input hidden="hidden" value="@item.Quantity" name="Quantity">
+                                                                    <input hidden="hidden" value="@item.QuantityUnit" name="IQuantityUnitd">
+                                                                    <input hidden="hidden" value="1" name="RequestStatus">
+                                                                    <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="AcceptedId">
+                                                                    <button class="dropdown-item" type="submit">Onayla</button>
+                                                                </form>
+                                                            </li>
+                                                            <li>
+                                                                <form method="post" action="/Admin/TalepGuncelle">
+                                                                    <input hidden="hidden" value="@item.Id" name="Id">
+                                                                    <input hidden="hidden" value="@item.Title" name="Title">
+                                                                    <input hidden="hidden" value="@item.Description" name="Description">
+                                                                    <input hidden="hidden" value="@item.UserId" name="UserId">
+                                                                    <input hidden="hidden" value="@item.Quantity" name="Quantity">
+                                                                    <input hidden="hidden" value="@item.QuantityUnit" name="IQuantityUnitd">
+                                                                    <input hidden="hidden" value="3" name="RequestStatus">
+                                                                    <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="AcceptedId">
+                                                                    <button class="dropdown-item" type="submit">Reddet</button>
+                                                                </form>
+                                                            </li>
 
-                                                        <li><hr class="dropdown-divider text-danger"></li>
-                                                        <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                                            <li><hr class="dropdown-divider text-danger"></li>
+                                                            <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            }
+                                            }
+
+
+                                           
                                         </tr>
                                     }
 
@@ -256,7 +279,7 @@
                                                                data-miktar1="@item.Quantity"
                                                                data-status1="@item.RequestStatus">Detay</a>
                                                         </li>
-                                                        
+
 
                                                     </ul>
                                                 </div>
@@ -345,7 +368,7 @@
                                                                data-miktar1="@item.Quantity"
                                                                data-status1="@item.RequestStatus">Detay</a>
                                                         </li>
-                                                        
+                                      
                                                     </ul>
                                                 </div>
                                             </td>
@@ -522,15 +545,24 @@
                     <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId1" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
-                        <select class="form-control" id="inputUserId1" name="UserId" aria-describedby="basic-addon1" required>
-                            <option value="">Kullanıcı Seçiniz...</option>
+                        @if (Model.Users == null)
+                        {
 
-                            @foreach (var item in Model.Users)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
+                        }
+                        else
+                        {
 
-                        </select>
+
+                            <select class="form-control" id="inputUserId1" name="UserId" aria-describedby="basic-addon1" required>
+                                <option value="">Kullanıcı Seçiniz...</option>
+
+                                @foreach (var item in Model.Users)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+                            </select>
+                        }
                     </div>
 
                     <div class="input-group mb-3">
@@ -601,15 +633,22 @@
                 <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId2" name="Id" aria-describedby="basic-addon1" required>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
-                    <select class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
-                        <option value="">Kullanıcı Seçiniz...</option>
+                    @if (Model.Users == null)
+                    {
 
-                        @foreach (var item in Model.Users)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
+                    }
+                    else
+                    {
+                        <select class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
+                            <option value="">Kullanıcı Seçiniz...</option>
 
-                    </select>
+                            @foreach (var item in Model.Users)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        </select>
+                    }
                 </div>
 
                 <div class="input-group mb-3">

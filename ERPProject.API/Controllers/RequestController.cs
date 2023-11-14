@@ -38,6 +38,7 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetRequests()
         {
             var requests= await _requestService.GetAllAsync(x=>x.IsActive==true,"User","Product");
+            
             if (requests==null)
             {
                 return NotFound(Sonuc<List<RequestDTOResponse>>.SuccessNoDataFound());
