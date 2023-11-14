@@ -21,22 +21,27 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
-            var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
-            if (val.StatusCode == 401)
+            if (HttpContext.Session.GetString("Department") == "Muhasebe" || HttpContext.Session.GetString("Role") == "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")
             {
-                return RedirectToAction("Unauthorized", "Home");
+                var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+                var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                InvoiceVM invoiceVM = new InvoiceVM()
+                {
+                    Invoices = val.Data,
+                    InvoiceDetail = val2.Data
+                };
+                return View(invoiceVM);
             }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            InvoiceVM invoiceVM = new InvoiceVM()
-            {
-                Invoices = val.Data,
-                InvoiceDetail = val2.Data
-            };
-            return View(invoiceVM);
+            return RedirectToAction("Index", "UserHome");
+
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)

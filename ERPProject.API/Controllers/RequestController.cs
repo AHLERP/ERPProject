@@ -189,13 +189,12 @@ namespace ERPProject.API.Controllers
 
         }
 
-        [HttpGet("/RequestsByDepartment/{userId}")]
-        public async Task<IActionResult> GetRequestsByDepartment(long userId)
+        [HttpGet("/RequestsByUser/{userId}")]
+        public async Task<IActionResult> GetRequestsByUser(long userId)
         {
             User user = await _userService.GetAsync(x => x.Id == userId);
-            Department department = await _departmentService.GetAsync(x => x.Id == user.DepartmentId);
 
-            var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.DepartmentId == department.Id, "User", "Product");
+            var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.Id == userId, "User", "Product");
 
             if (requests == null)
             {
@@ -209,7 +208,7 @@ namespace ERPProject.API.Controllers
                 requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
             }
 
-            Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
+            Log.Information("Requests => {@requestDTOResponse} => { İstekler Kullanıcıya Göre Getirildi. }", requestDTOResponseList);
 
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
