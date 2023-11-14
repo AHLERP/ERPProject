@@ -234,31 +234,31 @@ namespace ERPProject.API.Controllers
             a.Send(mesaj);
         }
 
-        [HttpGet("/RequestsByDepartment/{userId}")]
-        public async Task<IActionResult> GetRequestsByDepartment(long userId)
-        {
-            User user = await _userService.GetAsync(x => x.Id == userId);
-            Department department = await _departmentService.GetAsync(x => x.Id == user.DepartmentId);
+        //[HttpGet("/RequestsByDepartment/{userId}")]
+        //public async Task<IActionResult> GetRequestsByDepartment(long userId)
+        //{
+        //    User user = await _userService.GetAsync(x => x.Id == userId);
+        //    Department department = await _departmentService.GetAsync(x => x.Id == user.DepartmentId);
 
-            var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.DepartmentId == department.Id, "User", "Product");
+        //    var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.DepartmentId == department.Id, "User", "Product");
 
-            if (requests == null)
-            {
-                return NotFound(Sonuc<List<RequestDTOResponse>>.SuccessNoDataFound());
-            }
+        //    if (requests == null)
+        //    {
+        //        return NotFound(Sonuc<List<RequestDTOResponse>>.SuccessNoDataFound());
+        //    }
 
-            List<RequestDTOResponse> requestDTOResponseList = new();
+        //    List<RequestDTOResponse> requestDTOResponseList = new();
 
-            foreach (var request in requests)
-            {
-                requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
-            }
+        //    foreach (var request in requests)
+        //    {
+        //        requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
+        //    }
 
-            Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
+        //    Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
 
-            return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
+        //    return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
-        }
+        //}
 
     }
 }

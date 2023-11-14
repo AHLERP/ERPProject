@@ -22,6 +22,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+            if (val==null)
+            {
+                return View();
+            }
             var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
             if (val.StatusCode == 401)
             {
@@ -98,7 +102,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                             };
 
                         }
+                        dTORequest.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                        dTORequest.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
                         var val = await AddAsync(dTORequest, url + "AddInvoice");
+                        
                         id = val.Data.Id;
                         InvoiceDetailDTORequest ınvoiceDetailDTORequest = null;
                         for (i = 0; i < n - 2; i++)

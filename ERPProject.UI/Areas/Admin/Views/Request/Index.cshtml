@@ -10,6 +10,9 @@
 }
 <div class="container col col-md-12 py-3">
     <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div id="example_filter" class="dataTables_filter">
+            <div id="notFoundMessage1" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+        </div>
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -18,160 +21,183 @@
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <div id="example_filter" class="dataTables_filter">
-                        <div id="notFoundMessage1" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+                    
+                    <div class="container-table100" style="border-radius:8px;">
+                        <div class="wrap-table100">
+                            <div class="table100 ver5 m-b-110">
+                                <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                            <tr class="row100 head bg-secondary bg-opacity-75">
+                                                <th class="cell100 column2 text-light" style="padding-left:5px;">Talep Eden</th>
+                                                <th class="cell100 column2 text-light">Talep Adı</th>
+                                                <th class="cell100 column2 text-light">Ürün</th>
+                                                <th class="cell100 column2 text-light">Açıklama</th>
+                                                <th class="cell100 column2 text-light">Miktar</th>
+                                                <th class="cell100 column2 text-light">Durum</th>
+                                                <th class="cell100 column2 text-light">İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="table100-body js-pscroll ps ps--active-y">
+                                    <table id="example" style="min-height:350px;">
+                                        <tbody>
+                                            @if (Model.Requests == null)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+
+                                                @foreach (var item in Model.Requests)
+                                                {
+                                                    if (item.RequestStatus == 0)
+                                                    {
+                                                        <tr class="row100 body">
+                                                            <td class="cell100 column2" style="padding-left:5px;">@item.UserName</td>
+                                                            <td class="cell100 column2">@item.Title</td>
+                                                            <td class="cell100 column2">@item.ProductName</td>
+                                                            <td class="cell100 column2">@item.Description</td>
+                                                            @if (@item.QuantityUnit == 1)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Metre
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 2)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Kilometre
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 3)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Mililitre
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 4)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Litre
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 5)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Kilogram
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 6)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Ton
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 7)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Adet
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 8)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity Koli
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 9)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity m²
+                                                                </td>
+                                                            }
+                                                            else if (@item.QuantityUnit == 10)
+                                                            {
+                                                                <td class="cell100 column2">
+                                                                    @item.Quantity m³
+                                                                </td>
+                                                            }
+                                                            @if (@item.RequestStatus == 0)
+                                                            {
+                                                                <td class="cell100 column2"> Beklemede... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 1)
+                                                            {
+                                                                <td class="cell100 column2"> Onaylandı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 2)
+                                                            {
+                                                                <td class="cell100 column2"> Satın Alındı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 3)
+                                                            {
+                                                                <td class="cell100 column2"> Reddedildi... </td>
+                                                            }
+                                                            <td class="cell100 column2">
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        İşlemler
+                                                                    </button>
+                                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                        <li>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+                                                                               data-id="@item.Id"
+                                                                               data-title="@item.Title"
+                                                                               data-description="@item.Description"
+                                                                               data-username="@item.UserId"
+                                                                               data-product="@item.ProductId"
+                                                                               data-brim="@item.QuantityUnit"
+                                                                               data-miktar="@item.Quantity"
+                                                                               data-updateduser="@Accessor.HttpContext.Session.GetString("User")"
+                                                                               data-status="@item.RequestStatus">Düzenle</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <form method="post" action="/Admin/TalepGuncelle">
+                                                                                <input hidden="hidden" value="@item.Id" name="Id">
+                                                                                <input hidden="hidden" value="@item.Title" name="Title">
+                                                                                <input hidden="hidden" value="@item.Description" name="Description">
+                                                                                <input hidden="hidden" value="@item.ProductId" name="ProductId">
+                                                                                <input hidden="hidden" value="@item.QuantityUnit" name="QuantityUnit">
+                                                                                <input hidden="hidden" value="@item.Quantity" name="Quantity">
+                                                                                <input hidden="hidden" value="1" name="RequestStatus">
+                                                                                <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
+                                                                                <input hidden="hidden" value="@item.UserId" name="UserId">
+                                                                                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="AcceptedId">
+                                                                                <button class="dropdown-item" type="submit">Onayla</button>
+                                                                            </form>
+                                                                        </li>
+                                                                        <li>
+                                                                            <form method="post" action="/Admin/TalepGuncelle">
+                                                                                <input hidden="hidden" value="@item.Id" name="Id">
+                                                                                <input hidden="hidden" value="1" name="RequestStatus">
+                                                                                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="AcceptedId">
+                                                                                <button class="dropdown-item" type="submit">Reddet</button>
+                                                                            </form>
+                                                                        </li>
+
+                                                                        <li><hr class="dropdown-divider text-danger"></li>
+                                                                        <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                        </tr>
+                                                    }
+                                                }
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div>
+
+                                    <div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;"></div></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <table id="example" class="table table-bordered border-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Talep Eden</th>
-                                <th scope="col">Talep Adı</th>
-                                <th scope="col">Ürün</th>
-                                <th scope="col">Açıklama</th>
-                                <th scope="col">Miktar</th>
-                                <th scope="col">Durum</th>
-                                <th scope="col" style="width:100px ">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Requests == null)
-                            {
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            }
-                            else
-                            {
-
-                                @foreach (var item in Model.Requests)
-                                {
-                                    if (item.RequestStatus == 0)
-                                    {
-                                        <tr>
-                                            <td>@item.UserName</td>
-                                            <td>@item.Title</td>
-                                            <td>@item.ProductName</td>
-                                            <td>@item.Description</td>
-                                            @if(@item.QuantityUnit == 1){
-                                            <td>
-                                                @item.Quantity Metre
-                                            </td>
-                                            }
-                                            else if (@item.QuantityUnit == 2)
-                                            {
-                                                <td>
-                                                    @item.Quantity Kilometre
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 3)
-                                            {
-                                                <td>
-                                                    @item.Quantity Mililitre
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 4)
-                                            {
-                                                <td>
-                                                    @item.Quantity Litre
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 5)
-                                            {
-                                                <td>
-                                                    @item.Quantity Kilogram
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 6)
-                                            {
-                                                <td>
-                                                    @item.Quantity Ton
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 7)
-                                            {
-                                                <td>
-                                                    @item.Quantity Adet
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 8)
-                                            {
-                                                <td>
-                                                    @item.Quantity Koli
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 9)
-                                            {
-                                                <td>
-                                                    @item.Quantity m²
-                                                </td>
-                                            }
-                                            else if (@item.QuantityUnit == 10)
-                                            {
-                                                <td>
-                                                    @item.Quantity m³
-                                                </td>
-                                            }
-                                            @if (@item.RequestStatus == 0)
-                                            {
-                                                <td> Beklemede... </td>
-                                            }
-                                            else if (@item.RequestStatus == 1)
-                                            {
-                                                <td> Onaylandı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 2)
-                                            {
-                                                <td> Satın Alındı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 3)
-                                            {
-                                                <td> Reddedildi... </td>
-                                            }
-
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        İşlemler
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
-                                                               data-id="@item.Id"
-                                                               data-title="@item.Title"
-                                                               data-description="@item.Description"
-                                                               data-username="@item.UserId"
-                                                               data-product="@item.ProductId"
-                                                               data-brim="@item.QuantityUnit"
-                                                               data-miktar="@item.Quantity"
-                                                               data-status="@item.RequestStatus">Düzenle</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticOnayla"
-                                                               data-id="@item.Id"
-                                                               data-title="@item.Title"
-                                                               data-description="@item.Description"
-                                                               data-username="@item.UserId"
-                                                               data-product="@item.ProductId"
-                                                               data-brim="@item.QuantityUnit"
-                                                               data-miktar="@item.Quantity"
-                                                               data-status="@item.RequestStatus">Onayla</a>
-                                                        </li>
-                                                        <li><hr class="dropdown-divider text-danger"></li>
-                                                        <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-
-
-                                }
-
-                            }
-
-
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -183,93 +209,98 @@
             </h2>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <div id="example_filter" class="dataTables_filter">
-                        <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+                    <div class="container-table100" style="border-radius:8px;">
+                        <div class="wrap-table100">
+                            <div class="table100 ver5 m-b-110">
+                                <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                            <tr class="row100 head bg-secondary bg-opacity-75">
+                                                <th class="cell100 column2 text-light" style="padding-left:5px;">Talep Eden</th>
+                                                <th class="cell100 column2 text-light">Onaylayan</th>
+                                                <th class="cell100 column2 text-light">Talep Adı</th>
+                                                <th class="cell100 column2 text-light">Ürün</th>
+                                                <th class="cell100 column2 text-light">Durum</th>
+                                                <th class="cell100 column2 text-light">İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="table100-body js-pscroll1 ps ps--active-y">
+                                    <table id="example" style="min-height:350px;">
+                                        <tbody>
+                                            @if (Model.Requests == null)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+
+                                                @foreach (var item in Model.Requests)
+                                                {
+                                                    if (item.RequestStatus == 1)
+                                                    {
+                                                        <tr class="row100 body">
+                                                        <td class="cell100 column2" style="padding-left:5px;">@item.UserName</td>
+                                                        <td class="cell100 column2">@item.AcceptedName</td>
+                                                        <td class="cell100 column2">@item.Title</td>
+                                                        <td class="cell100 column2">@item.ProductName</td>
+                                                            @if (@item.RequestStatus == 0)
+                                                            {
+                                                                <td class="cell100 column2"> Beklemede... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 1)
+                                                            {
+                                                                <td class="cell100 column2"> Onaylandı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 2)
+                                                            {
+                                                                <td class="cell100 column2"> Satın Alındı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 3)
+                                                            {
+                                                                <td class="cell100 column2"> Reddedildi... </td>
+                                                            }
+                                                            <td class="cell100 column2">
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        İşlemler
+                                                                    </button>
+                                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                        <li>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                                               data-id1="@item.Id"
+                                                                               data-title1="@item.Title"
+                                                                               data-description1="@item.Description"
+                                                                               data-username1="@item.UserId"
+                                                                               data-product1="@item.ProductId"
+                                                                               data-brim1="@item.QuantityUnit"
+                                                                               data-miktar1="@item.Quantity"
+                                                                               data-status1="@item.RequestStatus">Detay</a>
+                                                                        </li>
+
+
+                                                                    </ul>
+                                                                </div>
+                                                        </tr>
+                                                    }
+                                                }
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div>
+
+                                    <div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;">
+
+                                    </div></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <table id="example" class="table table-bordered border-dark" >
-                        <thead>
-                            <tr>
-                                <th scope="col">Telep Eden</th>
-                                <th scope="col">Onaylayan Kullanıcı</th>
-                                <th scope="col">Talep Adı</th>
-                                <th scope="col">Ürün</th>
-                                <th scope="col">Durum</th>
-                                <th scope="col" style="width:100px ">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Requests == null)
-                            {
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            }
-                            else
-                            {
-
-                                @foreach (var item in Model.Requests)
-                                {
-                                    if (item.RequestStatus == 1)
-                                    {
-                                        <tr>
-                                            <td>@item.UserName</td>
-                                            <td>@item.AcceptedName</td>
-                                            <td>@item.Title</td>
-                                            <td>@item.ProductName</td>
-                                            @if (@item.RequestStatus == 0)
-                                            {
-                                                <td> Beklemede... </td>
-                                            }
-                                            else if (@item.RequestStatus == 1)
-                                            {
-                                                <td> Onaylandı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 2)
-                                            {
-                                                <td> Satın Alındı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 3)
-                                            {
-                                                <td> Reddedildi... </td>
-                                            }
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        İşlemler
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                                               data-id1="@item.Id"
-                                                               data-title1="@item.Title"
-                                                               data-description1="@item.Description"
-                                                               data-username1="@item.UserId"
-                                                               data-product1="@item.ProductId"
-                                                               data-brim1="@item.QuantityUnit"
-                                                               data-miktar1="@item.Quantity"
-                                                               data-status1="@item.RequestStatus">Detay</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticOnayla"
-                                                               data-id="@item.Id"
-                                                               data-title="@item.Title"
-                                                               data-description="@item.Description"
-                                                               data-username="@item.UserId"
-                                                               data-product="@item.ProductId"
-                                                               data-brim="@item.QuantityUnit"
-                                                               data-miktar="@item.Quantity"
-                                                               data-status="@item.RequestStatus">Onayla</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
-
                 </div>
             </div>
         </div>
@@ -281,92 +312,99 @@
             </h2>
             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <div id="example_filter" class="dataTables_filter">
-                        <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
-                    </div>
-                    <table id="example" class="table table-bordered border-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Talep Eden</th>
-                                <th scope="col">Reddeden Kullanıcı</th>
-                                <th scope="col">Talep Adı</th>
-                                <th scope="col">Ürün</th>
-                                <th scope="col">Durum</th>
-                                <th scope="col" style="width:100px ">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Requests == null)
-                            {
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            }
-                            else
-                            {
-                                @foreach (var item in Model.Requests)
-                                {
-                                    if (item.RequestStatus == 3)
-                                    {
-                                        <tr>
-                                            <td>@item.UserName</td>
-                                            <td>@item.AcceptedName</td>
-                                            <td>@item.Title</td>
-                                            <td>@item.ProductName</td>
-                                            @if (@item.RequestStatus == 0)
+                    <div class="container-table100" style="border-radius:8px;">
+                        <div class="wrap-table100">
+                            <div class="table100 ver5 m-b-110">
+                                <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                            <tr class="row100 head bg-secondary bg-opacity-75">
+                                                <th class="cell100 column2 text-light" style="padding-left:5px;">Talep Eden</th>
+                                                <th class="cell100 column2 text-light">Reddeden</th>
+                                                <th class="cell100 column2 text-light">Talep Adı</th>
+                                                <th class="cell100 column2 text-light">Ürün</th>
+                                                <th class="cell100 column2 text-light">Durum</th>
+                                                <th class="cell100 column2 text-light">İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="table100-body js-pscroll ps ps--active-y">
+                                    <table id="example" style="min-height:350px;">
+                                        <tbody>
+                                            @if (Model.Requests == null)
                                             {
-                                                <td> Beklemede... </td>
+                                                <tr>
+                                                    <td></td>
+                                                </tr>
                                             }
-                                            else if (@item.RequestStatus == 1)
+                                            else
                                             {
-                                                <td> Onaylandı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 2)
-                                            {
-                                                <td> Satın Alındı... </td>
-                                            }
-                                            else if (@item.RequestStatus == 3)
-                                            {
-                                                <td> Reddedildi... </td>
-                                            }
 
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        İşlemler
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                                               data-id1="@item.Id"
-                                                               data-title1="@item.Title"
-                                                               data-description1="@item.Description"
-                                                               data-username1="@item.UserId"
-                                                               data-product1="@item.ProductId"
-                                                               data-brim1="@item.QuantityUnit"
-                                                               data-miktar1="@item.Quantity"
-                                                               data-status1="@item.RequestStatus">Detay</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticOnayla"
-                                                               data-id="@item.Id"
-                                                               data-title="@item.Title"
-                                                               data-description="@item.Description"
-                                                               data-username="@item.UserId"
-                                                               data-product="@item.ProductId"
-                                                               data-brim="@item.QuantityUnit"
-                                                               data-miktar="@item.Quantity"
-                                                               data-status="@item.RequestStatus">Onayla</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
+                                                @foreach (var item in Model.Requests)
+                                                {
+                                                    if (item.RequestStatus == 3)
+                                                    {
+                                                        <tr class="row100 body">
+                                                            <td class="cell100 column2" style="padding-left:5px;">@item.UserName</td>
+                                                            <td class="cell100 column2">@item.AcceptedName</td>
+                                                            <td class="cell100 column2">@item.Title</td>
+                                                            <td class="cell100 column2">@item.ProductName</td>
+                                                            @if (@item.RequestStatus == 0)
+                                                            {
+                                                                <td class="cell100 column2"> Beklemede... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 1)
+                                                            {
+                                                                <td class="cell100 column2"> Onaylandı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 2)
+                                                            {
+                                                                <td class="cell100 column2"> Satın Alındı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 3)
+                                                            {
+                                                                <td class="cell100 column2"> Reddedildi... </td>
+                                                            }
+                                                            <td class="cell100 column2">
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        İşlemler
+                                                                    </button>
+                                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                        <li>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                                               data-id1="@item.Id"
+                                                                               data-title1="@item.Title"
+                                                                               data-description1="@item.Description"
+                                                                               data-username1="@item.UserId"
+                                                                               data-product1="@item.ProductId"
+                                                                               data-brim1="@item.QuantityUnit"
+                                                                               data-miktar1="@item.Quantity"
+                                                                               data-status1="@item.RequestStatus">Detay</a>
+                                                                        </li>
+
+
+                                                                    </ul>
+                                                                </div>
+                                                        </tr>
+                                                    }
+                                                }
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div>
+
+                                    <div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -379,83 +417,101 @@
             </h2>
             <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <div id="example_filter" class="dataTables_filter">
-                        <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
+                    <div class="container-table100" style="border-radius:8px;">
+                        <div class="wrap-table100">
+                            <div class="table100 ver5 m-b-110">
+                                <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                            <tr class="row100 head bg-secondary bg-opacity-75">
+                                                <th class="cell100 column2 text-light" style="padding-left:5px;">Talep Eden</th>
+                                                <th class="cell100 column2 text-light">Onaylayan</th>
+                                                <th class="cell100 column2 text-light">Talep Adı</th>
+                                                <th class="cell100 column2 text-light">Ürün</th>
+                                                <th class="cell100 column2 text-light">Durum</th>
+                                                <th class="cell100 column2 text-light">İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="table100-body js-pscroll ps ps--active-y">
+                                    <table id="example" style="min-height:350px;">
+                                        <tbody>
+                                            @if (Model.Requests == null)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+
+                                                @foreach (var item in Model.Requests)
+                                                {
+                                                    if (item.RequestStatus == 2)
+                                                    {
+                                                        <tr class="row100 body">
+                                                            <td class="cell100 column2" style="padding-left:5px;">@item.UserName</td>
+                                                            <td class="cell100 column2">@item.AcceptedName</td>
+                                                            <td class="cell100 column2">@item.Title</td>
+                                                            <td class="cell100 column2">@item.ProductName</td>
+                                                            @if (@item.RequestStatus == 0)
+                                                            {
+                                                                <td class="cell100 column2"> Beklemede... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 1)
+                                                            {
+                                                                <td class="cell100 column2"> Onaylandı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 2)
+                                                            {
+                                                                <td class="cell100 column2"> Satın Alındı... </td>
+                                                            }
+                                                            else if (@item.RequestStatus == 3)
+                                                            {
+                                                                <td class="cell100 column2"> Reddedildi... </td>
+                                                            }
+                                                            <td class="cell100 column2">
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        İşlemler
+                                                                    </button>
+                                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                        <li>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                                               data-id1="@item.Id"
+                                                                               data-title1="@item.Title"
+                                                                               data-description1="@item.Description"
+                                                                               data-username1="@item.UserId"
+                                                                               data-product1="@item.ProductId"
+                                                                               data-brim1="@item.QuantityUnit"
+                                                                               data-miktar1="@item.Quantity"
+                                                                               data-status1="@item.RequestStatus">Detay</a>
+                                                                        </li>
+
+
+                                                                    </ul>
+                                                                </div>
+                                                        </tr>
+                                                    }
+                                                }
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div>
+
+                                    <div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <table id="example" class="table table-bordered border-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Talep Eden</th>
-                                <th scope="col">Onaylayan Kullanıcı</th>
-                                <th scope="col">Talep Adı</th>
-                                <th scope="col">Ürün</th>
-                                <th scope="col">Durum</th>
-                                <th scope="col" style="width:100px ">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Requests == null)
-                            {
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            }
-                            else
-                            {
-                                @foreach (var item in Model.Requests)
-                                {
-                                    if (item.RequestStatus == 2)
-                                    {
-                                        <tr>
-                                            <td>@item.UserName</td>
-                                            <td>@item.AcceptedName</td>
-                                            <td>@item.Title</td>
-                                            <td>@item.ProductName</td>
-                                                @if (@item.RequestStatus == 0)
-                                                {
-                                                <td> Beklemede... </td>
-                                                }
-                                                else if (@item.RequestStatus == 1)
-                                                {
-                                                <td> Onaylandı... </td>
-                                                }
-                                                else if (@item.RequestStatus == 2)
-                                                {
-                                                <td> Satın Alındı... </td>
-                                                }
-                                                else if (@item.RequestStatus == 3)
-                                                {
-                                                <td> Reddedildi... </td>
-                                                }
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        İşlemler
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                                               data-id1="@item.Id"
-                                                               data-title1="@item.Title"
-                                                               data-description1="@item.Description"
-                                                               data-username1="@item.UserId"
-                                                               data-product1="@item.ProductId"
-                                                               data-brim1="@item.QuantityUnit"
-                                                               data-miktar1="@item.Quantity"
-                                                               data-status1="@item.RequestStatus">Detay</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-
-                        </tbody>
-                    </table>
-
-                </div>.
+                    
+                </div>
             </div>
             </div>
         </div>
@@ -510,7 +566,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 
@@ -592,7 +648,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama1" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama1" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 
@@ -673,7 +729,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                    <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
                 </div>
             </div>
 
@@ -741,7 +797,7 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <textarea autocomplete="off" hidden="hidden" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklamaonay" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea autocomplete="off" hidden="hidden" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklamaonay" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
 
@@ -762,6 +818,18 @@
             window.location.href = 'TalepSil/' + id;
         }
     }
+    $('.js-pscroll').each(function () {
+        var ps = new PerfectScrollbar(this);
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
+    $('.js-pscroll1').each(function () {
+        var ps = new PerfectScrollbar(this);
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id');
