@@ -4,6 +4,7 @@ using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.DTO.CategoryDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +32,14 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> AddCategory(CategoryDTORequest categoryDTORequest)
         {
             Category category = _mapper.Map<Category>(categoryDTORequest);
+
+            var existingCategory = await _categoryService.GetAsync(x => x.Name == category.Name);
+
+            if (existingCategory != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kategori zaten var"));
+            }
+
             await _categoryService.AddAsync(category);
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
@@ -65,6 +74,14 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<CategoryDTOResponse>.SuccessNoDataFound());
             }
             category = _mapper.Map(categoryDTORequest, category);
+
+            var existingCategory = await _categoryService.GetAsync(x => x.Name == category.Name);
+
+            if (existingCategory != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kategori zaten var"));
+            }
+
             await _categoryService.UpdateAsync(category);
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);

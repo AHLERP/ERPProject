@@ -69,5 +69,10 @@ namespace ERPProject.Entity.Result
             return new Sonuc<T>("Hata Oluştu", (int)HttpStatusCode.Unauthorized, HataBilgisi.TokenNotFoundError());
         }
 
+        public static Sonuc<T> ExistingError(string message = "Hata Oluştu", int statusCode = (int)HttpStatusCode.BadRequest)
+        {
+            return new Sonuc<T>(message, statusCode, HataBilgisi.Error());
+        }
+
     }
 }
