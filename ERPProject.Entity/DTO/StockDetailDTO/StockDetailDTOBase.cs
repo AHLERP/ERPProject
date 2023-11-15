@@ -16,5 +16,8 @@ namespace ERPProject.Entity.DTO.StockDetailDTO
         public long RecieverId { get; set; }
 
         public long DelivererId { get; set; }
+        public string RecieverName { get; set; }
+
+        public string DelivererName { get; set; }
     }
 }

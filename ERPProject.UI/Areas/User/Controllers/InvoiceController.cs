@@ -16,7 +16,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Faturalar")]
+        [HttpGet("/Kullanici/Faturalar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
@@ -42,17 +42,17 @@ namespace ERPProject.UI.Areas.User.Controllers
             };
             return View(invoiceVM);
         }
-        [HttpGet("/User/Fatura")]
+        [HttpGet("/Kullanici/Fatura")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<InvoiceDTOResponse>(url + "GetInvoice/" + id);
             return View(val);
         }
-        [HttpPost("/User/FaturaEkle")]
+        [HttpPost("/Kullanici/FaturaEkle")]
         public async Task<IActionResult> Add(InvoiceDTORequest p)
         {
             var val = await AddAsync(p, url + "AddInvoice");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Invoice");
 
@@ -60,7 +60,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/FaturaGuncelle")]
+        [HttpPost("/Kullanici/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateInvoice");
@@ -72,7 +72,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/FaturaSil")]
+        [HttpPost("/Kullanici/FaturaSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveInvoice/" + id);

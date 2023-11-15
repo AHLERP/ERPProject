@@ -15,7 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "deneme")]
+    [Authorize]
     public class BrandController : ControllerBase
     {
         

@@ -15,13 +15,13 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Kullanicilar")]
+        [HttpGet("/Kullanici/Kullanicilar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
-            var val4 = await GetAllAsync<RequestDTOResponse>(url + "GetRequests");
+            var val4 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
 
             UserVM userVM = new UserVM
             {
@@ -34,7 +34,8 @@ namespace ERPProject.UI.Areas.User.Controllers
 
             return View(userVM);
         }
-        [HttpGet("/User/Kullanici")]
+        [HttpGet("/Kullanici/Kullanici")]
+
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + id);
@@ -47,13 +48,12 @@ namespace ERPProject.UI.Areas.User.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             return View(val);
-            return View(val);
         }
-        [HttpPost("/User/KullaniciEkle")]
+        [HttpPost("/Kullanici/KullaniciEkle")]
         public async Task<IActionResult> Add(UserDTORequest p)
         {
             var val = await AddAsync(p, url + "AddUser");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "User");
 
@@ -61,7 +61,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/KullaniciGuncelle")]
+        [HttpPost("/Kullanici/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateUser");
@@ -73,7 +73,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpGet("/User/KullaniciSil/{id}")]
+        [HttpGet("/Kullanici/KullaniciSil/{id}")]
         public async Task<IActionResult> Delete(Int64 id)
         {
             var val = await DeleteAsync(url + "RemoveUser/" + id);

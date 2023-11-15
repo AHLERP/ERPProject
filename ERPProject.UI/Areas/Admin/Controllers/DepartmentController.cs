@@ -37,8 +37,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/DepartmanEkle")]
         public async Task<IActionResult> Add(DepartmentDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddDepartment");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Sirketler", "Admin");
 
@@ -49,6 +51,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/DepartmanGuncelle")]
         public async Task<IActionResult> Update(DepartmentDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateDepartment");
             if (val)
             {

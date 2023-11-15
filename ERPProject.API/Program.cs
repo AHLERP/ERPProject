@@ -85,6 +85,8 @@ builder.Services.AddScoped<IRoleService, RoleManager>();
 builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<IBrandService, BrandManager>();
 builder.Services.AddScoped<IRequestService, RequestManager>();
+builder.Services.AddScoped<IStockService, StockManager>();
+builder.Services.AddScoped<IInvoiceDetailService, InvoiceDetailManager>();
 builder.Services.AddFluentValidationAutoValidation();
 
 
@@ -124,7 +126,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-//app.UseApiAuthorizationMiddleware();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

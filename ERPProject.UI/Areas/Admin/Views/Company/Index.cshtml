@@ -7,11 +7,6 @@
     ViewData["buttonismi"] = "Şirket Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
-@Accessor.HttpContext.Session.GetString("Token")
-@Accessor.HttpContext.Session.GetString("Role")
-@Accessor.HttpContext.Session.GetString("Company")
-@Accessor.HttpContext.Session.GetString("Department")
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @{
         int i = 0;
@@ -41,7 +36,7 @@
                     </div>
                 </div>
                 <div class="card-back" style="max-height: 395px; overflow-y: auto;">
-                    <table class="table table-hover table-secondary table-striped" id="example" style="min-width:375px; min-height:375px;">
+                    <table class="table table-hover table-secondary table-striped rounded" id="example" style="min-width:406px; min-height:379px;">
                         <thead>
                             <tr>
                                 <th scope="col">Departmanlar</th>
@@ -62,7 +57,6 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" data-id="@dd.Id" data-another-id="@dd.CompanyId" data-name-id="@dd.Name">Düzenle</a></li>
-                                                    <li><a class="dropdown-item" href="#">Another action</a></li>
                                                     <li><hr class="dropdown-divider text-danger"></li>
                                                     <li><a class="dropdown-item text-danger" onclick="confirmDepartmentDelete(@dd.Id)">Sil</a></li>
                                                 </ul>
@@ -75,7 +69,7 @@
                     </table>
                 </div>
             </div>
-            <button class="flip-button col col-md-6" style="width:100%;" onclick="flipCard(@i)">Departmanlar</button>
+            <button class="flip-button col col-md-6" style="width:100%; background-color:#c6cdff" onclick="flipCard(@i)">Departmanlar</button>
         </div>
         i++;
     }

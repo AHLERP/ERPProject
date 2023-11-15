@@ -20,25 +20,30 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Urunler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-            var val2 = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            var val3 = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
-            if (val.StatusCode == 401)
+            if (HttpContext.Session.GetString("Department") == "Satın Alma" || HttpContext.Session.GetString("Role") == "Admin")
             {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            ProductVM productVM = new ProductVM()
+                var val = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+                var val2 = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+                var val3 = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                ProductVM productVM = new ProductVM()
 
-            {
-                Products = val.Data,
-                Brands= val2.Data,
-                Categories= val3.Data,
-            };
-            return View(productVM);
+                {
+                    Products = val.Data,
+                    Brands = val2.Data,
+                    Categories = val3.Data,
+                };
+                return View(productVM);
+            }
+            return RedirectToAction("Index", "UserHome");
+
         }
         [HttpGet("/Admin/Urun")]
         public async Task<IActionResult> Get(long id)
@@ -49,8 +54,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/UrunEkle")]
         public async Task<IActionResult> Add(ProductDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddProduct");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Product");
 
@@ -61,6 +68,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/UrunGuncelle")]
         public async Task<IActionResult> Update(ProductDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateProduct");
             if (val)
             {

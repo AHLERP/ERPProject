@@ -14,17 +14,21 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [AllowAnonymous]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IDepartmentService _departmentService;
+        private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
 
-        public UserController(IMapper mapper, IUserService userService)
+        public UserController(IMapper mapper, IUserService userService, ICompanyService companyService, IDepartmentService departmentService)
         {
             _mapper = mapper;
             _userService = userService;
+            _companyService = companyService;
+            _departmentService = departmentService;
         }
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
 
         [HttpPost("/AddUser")]
         [ValidationFilter(typeof(UserValidator))]
@@ -51,6 +55,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpDelete("/RemoveUser/{userId}")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
 
         public async Task<IActionResult> RemoveUser(Int64 userId)
         {
@@ -68,6 +73,8 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateUser")]
         [ValidationFilter(typeof(UserValidator))]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
+
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);
@@ -95,7 +102,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetUser/{userId}")]
         public async Task<IActionResult> GetUser(long userId)
         {
-            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department");
+            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department","Department.Company");
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -109,36 +116,45 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpGet("/GetUsers")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
+
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userService.GetAllAsync(x=>x.IsActive==true,"Department","Role");
+            
+            var users = await _userService.GetAllAsync(x=>x.IsActive==true,"Department.Company","Role");
+            
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
             }
             List<UserDTOResponse> userDTOResponseList = new();
-            foreach (var user in users)
+            foreach (var item in users)
             {
-                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
+                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(item));
+                
             }
+
 
             Log.Information("Users => {@userDTOResponse} => { Kullanıcılar Getirildi. }", userDTOResponseList);
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
 
-        [HttpGet("GetUsersByDepartment/{departmentId}")]
-        public async Task<IActionResult> GetUsersByDepartment(int departmentId)
+        [HttpGet("/GetUsersByDepartment/{userId}")]
+        public async Task<IActionResult> GetUsersByDepartment(int userId)
         {
-            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId==departmentId, "Department", "Role");
+            User user = await _userService.GetAsync(x=>x.Id == userId);
+            Department department = await _departmentService.GetAsync(x=>x.Id == user.DepartmentId);
+
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId==department.Id, "Department.Company", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
             }
             List<UserDTOResponse> userDTOResponseList = new();
-            foreach (var user in users)
+            foreach (var item in users)
             {
-                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
+                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(item));
             }
 
             Log.Information("Users => {@userDTOResponse} => { Departmana Göre Kullanıcılar Getirildi. }", userDTOResponseList);
@@ -146,10 +162,14 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
 
-        [HttpGet("GetUsersByRole/{roleId}")]
+        
+
+
+
+        [HttpGet("/GetUsersByRole/{roleId}")]
         public async Task<IActionResult> GetUsersByRole(int roleId)
         {
-            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId == roleId, "Department", "Role");
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.DepartmentId == roleId, "Department.Company", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -165,23 +185,39 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
 
-        [HttpGet("GetUsersByCompany/{companyId}")]
-        public async Task<IActionResult> GetUsersByCompany(int companyId)
+        [HttpGet("/GetUsersByCompany/{userId}")]
+        public async Task<IActionResult> GetUsersByCompany(int userId)
         {
-            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.Department.CompanyId == companyId, "Department", "Role");
+            User user = await _userService.GetAsync(x=>x.Id == userId);
+            Department department = await _departmentService.GetAsync(x=>x.Id == user.DepartmentId);
+            Company company = await _companyService.GetAsync(x=>x.Id == department.CompanyId);
+            
+
+            var users = await _userService.GetAllAsync(x => x.IsActive == true && x.Department.CompanyId == company.Id, "Department.Company", "Role");
             if (users == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
             }
             List<UserDTOResponse> userDTOResponseList = new();
-            foreach (var user in users)
+            foreach (var item in users)
             {
-                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(user));
+                
+                userDTOResponseList.Add(_mapper.Map<UserDTOResponse>(item));
+                
+            }
+
+            foreach (var item in userDTOResponseList)
+            {
+                item.CompanyName = company.Name;
             }
 
             Log.Information("Users => {@userDTOResponse} => { Şirkete Göre Kullanıcılar Getirildi. }", userDTOResponseList);
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
+
+
     }
+
+
 }

@@ -7,6 +7,7 @@ using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -14,12 +15,13 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IMapper mapper, IDepartmentService departmentService)
+        public DepartmentController(IMapper mapper, IDepartmentService departmentService, IUserService userService, ICompanyService companyService)
         {
             _mapper = mapper;
             _departmentService = departmentService;

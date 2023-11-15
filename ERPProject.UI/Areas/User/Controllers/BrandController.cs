@@ -13,7 +13,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Markalar")]
+        [HttpGet("/Kullanici/Markalar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
@@ -27,18 +27,18 @@ namespace ERPProject.UI.Areas.User.Controllers
             }
             return View(val);
         }
-        [HttpGet("/User/Marka")]
+        [HttpGet("/Kullanici/Marka")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<BrandDTOResponse>(url + "GetBrand/" + id);
             
             return View(val);
         }
-        [HttpPost("/User/MarkaEkle")]
+        [HttpPost("/Kullanici/MarkaEkle")]
         public async Task<IActionResult> Add(BrandDTORequest p)
         {
             var val = await AddAsync(p, url + "AddBrand");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Brand");
 
@@ -46,7 +46,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/MarkaGuncelle")]
+        [HttpPost("/Kullanici/MarkaGuncelle")]
         public async Task<IActionResult> Update(BrandDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateBrand");
@@ -58,7 +58,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpGet("/User/MarkaSil/{id}")]
+        [HttpGet("/Kullanici/MarkaSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveBrand/" + id);

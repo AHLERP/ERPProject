@@ -11,7 +11,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Talepler")]
+        [HttpGet("/Kullanici/Talepler")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<RequestDTOResponse>(url + "GetCompanies");
@@ -26,17 +26,17 @@ namespace ERPProject.UI.Areas.User.Controllers
             return View(val);
             return View(val);
         }
-        [HttpGet("/User/Talep")]
+        [HttpGet("/Kullanici/Talep")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<RequestDTOResponse>(url + "GetRequest/" + id);
             return View(val);
         }
-        [HttpPost("/User/TalepEkle")]
+        [HttpPost("/Kullanici/TalepEkle")]
         public async Task<IActionResult> AddRequest(RequestDTORequest p)
         {
             var val = await AddAsync(p, url + "AddRequest");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 
@@ -44,7 +44,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/TalepGuncelle")]
+        [HttpPost("/Kullanici/TalepGuncelle")]
         public async Task<IActionResult> Update(RequestDTORequest p)
         {
             p.Id = 1;
@@ -57,7 +57,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/TalepSil")]
+        [HttpPost("/Kullanici/TalepSil")]
         public async Task<IActionResult> Delete(long id)
         {
             id = 3;

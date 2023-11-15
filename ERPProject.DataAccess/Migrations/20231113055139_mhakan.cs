@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ERPProject.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class m2 : Migration
+    public partial class mhakan : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,16 +72,15 @@ namespace ERPProject.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offer",
+                name: "Invoice",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SupplierName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceStatus = table.Column<string>(type: "char(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
-                    Status = table.Column<string>(type: "char(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
+                    InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SupplierName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
@@ -92,7 +91,7 @@ namespace ERPProject.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offer", x => x.Id);
+                    table.PrimaryKey("PK_Invoice", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,14 +174,16 @@ namespace ERPProject.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invoice",
+                name: "InvoiceDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OfferId = table.Column<long>(type: "bigint", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    QuantityUnit = table.Column<short>(type: "smallint", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InvoiceId = table.Column<long>(type: "bigint", nullable: false),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
@@ -193,21 +194,11 @@ namespace ERPProject.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invoice", x => x.Id);
+                    table.PrimaryKey("PK_InvoiceDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invoice_Company",
-                        column: x => x.CompanyId,
-                        principalTable: "Company",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Invoice_Offer",
-                        column: x => x.OfferId,
-                        principalTable: "Offer",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Invoice_Product",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
+                        name: "FK_InvoiceDetail_Invoice",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoice",
                         principalColumn: "Id");
                 });
 
@@ -219,6 +210,7 @@ namespace ERPProject.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    QuantityUnit = table.Column<short>(type: "smallint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -292,8 +284,8 @@ namespace ERPProject.DataAccess.Migrations
                     Description = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    QuantityUnit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    RequestStatus = table.Column<int>(type: "int", nullable: false),
+                    QuantityUnit = table.Column<short>(type: "smallint", nullable: false),
+                    RequestStatus = table.Column<short>(type: "smallint", nullable: false),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
@@ -326,8 +318,11 @@ namespace ERPProject.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StockId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    RecieverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DelivererName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RecieverId = table.Column<long>(type: "bigint", nullable: false),
                     DelivererId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: true),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
@@ -346,12 +341,48 @@ namespace ERPProject.DataAccess.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_StockDetail_User",
-                        column: x => x.RecieverId,
+                        column: x => x.DelivererId,
                         principalTable: "User",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_StockDetail_User1",
-                        column: x => x.DelivererId,
+                        name: "FK_StockDetail_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Offer",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SupplierName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PriceStatus = table.Column<string>(type: "char(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
+                    Status = table.Column<int>(type: "int", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    RequestId = table.Column<long>(type: "bigint", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
+                    UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Offer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Offer_Request",
+                        column: x => x.RequestId,
+                        principalTable: "Request",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Offer_User",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -362,19 +393,19 @@ namespace ERPProject.DataAccess.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_CompanyId",
-                table: "Invoice",
-                column: "CompanyId");
+                name: "IX_InvoiceDetail_InvoiceId",
+                table: "InvoiceDetail",
+                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_OfferId",
-                table: "Invoice",
-                column: "OfferId");
+                name: "IX_Offer_RequestId",
+                table: "Offer",
+                column: "RequestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_ProductId",
-                table: "Invoice",
-                column: "ProductId");
+                name: "IX_Offer_UserId",
+                table: "Offer",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_BrandId",
@@ -412,14 +443,14 @@ namespace ERPProject.DataAccess.Migrations
                 column: "DelivererId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockDetail_RecieverId",
-                table: "StockDetail",
-                column: "RecieverId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_StockDetail_StockId",
                 table: "StockDetail",
                 column: "StockId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockDetail_UserId",
+                table: "StockDetail",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_DepartmentId",
@@ -436,16 +467,19 @@ namespace ERPProject.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Invoice");
+                name: "InvoiceDetail");
 
             migrationBuilder.DropTable(
-                name: "Request");
+                name: "Offer");
 
             migrationBuilder.DropTable(
                 name: "StockDetail");
 
             migrationBuilder.DropTable(
-                name: "Offer");
+                name: "Invoice");
+
+            migrationBuilder.DropTable(
+                name: "Request");
 
             migrationBuilder.DropTable(
                 name: "Stock");

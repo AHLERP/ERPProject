@@ -7,38 +7,47 @@
     ViewData["buttonismi"] = "Yetki Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<div class="container col col-md-9 pt-3">
-    <div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
-    <table class="table table-bordered border-dark" id="example">
-        <thead>
-            <tr>
-                <th scope="col">Yetki Adı</th>
-                <th scope="col" style="width:100px ">İşlemler</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Data)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                İşlemler
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name="@item.Name">Yetki Düzenle</a></li>
-                                <li><hr class="dropdown-divider text-danger"></li>
-                                <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
-</div>
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100 ver5 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                            <tr class="row100 head">
+                                <th class="cell100 column1 text-light bg-secondary opacity-75">YETKİ</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="table100-body js-pscroll ps ps--active-y">
+                <table id="example" style="min-height:350px;">
+                        <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
+                        <tbody>
+                            @foreach (var item in Model.Data)
+                            {
+                                <tr class="row100 body">
+                                    <td class="cell100 column1">@item.Name</td>
+                                    <td class="cell100 column2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                İşlemler
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@item.Id" data-name="@item.Name">Yetki Düzenle</a></li>
+                                                <li><hr class="dropdown-divider text-danger"></li>
+                                                <li><a class="dropdown-item text-danger" onclick="confirmRolDelete(@item.Id)">Sil</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -89,6 +98,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function confirmRolDelete(id) {
         var result = confirm("Bu yetkiyi silmek istediğinizden emin misiniz?");
@@ -102,5 +112,12 @@
         var name = button.data('name');
         $("#inputRolId").val(CompanyId);
         $("#inputRolName").val(name);
+    });
+
+    $('.js-pscroll').each(function () {
+        var ps = new PerfectScrollbar(this);
+        $(window).on('resize', function () {
+            ps.update();
+        })
     });
 </script>

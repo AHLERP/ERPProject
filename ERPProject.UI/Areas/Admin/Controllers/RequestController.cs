@@ -3,6 +3,7 @@ using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -12,12 +13,40 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         private readonly string url = "https://localhost:7075/";
         public RequestController(HttpClient httpClient) : base(httpClient)
         {
-
         }
+        
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
+
+            var id = HttpContext.Session.GetString("User");
+
+            if (HttpContext.Session.GetString("Role") == "Personel")
+            {
+                var val5 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+                var val6= await GetAllAsync<RequestDTOResponse>(url + "RequestsByUser/"+id);
+                RequestVM requestVM2 = new RequestVM()
+
+                {
+                    Requests = val6.Data,
+                    Products = val5.Data,
+                    Users = null,
+                };
+                return View(requestVM2);
+            }
             var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
+
+            if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
+            {
+                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByDepartment/" + id);
+
+            }
+            else if (HttpContext.Session.GetString("Role") == "Şirket Müdürü")
+            {
+                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
+
+            }
+            
             var val1 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
             if (val.StatusCode == 401)
@@ -40,14 +69,16 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Talep")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<RequestDTOResponse>(url + "GetRequest/" + id);
+            var val = await GetAsync<RequestDTOResponse>(url + "Request/" + id);
             return View(val);
         }
         [HttpPost("/Admin/TalepEkle")]
         public async Task<IActionResult> AddRequest(RequestDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddRequest");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 
@@ -58,6 +89,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/TalepGuncelle")]
         public async Task<IActionResult> Update(RequestDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateRequest");
             if (val)
             {

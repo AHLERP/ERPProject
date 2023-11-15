@@ -7,6 +7,7 @@ using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,8 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    [Authorize]
+
     public class StockController : Controller
     {
         private readonly IMapper _mapper;
@@ -29,7 +32,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/Stocks")]
         public async Task<IActionResult> GetStocks()
         {
-            var stocks = await _stockService.GetAllAsync();
+            var stocks = await _stockService.GetAllAsync(x=>x.IsActive == true ,"Product","Company");
             if (stocks == null)
             {
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
@@ -48,7 +51,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/Stock/{stockId}")]
         public async Task<IActionResult> GetStock(int stockId)
         {
-            var stock = await _stockService.GetAsync(e=>e.Id== stockId);
+            var stock = await _stockService.GetAsync(e=>e.Id== stockId && e.IsActive == true, "Product", "Company");
             if (stock == null)
             {
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
@@ -108,6 +111,26 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<StockDTOResponse>.SuccessWithoutData());
 
+        }
+
+        [HttpGet("/StocksByCompany/{companyId}")]
+        public async Task<IActionResult> GetStocksByCompany(int companyId)
+        {
+
+            var stocks = await _stockService.GetAllAsync(x=>x.CompanyId == companyId);
+            if (stocks == null)
+            {
+                return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
+            }
+
+            List<StockDTOResponse> stockDTOResponses = new();
+            foreach (var stock in stocks)
+            {
+                stockDTOResponses.Add(_mapper.Map<StockDTOResponse>(stock));
+            }
+
+            Log.Information("Stocks => {@stockDTOResponse} => { Stoklar Getirildi. }", stockDTOResponses);
+            return Ok(Sonuc<List<StockDTOResponse>>.SuccessWithData(stockDTOResponses));
         }
 
     }

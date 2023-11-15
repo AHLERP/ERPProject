@@ -14,7 +14,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
 
         }
-        [HttpGet("/User/Stoklar")]
+        [HttpGet("/Kullanici/Stoklar")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<StockDTOResponse>(url + "GetStocks");
@@ -29,17 +29,17 @@ namespace ERPProject.UI.Areas.User.Controllers
             return View(val);
             return View(val);
         }
-        [HttpGet("/User/Stok")]
+        [HttpGet("/Kullanici/Stok")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<StockDTOResponse>(url + "GetStock/" + id);
             return View(val);
         }
-        [HttpPost("/User/StokEkle")]
+        [HttpPost("/Kullanici/StokEkle")]
         public async Task<IActionResult> Add(StockDTORequest p)
         {
             var val = await AddAsync(p, url + "AddStock");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Stock");
 
@@ -47,7 +47,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/StokGuncelle")]
+        [HttpPost("/Kullanici/StokGuncelle")]
         public async Task<IActionResult> Update(StockDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateStock");
@@ -59,7 +59,7 @@ namespace ERPProject.UI.Areas.User.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost("/User/StokSil")]
+        [HttpPost("/Kullanici/StokSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveStock/" + id);

@@ -35,6 +35,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
             StockRepository = new EfStockRepository(_context);
             StockDetailRepository = new EfStockDetailRepository(_context);
             UserRepository = new EfUserRepository(_context);
+            InvoiceDetailRepository = new EfInvoiceDetailRepository(_context);
         }
 
         public IBrandRepository BrandRepository { get; }
@@ -60,6 +61,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
         public IStockDetailRepository StockDetailRepository { get; }
 
         public IUserRepository UserRepository { get; }
+        public IInvoiceDetailRepository InvoiceDetailRepository { get; }
 
         public Task<int> SaveChangeAsync()
         {
@@ -69,8 +71,8 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
                 {
                     item.Entity.AddedTime = DateTime.Now;
                     item.Entity.UpdatedTime = DateTime.Now;
-                    item.Entity.AddedUser = 1;
-                    item.Entity.UpdatedUser = 1;
+                    item.Entity.AddedUser = item.Entity.AddedUser;
+                    item.Entity.UpdatedUser = item.Entity.UpdatedUser;
                     item.Entity.AddedIPV4Address = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                     item.Entity.UpdatedIPV4Address = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
@@ -83,7 +85,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
                 else if (item.State == EntityState.Modified)
                 {
                     item.Entity.UpdatedTime = DateTime.Now;
-                    item.Entity.UpdatedUser = 1;
+                    item.Entity.UpdatedUser = item.Entity.UpdatedUser;
                     item.Entity.UpdatedIPV4Address = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                 }
             }

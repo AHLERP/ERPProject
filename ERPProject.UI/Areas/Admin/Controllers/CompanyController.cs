@@ -14,10 +14,23 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
 
         }
+
         [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var id = HttpContext.Session.GetString("User");
+            if (HttpContext.Session.GetString("Role") == "Admin" || HttpContext.Session.GetString("Role") == "Genel Müdür" || HttpContext.Session.GetString("Role") == "Yönetim Kurulu Başkanı")
+            {
+                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+
+            }
+            else
+            {
+                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/" + id);
+
+            }
+
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             if (val.StatusCode == 401)
             {
@@ -48,9 +61,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/SirketEkle")]
         public async Task<IActionResult> AddCompany(CompanyDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddCompany");
 
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Company");
 
@@ -61,6 +76,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/SirketGuncelle")]
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateCompany");
             if (val)
             {

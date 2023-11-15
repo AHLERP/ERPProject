@@ -16,16 +16,20 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kategoriler")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
-            if (val.StatusCode == 401)
+            if (HttpContext.Session.GetString("Department") == "Satın Alma" || HttpContext.Session.GetString("Role") == "Admin")
             {
-                return RedirectToAction("Unauthorized", "Home");
+                var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                return View(val);
             }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            return View(val);
+            return RedirectToAction("Index", "UserHome");
         }
         [HttpGet("/Admin/Kategori")]
         public async Task<IActionResult> Get(long id)
@@ -36,8 +40,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KategoriEkle")]
         public async Task<IActionResult> Add(CategoryDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddCategory");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Category");
 
@@ -48,6 +54,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KategoriGuncelle")]
         public async Task<IActionResult> Update(CategoryDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateCategory");
             if (val)
             {

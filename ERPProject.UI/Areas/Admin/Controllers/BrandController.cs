@@ -16,16 +16,21 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Markalar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            if (val.StatusCode == 401)
+            if (HttpContext.Session.GetString("Department")=="Satın Alma"|| HttpContext.Session.GetString("Role")=="Admin") 
             {
-                return RedirectToAction("Unauthorized", "Home");
+                var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                return View(val);
             }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            return View(val);
+
+           return RedirectToAction("Index", "UserHome");
         }
         [HttpGet("/Admin/Marka")]
         public async Task<IActionResult> Get(long id)
@@ -37,8 +42,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/MarkaEkle")]
         public async Task<IActionResult> Add(BrandDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddBrand");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Brand");
 
@@ -49,6 +56,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/MarkaGuncelle")]
         public async Task<IActionResult> Update(BrandDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateBrand");
             if (val)
             {

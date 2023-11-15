@@ -28,24 +28,40 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             request.AddBody(body, "application/json");
             RestResponse response = await client.ExecuteAsync(request);
             var responseObject = JsonConvert.DeserializeObject<ApiResponse<LoginDTO>>(response.Content);
-            HttpContext.Session.SetString("Token", responseObject.Data.Token);
-            HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
-            HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
-            HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
-            
-            
-
-            
-
-
-            
-            if (response.IsSuccessStatusCode)
+            if (responseObject.StatusCode == 200)
             {
-                return RedirectToAction("Index","Company");
+                HttpContext.Session.SetString("Token", responseObject.Data.Token);
+                HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
+                HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
+                HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
+                HttpContext.Session.SetString("DepartmentName", responseObject.Data.DepartmentName);
+                HttpContext.Session.SetString("UserName", responseObject.Data.AdSoyad.ToString());
+                HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
+
+            }
+            else
+            {
+                TempData["HATA"] = "Hatalı Giriş Yaptınız";
+                return RedirectToAction("", "");
+            }
+            HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
+
+
+            if (responseObject!=null)
+            {
+                return RedirectToAction("Index", "UserHome");
             }
             
 
+
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("/Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("", "");
         }
     }
 }

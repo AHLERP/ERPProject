@@ -1,6 +1,9 @@
-﻿using ERPProject.Business.Abstract;
+﻿using AutoMapper;
+using ERPProject.Business.Abstract;
 using ERPProject.DataAccess.Abstract.DataManagement;
+using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
+using ERPProject.Entity.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +49,28 @@ namespace ERPProject.Business.Concrete
         {
             await _uow.OfferRepository.UpdateAsync(Entity);
             await _uow.SaveChangeAsync();
+        }
+        public async Task<IEnumerable<Offer>> UpdateAllAsync(Offer Entity)
+        { 
+            var updateofferList = await _uow.OfferRepository.GetAllAsync(e => e.RequestId == Entity.RequestId);
+            Entity.Status = 4;
+            Entity.IsActive = true;
+            await _uow.OfferRepository.UpdateAsync(Entity);
+            foreach (var val in updateofferList)
+            {
+                if (val.Id != Entity.Id)
+                {
+                    val.Status = 3;
+                    await _uow.OfferRepository.UpdateAsync(val);
+                }
+            }
+            await _uow.SaveChangeAsync();
+
+            return updateofferList;
+            //onay bekliyor 1
+            //kabukl edildi 2
+            //reddedildi 3
+            //onaylandı 4
         }
     }
 }

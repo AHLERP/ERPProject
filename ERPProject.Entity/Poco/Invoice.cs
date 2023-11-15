@@ -6,17 +6,12 @@ namespace ERPProject.Entity.Poco;
 
 public partial class Invoice : BaseEntity
 {
-    public int Id { get; set; }
+    public DateTime InvoiceDate { get; set; }
+    public long Id { get; set; }
+    public decimal TotalPrice { get; set; }
+    public string SupplierName { get; set; }
+    public string CompanyName { get; set; }
+    public ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 
-    public long OfferId { get; set; }
-
-    public int CompanyId { get; set; }
-
-    public int ProductId { get; set; }
-
-    public virtual Company Company { get; set; } = null!;
-
-    public virtual Offer Offer { get; set; } = null!;
-
-    public virtual Product Product { get; set; } = null!;
 }
+

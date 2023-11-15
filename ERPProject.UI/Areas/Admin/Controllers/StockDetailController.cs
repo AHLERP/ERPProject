@@ -1,4 +1,7 @@
 ﻿using ERPProject.Entity.DTO.StockDetailDTO;
+using ERPProject.Entity.DTO.StockDTO;
+using ERPProject.Entity.DTO.UserDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -14,7 +17,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/StokDetaylar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<StockDetailDTOResponse>(url + "GetStockDetails");
+            var val = await GetAllAsync<StockDetailDTOResponse>(url + "StockDetails");
+            var val1 = await GetAllAsync<StockDTOResponse>(url + "Stocks");
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -23,34 +27,49 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
-            return View(val);
+            StockDetailVM stockDetailVM = new StockDetailVM
+            {
+                StockDetails = val.Data,
+                Stocks = val1.Data
+            };
+            return View(stockDetailVM);
         }
         [HttpGet("/Admin/StokDetay")]
         public async Task<IActionResult> Get(long id)
         {
-            var val = await GetAsync<StockDetailDTOResponse>(url + "GetStockDetail/" + id);
+            var val = await GetAsync<StockDetailDTOResponse>(url + "StockDetail/" + id);
             return View(val);
         }
         [HttpPost("/Admin/StokDetayEkle")]
         public async Task<IActionResult> Add(StockDetailDTORequest p)
         {
+            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.DelivererId = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            var deliuser= await GetAsync<UserDTOResponse>(url + "GetUser/" + p.DelivererId);
+            p.DelivererName = deliuser.Data.Name+ " " +deliuser.Data.LastName;
+            var reciuser= await GetAsync<UserDTOResponse>(url + "GetUser/" + p.RecieverId);
+            p.RecieverName = reciuser.Data.Name+ " " +reciuser.Data.LastName;
+
+
             var val = await AddAsync(p, url + "AddStockDetail");
-            if (val)
+            if (val.Data != null)
             {
-                return RedirectToAction("Index", "StockDetail");
+                return RedirectToAction("Index", "Stock");
 
             }
-            return RedirectToAction("Index", "Home");
+            TempData["stok"] = "Stok Yetersiz...";
+            return RedirectToAction("Index", "Stock");
 
         }
         [HttpPost("/Admin/StokDetayGuncelle")]
         public async Task<IActionResult> Update(StockDetailDTORequest p)
         {
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateStockDetail");
             if (val)
             {
-                return RedirectToAction("Index", "StockDetail");
+                return RedirectToAction("Index", "Stock");
 
             }
             return RedirectToAction("Index", "Home");
