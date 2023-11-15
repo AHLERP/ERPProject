@@ -4,6 +4,7 @@ using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +32,14 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = _mapper.Map<Department>(departmentDTORequest);
+
+            var existingDepartment = await _departmentService.GetAsync(x => x.Name == department.Name);
+
+            if (existingDepartment != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu departman zaten var"));
+            }
+
             await _departmentService.AddAsync(department);
 
 
@@ -69,6 +78,13 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());
             }
             _mapper.Map(departmentDTORequest,department);
+
+            var existingDepartment = await _departmentService.GetAsync(x => x.Name == department.Name);
+
+            if (existingDepartment != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu departman zaten var"));
+            }
 
             await _departmentService.UpdateAsync(department);
 

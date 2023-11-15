@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using FluentValidation.Internal;
@@ -36,6 +37,14 @@ namespace ERPProject.API.Controllers
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
+
+            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
+
             await _companyService.AddAsync(company);
 
 
@@ -75,6 +84,13 @@ namespace ERPProject.API.Controllers
             }
 
             company = _mapper.Map(companyDTORequest, company);
+
+            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
 
             await _companyService.UpdateAsync(company);
 

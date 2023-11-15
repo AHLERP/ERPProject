@@ -36,6 +36,13 @@ namespace ERPProject.API.Controllers
         {
             User user = _mapper.Map<User>(userDTORequest);
 
+            var existingUser = await _userService.GetAsync(x=>x.Email == user.Email);
+
+            if (existingUser!= null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
+            }
+
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             await _userService.AddAsync(user);
@@ -74,6 +81,12 @@ namespace ERPProject.API.Controllers
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
+            }
+            var existingUser = await _userService.GetAsync(x => x.Email == user.Email);
+
+            if (existingUser != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
             }
             user = _mapper.Map(userDTORequest,user);
             //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
