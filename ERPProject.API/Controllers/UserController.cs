@@ -14,7 +14,6 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize(Roles ="Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -29,6 +28,7 @@ namespace ERPProject.API.Controllers
             _companyService = companyService;
             _departmentService = departmentService;
         }
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
 
         [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/AddUser")]
@@ -50,6 +50,8 @@ namespace ERPProject.API.Controllers
 
         [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpDelete("/RemoveUser/{userId}")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
+
         public async Task<IActionResult> RemoveUser(Int64 userId)
         {
             User user = await _userService.GetAsync(x=>x.Id == userId);
@@ -66,7 +68,8 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateUser")]
         [ValidationFilter(typeof(UserValidator))]
-        [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
+
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);
@@ -102,6 +105,8 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpGet("/GetUsers")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
+
         public async Task<IActionResult> GetUsers()
         {
             

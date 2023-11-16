@@ -14,7 +14,8 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles="Muhasebe Personeli,Muhasebe Departman Müdürü,Şirket Müdürü,Admin,Yönetim Kurulu Başkanı")]
+    [Authorize]
+
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;

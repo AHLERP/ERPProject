@@ -16,7 +16,8 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [Authorize(Roles = "Satın Alma Departman Müdürü,Satın Alma Personeli, Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+    [Authorize]
+
     public class StockController : Controller
     {
         private readonly IMapper _mapper;

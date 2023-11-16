@@ -16,6 +16,7 @@ namespace ERPProject.API.Controllers
     [ApiController]
     [Route("[action]")]
     [Authorize(Roles = "Admin")]
+
     public class RoleController : Controller
     {
         private readonly IMapper _mapper;
