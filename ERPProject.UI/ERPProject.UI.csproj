@@ -16,4 +16,7 @@
  <ItemGroup>
    <ProjectReference Include="..\ERPProject.Entity\ERPProject.Entity.csproj" />
  </ItemGroup>
+ <ItemGroup>
+   <Folder Include="wwwroot\UserImage\" />
+ </ItemGroup>
 </Project>

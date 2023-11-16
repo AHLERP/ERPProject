@@ -17,6 +17,8 @@ public partial class Offer : BaseEntity
     public string PriceStatus { get; set; } = null!;
 
     public int Status { get; set; }
+    public decimal Rate { get; set; }
+
     public long UserId { get; set; }//gelecek
     public virtual User User { get; set; } = null!;
     public long RequestId { get; set; }//gelecek

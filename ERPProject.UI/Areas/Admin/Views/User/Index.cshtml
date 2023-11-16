@@ -59,6 +59,7 @@
                     <table>
                         <thead>
                             <tr class="row100 head bg-secondary bg-opacity-75">
+                                <th class="class="cell100 column2 text-light"">Fotoğraf</th>
                             <th class="cell100 column2 text-light" style="padding-left:5px;">Ad</th>
                                 <th class="cell100 column2 text-light">Soyad</th>
                                 <th class="cell100 column2 text-light">Email</th>
@@ -78,6 +79,9 @@
                             @foreach (var user in Model.Users)
                             {
                                 <tr class="row100 body">
+                                    <td class="cell100 column2">
+                                        <img src="~/@user.Image" style="max-height:80px; max-width:80px;" alt="...">
+                                    </td>
                                     <td class="cell100 column2" style="padding-left:5px;">@user.Name</td>
                                     <td class="cell100 column2">@user.LastName</td>
                                     <td class="cell100 column2">@user.Email</td>
@@ -114,7 +118,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Personel Ekle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/KullaniciEkle" method="post">
+            <form enctype="multipart/form-data" class= action="/Admin/KullaniciEkle" method="post">
                 <div class="modal-body">
 
                     <div class="input-group mb-3">
@@ -172,6 +176,10 @@
                             <option value="d" selected>Departman Seç...</option>
                         </select>
                     </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
+                        <input type="file" name="imageFile" value="" required />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
@@ -189,7 +197,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Personel Güncelle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/KullaniciGuncelle" method="post">
+            <form enctype="multipart/form-data" action="/Admin/KullaniciGuncelle" method="post">
                 <div class="modal-body">
                     <input autocomplete="off" id="inputUserId" name="Id" class="form-control" type="hidden">
                     <div class="input-group mb-3">
@@ -245,6 +253,11 @@
                             <option selected>Departman Seç...</option>
                         </select>
                     </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
+                        <input type="file" name="imageFile" value="" required />
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>

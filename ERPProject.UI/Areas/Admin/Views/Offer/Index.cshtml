@@ -38,8 +38,8 @@
                     if (item.RequestStatus == 1)
                     {
                         <tr>
-                            <td>@item.Title</td>
-                            <td>@item.ProductName</td>
+                            <td class="cell100 column2">@item.Title</td>
+                            <td class="cell100 column2">@item.ProductName</td>
                             @if (@item.QuantityUnit == 1)
                             {
                                 <td class="cell100 column2">
@@ -100,7 +100,7 @@
                                     @item.Quantity m³
                                 </td>
                             }
-                            <td>@item.Description</td>
+                            <td class="cell100 column2">@item.Description</td>
 
                             <td>
                                 <div class="dropdown">
@@ -222,6 +222,7 @@
                             <option value="0">₺</option>
                             <option value="1">£</option>
                             <option value="2">$</option>
+                            <option value="3">¥</option>
 
                         </select>
 
