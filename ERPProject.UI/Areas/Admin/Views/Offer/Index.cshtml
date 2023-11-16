@@ -305,65 +305,66 @@
                             html += `<td>Onaylandı...</td>`;
                         }
                         html += ` <td>
-                <div>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                İşlemler
-                </button>
+                    <div>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    İşlemler
+                    </button>
 
     @{
         string rol = Accessor.HttpContext.Session.GetString("Role");
-                <ul class="dropdown-menu">
-                <li>
-                <form method="post" action="/Admin/TeklifGuncelle">
-                <input hidden="hidden" value="${arr[i].id}" name="Id">
-                <input hidden="hidden" value="${arr[i].price}" name="Price">
-                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
-                <input hidden="hidden" value="${arr[i].description}" name="Description">
-                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
-                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
-                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
-                <input hidden="hidden" value="2" name="Status">
-                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                <button class="dropdown-item" type="submit">Kabul Et</button>
-                </form>
-                </li>
-                <li>
-                <form method="post" action="/Admin/TeklifGuncelle">
-                <input hidden="hidden" value="${arr[i].id}" name="Id">
-                <input hidden="hidden" value="${arr[i].price}" name="Price">
-                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
-                <input hidden="hidden" value="${arr[i].description}" name="Description">
-                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
-                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
-                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
-                <input hidden="hidden" value="3" name="Status">
-                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                <button class="dropdown-item" type="submit">Reddet</button>
-                </form>
-                </li>
-                
-        @if (rol != "Personel"){
-                <li>
-                <form method="post" action="/Admin/TeklifTopluGuncelle">
-                <input hidden="hidden" value="${arr[i].id}" name="Id">
-                <input hidden="hidden" value="${arr[i].price}" name="Price">
-                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
-                <input hidden="hidden" value="${arr[i].description}" name="Description">
-                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
-                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
-                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
-                <input hidden="hidden" value="4" name="Status">
-                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                <button class="dropdown-item" type="submit">Onayla</button>
-                </form>
-                </li>
+                        <ul class="dropdown-menu">
+                        <li>
+                        <form method="post" action="/Admin/TeklifGuncelle">
+                        <input hidden="hidden" value="${arr[i].id}" name="Id">
+                        <input hidden="hidden" value="${arr[i].price}" name="Price">
+                        <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                        <input hidden="hidden" value="${arr[i].description}" name="Description">
+                        <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                        <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                        <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                        <input hidden="hidden" value="2" name="Status">
+                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                        <button class="dropdown-item" type="submit">Kabul Et</button>
+                        </form>
+                        </li>
+                        <li>
+                        <form method="post" action="/Admin/TeklifGuncelle">
+                        <input hidden="hidden" value="${arr[i].id}" name="Id">
+                        <input hidden="hidden" value="${arr[i].price}" name="Price">
+                        <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                        <input hidden="hidden" value="${arr[i].description}" name="Description">
+                        <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                        <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                        <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                        <input hidden="hidden" value="3" name="Status">
+                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                        <button class="dropdown-item" type="submit">Reddet</button>
+                        </form>
+                        </li>
+
+            @if (rol != "Personel")
+            {
+                            <li>
+                            <form method="post" action="/Admin/TeklifTopluGuncelle">
+                            <input hidden="hidden" value="${arr[i].id}" name="Id">
+                            <input hidden="hidden" value="${arr[i].price}" name="Price">
+                            <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                            <input hidden="hidden" value="${arr[i].description}" name="Description">
+                            <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                            <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                            <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                            <input hidden="hidden" value="4" name="Status">
+                            <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                            <button class="dropdown-item" type="submit">Onayla</button>
+                            </form>
+                            </li>
 
             }</ul>
 
     }
 
-                </div>
-                </td>`;
+                    </div>
+                    </td>`;
                         html += `</tbody>`;
                     }
                     html += `</tr></table>`;

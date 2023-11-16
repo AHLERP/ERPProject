@@ -38,7 +38,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/Requests")]
         public async Task<IActionResult> GetRequests()
         {
-            var requests= await _requestService.GetAllAsync(x=>x.IsActive==true,"User","Product");
+            var requests= await _requestService.GetAllAsync(x=>x.IsActive==true,"User","Product","AcceptedUser");
             
             if (requests==null)
             {
