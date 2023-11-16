@@ -65,7 +65,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 };
                 return View(offerVM);
             }
-            else if (role=="Admin")
+            else if (role == "Admin" || role == "Yönetim Kurulu Başkanı")
             {
                 var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
                 var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
@@ -102,9 +102,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 };
                 return View(offerVM);
             }
-            {
-                    
-            }
+
             return RedirectToAction("Index", "Home");
 
         }
@@ -177,7 +175,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         }
         [HttpPost("/Admin/TeklifTopluGuncelle")]
         public async Task<IActionResult> UpdateAll(OfferDTORequest p)
-        {       
+        {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateAllOffer");
             if (val)

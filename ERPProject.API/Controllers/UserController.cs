@@ -30,11 +30,19 @@ namespace ERPProject.API.Controllers
         }
         [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
 
+        [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/AddUser")]
         [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)
         {
             User user = _mapper.Map<User>(userDTORequest);
+
+            var existingUser = await _userService.GetAsync(x=>x.Email == user.Email);
+
+            if (existingUser!= null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
+            }
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
@@ -47,6 +55,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
+        [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpDelete("/RemoveUser/{userId}")]
         [Authorize(Roles = "Admin,Şirket Müdürü,Departman Müdürü")]
 
@@ -74,6 +83,12 @@ namespace ERPProject.API.Controllers
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
+            }
+            var existingUser = await _userService.GetAsync(x => x.Email == user.Email);
+
+            if (existingUser != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
             }
             user = _mapper.Map(userDTORequest,user);
             //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
@@ -148,9 +163,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
-
-        
-
 
 
         [HttpGet("/GetUsersByRole/{roleId}")]

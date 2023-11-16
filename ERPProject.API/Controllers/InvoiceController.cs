@@ -32,7 +32,6 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _companyService = companyService;
         }
-
         [HttpPost("/AddInvoice")]
         public async Task<IActionResult> AddInvoice(InvoiceDTORequest invoiceDTORequest)
         {

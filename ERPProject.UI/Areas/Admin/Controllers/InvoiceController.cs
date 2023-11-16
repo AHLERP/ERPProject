@@ -22,8 +22,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("Department") == "Muhasebe" || HttpContext.Session.GetString("Role") == "Admin" || HttpContext.Session.GetString("Role") == "Şirket Müdürü" || HttpContext.Session.GetString("Role") == "Yönetim Kurulu Başkanı")
-            {
+
+           
                 var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
                 var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
                 if (val.StatusCode == 401)
@@ -40,7 +40,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     InvoiceDetail = val2.Data
                 };
                 return View(invoiceVM);
-            }
             return RedirectToAction("Index", "UserHome");
 
         }
@@ -107,7 +106,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                                 PriceStatus = row["Para Birimi"].ToString(),
                                 InvoiceDate = Convert.ToDateTime(row["Tarih"])
                             };
-
                         }
                         if (dTORequest.PriceStatus == "USD")
                         {
@@ -132,7 +130,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                         dTORequest.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
                         dTORequest.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
                         var val = await AddAsync(dTORequest, url + "AddInvoice");
-
                         id = val.Data.Id;
                         InvoiceDetailDTORequest invoiceDetailDTORequest = null;
                         for (i = 0; i < n - 2; i++)

@@ -6,24 +6,28 @@ using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Net.Mail;
 
 namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    //[Authorize(Roles = "Satın Alma Departman Müdürü,Satın Alma Personeli, Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;
         private readonly IMapper _mapper;
+        private readonly IRequestService _requestService;
 
-        public OfferController(IMapper mapper, IOfferService offerService)
+        public OfferController(IMapper mapper, IOfferService offerService, IRequestService requestService)
         {
             _mapper = mapper;
             _offerService = offerService;
+            _requestService = requestService;
         }
 
         [HttpPost("/AddOffer")]
@@ -77,7 +81,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetOffer/{offerId}")]
         public async Task<IActionResult> GetOffer(int offerId)
         {
-            Offer offer = await _offerService.GetAsync(x => x.Id == offerId);
+            Offer offer = await _offerService.GetAsync(x => x.Id == offerId, "User", "Request");
             if (offer == null)
             {
                 return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
@@ -95,10 +99,10 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetOffers()
         {
 
-            var offers = await _offerService.GetAllAsync(x=>x.IsActive==true);
+            var offers = await _offerService.GetAllAsync(x => x.IsActive == true, "User", "Request");
             if (offers == null)
             {
-                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound()) ;
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
             }
             List<OfferDTOResponse> offerDTOResponseList = new();
             foreach (var offer in offers)
@@ -112,11 +116,28 @@ namespace ERPProject.API.Controllers
         [HttpPost("/UpdateAllOffer")]
         public async Task<IActionResult> UpdateAll(OfferDTORequest offerDTORequest)
         {
+            var request = await _requestService.GetAsync(e => e.Id == offerDTORequest.RequestId,"User","AcceptedUser");
+            request.RequestStatus = 2;
+            await _requestService.UpdateAsync(request);
             var offer = _mapper.Map<Offer>(offerDTORequest);
-            var response = await _offerService.UpdateAllAsync(offer);
 
+            string AcceptRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz tamamlanmıştır.";
+            string RefuseRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz reddedildi";
+            if (request.RequestStatus == 2)
+            {
+                SendMail(request.User.Email, AcceptRequestMessage);
+
+            }
+            if (request.RequestStatus == 3)
+            {
+                SendMail(request.User.Email, RefuseRequestMessage);
+            }
+
+
+
+            var response = await _offerService.UpdateAllAsync(offer);
             List<OfferDTOResponse> offerDTOResponse = new();
-            foreach (var item in response) 
+            foreach (var item in response)
             {
 
                 offerDTOResponse.Add(_mapper.Map<OfferDTOResponse>(item));
@@ -126,6 +147,48 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
 
+        }
+        [HttpGet("/GetOfferByjs/{requestId}")]
+        public async Task<IActionResult> GetOfferByjs(long requestId)
+        {
+            var offerlist = await _offerService.GetAllAsync(x => x.RequestId == requestId && x.IsActive == true, "User", "Request");
+            if (offerlist == null)
+            {
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
+            }
+
+            List<OfferDTOResponse> offerDTOResponseList = new();
+
+            foreach (var offer in offerlist)
+            {
+                offerDTOResponseList.Add(_mapper.Map<OfferDTOResponse>(offer));
+            }
+
+
+
+            Log.Information("Offers => {@offerDTOResponse} => { Teklif Getirildi. }", offerDTOResponseList);
+            //Log.Information($"Offers => {offerDTOResponse} =>  Teklif Getirildi.");
+
+            return Ok(offerDTOResponseList);
+        }
+        private void SendMail(string mail, string body)
+        {
+
+            MailMessage mesaj = new MailMessage();
+            mesaj.From = new MailAddress("stokbilgilendirmeahl@hotmail.com");
+            mesaj.To.Add(mail);
+            mesaj.Subject = "İstek Sonuçlandı";
+            mesaj.Body = body;
+
+            SmtpClient a = new SmtpClient();
+            a.Credentials = new System.Net.NetworkCredential("stokbilgilendirmeahl@hotmail.com", "HakanC19/");
+            a.Port = 587;
+            a.Host = "smtp.office365.com";
+            a.EnableSsl = true;
+            object userState = mesaj;
+
+
+            a.Send(mesaj);
         }
     }
 }

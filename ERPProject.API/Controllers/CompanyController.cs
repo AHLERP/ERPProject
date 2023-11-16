@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using FluentValidation.Internal;
@@ -30,12 +31,20 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _userService = userService;
         }
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpPost("/AddCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
+
+            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
+
             await _companyService.AddAsync(company);
 
 
@@ -46,7 +55,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpDelete("/RemoveCompany/{id}")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
@@ -63,7 +72,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpPost("/UpdateCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
@@ -76,6 +85,13 @@ namespace ERPProject.API.Controllers
 
             company = _mapper.Map(companyDTORequest, company);
 
+            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
+
             await _companyService.UpdateAsync(company);
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
@@ -85,7 +101,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
@@ -102,7 +118,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-        
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpGet("/GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
@@ -121,7 +137,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<CompanyDTOResponse>>.SuccessWithData(companyDTOResponseList));
         }
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpGet("/GetCompaniesByUser/{userId}")]
         public async Task<IActionResult> GetCompaniesByUser(long userId)
         {

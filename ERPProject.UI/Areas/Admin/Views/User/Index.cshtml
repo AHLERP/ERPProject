@@ -52,7 +52,6 @@
         });
     });
 </script>
-<div class="limiter" >
     <div class="container-table100" style="border-radius:8px;">
         <div class="wrap-table100">
             <div class="table100 ver5 m-b-110">
@@ -74,7 +73,7 @@
                     </table>
                 </div>
                 <div class="table100-body js-pscroll ps ps--active-y">
-                    <table id="example">
+                <table id="example" style="min-height:350px;">
                         <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
                         <tbody>
                             @foreach (var user in Model.Users)
@@ -92,7 +91,7 @@
                                     <td class="cell100 column2">@user.CompanyName</td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 İşlemler
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -111,7 +110,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -133,7 +131,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-at-fill"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Email..." id="inputEmails" name="Email" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="email" class="form-control" placeholder="Email..." id="inputEmails" name="Email" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
@@ -149,7 +147,7 @@
                             <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputYetki" name="RoleId" required>
-                            <option selected>Yetki Seç...</option>
+                            <option value="" selected>Yetki Seç...</option>
                             @foreach (var item in Model.Roles)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -162,7 +160,7 @@
                             <label class="input-group-text" for="inputDeparman"><i class="bi bi-building"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputCompany" name="CompanyId" required>
-                            <option selected>Şirket Seç...</option>
+                            <option value="" selected>Şirket Seç...</option>
                             @foreach (var company in Model.Companies)
                             {
                                 <option value="@company.Id">@company.Name</option>
@@ -175,7 +173,7 @@
                             <label class="input-group-text" for="inputDepartman"><i class="bi bi-building"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputDepartman" name="DepartmentId" required>
-                            <option selected>Departman Seç...</option>
+                            <option value="d" selected>Departman Seç...</option>
                         </select>
                     </div>
                     <div class="input-group mb-3">
@@ -218,7 +216,7 @@
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
                         <input autocomplete="off" class="form-control" id="inputPhone1" type="text" name="Phone" aria-label="Please enter your phone number" placeholder="(111)-111-1111" maxlength="10" minlength="10" required>
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3" hidden="hidden">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-incognito"></i></span>
                         <input autocomplete="off" type="password" class="form-control" placeholder="Şifre..." id="inputSifre1" name="Password" aria-describedby="basic-addon1" required>
                         <button id="togglePassword1" class="btn btn-light" type="button"><i class="bi bi-eye-slash"></i><i class="bi bi-eye"></i></button>
@@ -332,6 +330,7 @@
                 }
             });
         });
+        
         $("#inputCompany1").change(function () {
             var selectedCompanyId = $(this).val();
             $.ajax({
