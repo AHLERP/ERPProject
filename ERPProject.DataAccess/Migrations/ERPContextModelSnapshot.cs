@@ -246,6 +246,13 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PriceStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("SupplierName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -301,6 +308,10 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("PriceStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -310,6 +321,9 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.Property<short>("QuantityUnit")
                         .HasColumnType("smallint");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)
@@ -369,6 +383,9 @@ namespace ERPProject.DataAccess.Migrations
                         .IsUnicode(false)
                         .HasColumnType("char(2)")
                         .IsFixedLength();
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long>("RequestId")
                         .HasColumnType("bigint");
@@ -753,6 +770,10 @@ namespace ERPProject.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");

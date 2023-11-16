@@ -45,9 +45,9 @@
     <div class="offcanvas offcanvas-start w-25 bg-dark opacity-75" style="max-width:250px;" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
         <button type="button" data-bs-dismiss="offcanvas" aria-label="Close">
             <div class="offcanvas-header">
-            <h6 class="offcanvas-title d-none d-sm-block text-light" id="offcanvas">Menu</h6>
+                <h6 class="offcanvas-title d-none d-sm-block text-light" id="offcanvas">Menu</h6>
                 <i class="bi bi-x-circle" style="font-size: 2rem; color: red;"></i>
-        </div>
+            </div>
         </button>
         <div class="offcanvas-body px-0">
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
@@ -108,9 +108,14 @@
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Teklifler</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/Admin/Raporlama" class="nav-link text-truncate">
+                        <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Raporlar</span>
+                    </a>
+                </li>
             </ul>
         </div>
-        
+
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -118,7 +123,7 @@
                 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="bi bi-arrow-up fs-3 text-light"></i></button>
                 <div class="container">
                     <br>
-                    <br/>
+                    <br />
                     <br>
                     <div class="container mb-2" id="SearchBtn" style="width: 80%;">
                         <div class="input-group input-group-lg" style="border-style: solid;border-width: 1px; border-radius:5px;">
@@ -126,7 +131,7 @@
                                 @ViewData["buttonismi"]
                             </button>
                             <input autocomplete="off" type="text" class="form-control" style="" id="myInput" placeholder="Arama Yap...">
-                            
+
                         </div>
                     </div>
                     @RenderBody()

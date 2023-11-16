@@ -114,6 +114,28 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
+        [HttpGet("/GetInvoicesByDate/{date}")]
+        public async Task<IActionResult> GetInvoicesByDate(string date)
+        {
+            string[] parcalar = date.Split('-');
+            DateTime startDate = Convert.ToDateTime(parcalar[0]);
+            DateTime endDate = Convert.ToDateTime(parcalar[1]);
+            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.InvoiceDate >= startDate && x.InvoiceDate <= endDate);
+            if (invoices == null)
+            {
+                return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
+            }
+
+            List<InvoiceDTOResponse> invoiceDTOResponseList = new();
+            foreach (var invoice in invoices)
+            {
+                invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
+            }
+
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Faturalar Getirildi. }", invoiceDTOResponseList);
+
+            return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
+        }
         //[HttpGet("/GetInvoicesByOffer/{offerId}")]
         //public async Task<IActionResult> GetInvoicesByOffer(int offerId)
         //{
