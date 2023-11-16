@@ -40,7 +40,66 @@
                         <tr>
                             <td>@item.Title</td>
                             <td>@item.ProductName</td>
-                            <td>@item.Quantity @item.QuantityUnit</td>
+                            @if (@item.QuantityUnit == 1)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Metre
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 2)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Kilometre
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 3)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Mililitre
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 4)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Litre
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 5)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Kilogram
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 6)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Ton
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 7)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Adet
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 8)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity Koli
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 9)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity m²
+                                </td>
+                            }
+                            else if (@item.QuantityUnit == 10)
+                            {
+                                <td class="cell100 column2">
+                                    @item.Quantity m³
+                                </td>
+                            }
                             <td>@item.Description</td>
 
                             <td>
@@ -58,7 +117,7 @@
                                                data-product1="@item.ProductName"
                                                data-brim1="@item.QuantityUnit"
                                                data-miktar1="@item.Quantity"
-                                               data-status1="@item.RequestStatus">Detay</a>
+                                               data-status1="@item.RequestStatus" onclick="Doldur()">Detay</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticTeklifEkle"
@@ -75,11 +134,6 @@
     </table>
 
 </div>
-<th scope="col">Satıcı Firma</th>
-<th scope="col">Teklif</th>
-<th scope="col">Teklif Detay</th>
-<th scope="col">Durum</th>
-<th scope="col" style="width:100px ">İşlemler</th>
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static2" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -89,10 +143,11 @@
             </div>
             <div class="modal-body col gap-4 d-flex justify-content-start">
                 <div class="">
+                    <input autocomplete="off" type="text" class="form-control" id="inputRequestIdDetay" name="RequestId" aria-describedby="basic-addon1" required>
                     <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId2" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
-                        <input readonly="True" class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
+                        <input readonly="readonly" class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
 
 
                     </div>
@@ -106,18 +161,18 @@
                         <input readonly="readonly" class="form-control" id="inputProduct2" name="ProductId" aria-describedby="basic-addon1" required>
 
 
-                        <select readonly="readonly" class="form-control" id="inputBirim2" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                        <select readonly="readonly" class="form-control" id="inputBirim5" name="QuantityUnit" aria-describedby="basic-addon1" required>
                             <option value="">Birim Seçiniz...</option>
-                            <option value="1,00">Metre</option>
-                            <option value="2,00">Kilometre</option>
-                            <option value="3,00">Mililitre</option>
-                            <option value="4,00">Litre</option>
-                            <option value="5,00">Kilogram</option>
-                            <option value="6,00">Ton</option>
-                            <option value="7,00">Adet</option>
-                            <option value="8,00">Koli</option>
-                            <option value="9,00">m²</option>
-                            <option value="10,00">m³</option>
+                            <option value="1">Metre</option>
+                            <option value="2">Kilometre</option>
+                            <option value="3">Mililitre</option>
+                            <option value="4">Litre</option>
+                            <option value="5">Kilogram</option>
+                            <option value="6">Ton</option>
+                            <option value="7">Adet</option>
+                            <option value="8">Koli</option>
+                            <option value="9">m²</option>
+                            <option value="10">m³</option>
                         </select>
 
                     </div>
@@ -130,151 +185,7 @@
                         <textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
-                <div class="col">
-                    <table id="example" class="table table-bordered border-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Satıcı Firma</th>
-                                <th scope="col">Teklif</th>
-                                <th scope="col">Teklif Detay</th>
-                                <th scope="col">Durum</th>
-                                <th scope="col" style="width:100px ">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Offers == null)
-                            {
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            }
-                            else
-                            {
-                                @foreach (var item in Model.Offers)
-                                {
-                                    <tr>
-                                        <td>@item.SupplierName</td>
-                                        <td>@item.Price @item.PriceStatus</td>
-                                        <td>@item.Description</td>
-                                        @if (@item.Status == 1)
-                                        {
-                                            <td> Onay Bekliyor... </td>
-                                        }
-                                        else if (@item.Status == 2)
-                                        {
-                                            <td> Kabul Edildi... </td>
-                                        }
-                                        else if (@item.Status == 3)
-                                        {
-                                            <td> Reddedildi... </td>
-                                        }
-                                        else if (@item.Status == 4)
-                                        {
-                                            <td> Onaylandı... </td>
-                                        }
-                                        <td>
-                                            <div>
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    İşlemler
-                                                </button>
-
-                                                @{
-                                                    string rol = Accessor.HttpContext.Session.GetString("Role");
-                                                    <ul class="dropdown-menu">
-
-                                                        @if (rol == "Personel" || rol == "Departman Müdürü")
-                                                        {
-                                                            <li>
-                                                                <form method="post" action="/Admin/TeklifGuncelle">
-                                                                    <input hidden="hidden" value="@item.Id" name="Id">
-                                                                    <input hidden="hidden" value="@item.Price" name="Price">
-                                                                    <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
-                                                                    <input hidden="hidden" value="@item.Description" name="Description">
-                                                                    <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
-                                                                    <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
-                                                                    <input hidden="hidden" value="@item.RequestId" name="RequestId">
-
-                                                                    <input hidden="hidden" value="2" name="Status">
-                                                                    <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                                                    <button class="dropdown-item" type="submit">Kabul Et</button>
-                                                                </form>
-                                                            </li>
-                                                            <li>
-                                                                <form method="post" action="/Admin/TeklifGuncelle">
-                                                                    <input hidden="hidden" value="@item.Id" name="Id">
-                                                                    <input hidden="hidden" value="@item.Price" name="Price">
-                                                                    <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
-                                                                    <input hidden="hidden" value="@item.Description" name="Description">
-                                                                    <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
-                                                                    <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
-                                                                    <input hidden="hidden" value="@item.RequestId" name="RequestId">
-                                                                    <input hidden="hidden" value="3" name="Status">
-                                                                    <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                                                    <button class="dropdown-item" type="submit">Reddet</button>
-                                                                </form>
-                                                            </li>
-                                                            if (rol == "Departman Müdürü" && item.Price <= 500000)
-                                                            {
-                                                                <li>
-                                                                    <form method="post" action="/Admin/TeklifGuncelle">
-                                                                        <input hidden="hidden" value="@item.Id" name="Id">
-                                                                        <input hidden="hidden" value="@item.Price" name="Price">
-                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
-                                                                        <input hidden="hidden" value="@item.Description" name="Description">
-                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
-                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
-                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
-                                                                        <input hidden="hidden" value="4" name="Status">
-                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                                                        <button class="dropdown-item" type="submit">Onayla</button>
-                                                                    </form>
-                                                                </li>
-
-                                                            }
-                                                            else if (rol == "Yönetim Kurulu Başkanı" && item.Price > 500000)
-                                                            {
-
-                                                                <li>
-                                                                    <form method="post" action="/Admin/TeklifGuncelle">
-                                                                        <input hidden="hidden" value="@item.Id" name="Id">
-                                                                        <input hidden="hidden" value="@item.Price" name="Price">
-                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
-                                                                        <input hidden="hidden" value="@item.Description" name="Description">
-                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
-                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
-                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
-                                                                        <input hidden="hidden" value="4" name="Status">
-                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                                                        <button class="dropdown-item" type="submit">Onayla</button>
-                                                                    </form>
-                                                                </li>
-                                                                <li>
-                                                                    <form method="post" action="/Admin/TeklifGuncelle">
-                                                                        <input hidden="hidden" value="@item.Id" name="Id">
-                                                                        <input hidden="hidden" value="@item.Price" name="Price">
-                                                                        <input hidden="hidden" value="@item.PriceStatus" name="PriceStatus">
-                                                                        <input hidden="hidden" value="@item.Description" name="Description">
-                                                                        <input hidden="hidden" value="@item.SupplierName" name="SupplierName">
-                                                                        <input hidden="hidden" value="@item.AddedUser" name="AddedUser">
-                                                                        <input hidden="hidden" value="@item.RequestId" name="RequestId">
-                                                                        <input hidden="hidden" value="3" name="Status">
-                                                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                                                        <button class="dropdown-item" type="submit">Reddet</button>
-                                                                    </form>
-                                                                </li>
-                                                            }
-                                                        }
-                                                    </ul>
-
-                                                }
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
+                <div class="col" id="doldur">
                 </div>
             </div>
             <div class="modal-footer">
@@ -294,7 +205,7 @@
             <form action="/Admin/TeklifEkle" method="post">
 
                 <div class="modal-body">
-                    <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputRequestId" name="RequestId" aria-describedby="basic-addon1" required>
+                    <input autocomplete="off" hidden="hidden" class="form-control" placeholder="İstek..." id="inputRequestId" name="RequestId" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <input placeholder="Satıcı Firma" class="form-control" id="inputSupplierName" name="SupplierName" aria-describedby="basic-addon1" required>
@@ -330,7 +241,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Ekle</button>
+                    <button type="submit" class="btn btn-primary">Ekle</button>
 
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
 
@@ -340,12 +251,130 @@
     </div>
 </div>
 <script>
+    var token = $("#token").val();
     function confirmRolDelete(id) {
         var result = confirm("Bu talebi silmek istediğinizden emin misiniz?");
         if (result) {
             window.location.href = 'TalepSil/' + id;
         }
     }
+    @{
+        string rol1 = Accessor.HttpContext.Session.GetString("Role");
+    }
+        function Doldur() {
+
+            var selectedCompanyId = $("#inputRequestIdDetay").val();
+            $.ajax({
+                url: "https://localhost:7075/GetOfferByjs/" + selectedCompanyId,
+                type: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                },
+                success: function (data) {
+                    $("#doldur").empty();
+                    var html = ` <table id="example" class="table table-bordered border-dark"><thead><tr><th scope="col">Satıcı Firma</th><th scope="col">Teklif</th><th scope="col">Teklif Detay</th><th scope="col">Durum</th><th scope="col" style="width:100px ">İşlemler</th></tr></thead>`;
+
+                    var arr = data;
+                    for (var i = 0; i < arr.length; i++) {
+
+                        html += `<tbody><tr>`;
+                        html += `<td>${arr[i].supplierName}</td>`;
+                        if (arr[i].priceStatus == "0 ") {
+                            html += `<td>${arr[i].price} ₺</td>`;
+                        }
+                        else if (arr[i].priceStatus == "1 ") {
+                            html += `<td>${arr[i].price} $</td>`;
+                        }
+                        else if (arr[i].priceStatus == "2 ") {
+                            html += `<td>${arr[i].price} £</td>`;
+                        }
+                        else if (arr[i].priceStatus == "3 ") {
+                            html += `<td>${arr[i].price} ¥</td>`;
+                        }
+                        html += `<td>${arr[i].description}</td>`;
+                        if (arr[i].status == 1) {
+                            html += `<td>Onay Bekliyor...</td>`;
+                        }
+                        else if (arr[i].status == 2) {
+                            html += `<td>Kabul Edildi...</td>`;
+                        }
+                        else if (arr[i].status == 3) {
+                            html += `<td>Reddedildi...</td>`;
+                        }
+                        else if (arr[i].status == 4) {
+                            html += `<td>Onaylandı...</td>`;
+                        }
+                        html += ` <td>
+                <div>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                İşlemler
+                </button>
+
+    @{
+        string rol = Accessor.HttpContext.Session.GetString("Role");
+                <ul class="dropdown-menu">
+                <li>
+                <form method="post" action="/Admin/TeklifGuncelle">
+                <input hidden="hidden" value="${arr[i].id}" name="Id">
+                <input hidden="hidden" value="${arr[i].price}" name="Price">
+                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                <input hidden="hidden" value="${arr[i].description}" name="Description">
+                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                <input hidden="hidden" value="2" name="Status">
+                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                <button class="dropdown-item" type="submit">Kabul Et</button>
+                </form>
+                </li>
+                <li>
+                <form method="post" action="/Admin/TeklifGuncelle">
+                <input hidden="hidden" value="${arr[i].id}" name="Id">
+                <input hidden="hidden" value="${arr[i].price}" name="Price">
+                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                <input hidden="hidden" value="${arr[i].description}" name="Description">
+                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                <input hidden="hidden" value="3" name="Status">
+                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                <button class="dropdown-item" type="submit">Reddet</button>
+                </form>
+                </li>
+                
+        @if (rol != "Personel"){
+                <li>
+                <form method="post" action="/Admin/TeklifTopluGuncelle">
+                <input hidden="hidden" value="${arr[i].id}" name="Id">
+                <input hidden="hidden" value="${arr[i].price}" name="Price">
+                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                <input hidden="hidden" value="${arr[i].description}" name="Description">
+                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                <input hidden="hidden" value="4" name="Status">
+                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                <button class="dropdown-item" type="submit">Onayla</button>
+                </form>
+                </li>
+
+            }</ul>
+
+    }
+
+                </div>
+                </td>`;
+                        html += `</tbody>`;
+                    }
+                    html += `</tr></table>`;
+                    $("#doldur").html(html);
+                },
+                error: function (xhr, status, error) {
+                    alert("Ajax error:", error + status);
+                }
+
+            });
+        }
     $('#staticBackdrop2').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id1');
@@ -356,12 +385,13 @@
         var brim = button.data('brim1');
         var miktar = button.data('miktar1');
         var status = button.data('status1');
+        $("#inputRequestIdDetay").val(id);
         $("#inputId2").val(id);
         $("#inputTalepAd2").val(title);
         $("#inputAciklama2").val(description);
         $("#inputUserId2").val(username);
         $("#inputProduct2").val(product);
-        $("#inputBirim2").val(brim);
+        $("#inputBirim5").val(brim);
         $("#inputMiktar2").val(miktar);
         $("#inputStatus2").val(status);
     });

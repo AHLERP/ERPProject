@@ -25,7 +25,7 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _brandService = brandService;
         }
-
+        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/AddBrand")]
         [ValidationFilter(typeof(BrandValidator))]
         public async Task<IActionResult> AddBrand(BrandDTORequest brandDTORequest)
@@ -41,6 +41,7 @@ namespace ERPProject.API.Controllers
 
 
         }
+        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpDelete("/RemoveBrand/{brandId}")]
         public async Task<IActionResult> RemoveBrand(int brandId)
         {
@@ -56,7 +57,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithoutData());
         }
-
+        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/UpdateBrand")]
         [ValidationFilter(typeof(BrandValidator))]
         public async Task<IActionResult> UpdateBrand(BrandDTORequest brandDTORequest)
@@ -75,7 +76,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
-
+        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpGet("/GetBrand/{brandId}")]
         public async Task<IActionResult> GetBrand(int brandId)
         {
@@ -91,7 +92,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<BrandDTOResponse>.SuccessWithData(brandDTOResponse));
         }
-
+        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpGet("/GetBrands")]
         public async Task<IActionResult> GetBrands()
         {

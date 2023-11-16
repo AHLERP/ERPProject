@@ -21,8 +21,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
-            if (val==null)
+            if (HttpContext.Session.GetString("DepartmentName") == "Muhasebe Departmanı" || HttpContext.Session.GetString("Role") == "Admin")
             {
                 return View();
             }

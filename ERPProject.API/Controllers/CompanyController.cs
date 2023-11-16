@@ -15,8 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-
-
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -31,7 +30,7 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _userService = userService;
         }
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpPost("/AddCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
@@ -47,7 +46,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpDelete("/RemoveCompany/{id}")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
@@ -64,7 +63,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpPost("/UpdateCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
@@ -86,7 +85,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
@@ -103,7 +102,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-        
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpGet("/GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
@@ -122,7 +121,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<CompanyDTOResponse>>.SuccessWithData(companyDTOResponseList));
         }
-
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         [HttpGet("/GetCompaniesByUser/{userId}")]
         public async Task<IActionResult> GetCompaniesByUser(long userId)
         {

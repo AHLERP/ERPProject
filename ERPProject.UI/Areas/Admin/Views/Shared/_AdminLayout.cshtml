@@ -45,72 +45,101 @@
     <div class="offcanvas offcanvas-start w-25 bg-dark opacity-75" style="max-width:250px;" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
         <button type="button" data-bs-dismiss="offcanvas" aria-label="Close">
             <div class="offcanvas-header">
-            <h6 class="offcanvas-title d-none d-sm-block text-light" id="offcanvas">Menu</h6>
+                <h6 class="offcanvas-title d-none d-sm-block text-light" id="offcanvas">Menu</h6>
                 <i class="bi bi-x-circle" style="font-size: 2rem; color: red;"></i>
-        </div>
+            </div>
         </button>
         <div class="offcanvas-body px-0">
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
-
-                <li class="nav-item">
-                    <a href="/Admin/Anasayfa" class="nav-link text-truncate">
-                        <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Anasayfa</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="/Admin/Sirketler" class="nav-link text-truncate">
-                        <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Şirketler</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Roller" class="nav-link text-truncate">
-                        <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline">Roller</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Urunler" class="nav-link text-truncate">
-                        <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Urunler</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Kategoriler" class="nav-link text-truncate">
-                        <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Kategoriler</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Markalar" class="nav-link text-truncate">
-                        <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Markalar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Kullanicilar" class="nav-link text-truncate">
-                        <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Personeller</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Talepler" class="nav-link text-truncate">
-                        <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">İstekler</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Stoklar" class="nav-link text-truncate">
-                        <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Stok</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Faturalar" class="nav-link text-truncate">
-                        <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Faturalar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Admin/Teklifler" class="nav-link text-truncate">
-                        <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Teklifler</span>
-                    </a>
-                </li>
+                @{
+                    string rol = Accessor.HttpContext.Session.GetString("Role");
+                    string departman = Accessor.HttpContext.Session.GetString("DepartmentName");
+                    <li class="nav-item">
+                        <a href="/Admin/Anasayfa" class="nav-link text-truncate">
+                            <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Anasayfa</span>
+                        </a>
+                    </li>
+                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin"))
+                    {
+                        <li class="nav-item">
+                            <a href="/Admin/Sirketler" class="nav-link text-truncate">
+                                <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Şirketler</span>
+                            </a>
+                        </li>
+                    }
+                    if (rol == "Admin")
+                    {
+                        <li class="nav-item">
+                            <a href="/Admin/Roller" class="nav-link text-truncate">
+                                <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline">Roller</span>
+                            </a>
+                        </li>
+                    }
+                    if (rol == "Satın Alma Personeli" || rol == "Satın Alma Departman Müdürü" || rol == "Admin" || rol == "Şirket Müdürü")
+                    {
+                        <li>
+                            <a href="/Admin/Urunler" class="nav-link text-truncate">
+                                <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Urunler</span>
+                            </a>
+                        </li>
+                    }
+                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "Satın Alma"))
+                    {
+                        <li>
+                            <a href="/Admin/Kategoriler" class="nav-link text-truncate">
+                                <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Kategoriler</span>
+                            </a>
+                        </li>
+                    }
+                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "Satın Alma"))
+                    {
+                        <li>
+                            <a href="/Admin/Markalar" class="nav-link text-truncate">
+                                <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Markalar</span>
+                            </a>
+                        </li>
+                    }
+                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "İnsan Kaynakları Departmanı"))
+                    {
+                        <li>
+                            <a href="/Admin/Kullanicilar" class="nav-link text-truncate">
+                                <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Personeller</span>
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href="/Admin/Talepler" class="nav-link text-truncate">
+                            <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">İstekler</span>
+                        </a>
+                    </li>
+                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "Satın Alma"))
+                    {
+                        <li>
+                            <a href="/Admin/Stoklar" class="nav-link text-truncate">
+                                <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Stok</span>
+                            </a>
+                        </li>
+                    }
+                    if ((departman == "Muhasebe Departmanı") || (rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin"))
+                    {
+                        <li>
+                            <a href="/Admin/Faturalar" class="nav-link text-truncate">
+                                <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Faturalar</span>
+                            </a>
+                        </li>
+                    }
+                    if ((departman == "Satın Alma") || (rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin"))
+                    {
+                        <li>
+                            <a href="/Admin/Teklifler" class="nav-link text-truncate">
+                                <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Teklifler</span>
+                            </a>
+                        </li>
+                    }
+                }
             </ul>
         </div>
-        
+
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -118,7 +147,7 @@
                 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="bi bi-arrow-up fs-3 text-light"></i></button>
                 <div class="container">
                     <br>
-                    <br/>
+                    <br />
                     <br>
                     <div class="container mb-2" id="SearchBtn" style="width: 80%;">
                         <div class="input-group input-group-lg" style="border-style: solid;border-width: 1px; border-radius:5px;">
@@ -126,7 +155,7 @@
                                 @ViewData["buttonismi"]
                             </button>
                             <input autocomplete="off" type="text" class="form-control" style="" id="myInput" placeholder="Arama Yap...">
-                            
+
                         </div>
                     </div>
                     @RenderBody()

@@ -75,6 +75,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(RequestDTORequest p)
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.AcceptedId = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateRequest");
             if (val)
             {

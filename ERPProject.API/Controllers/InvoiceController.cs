@@ -14,8 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
-
+    [Authorize(Roles="Muhasebe Personeli,Muhasebe Departman Müdürü,Şirket Müdürü,Admin,Yönetim Kurulu Başkanı")]
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;
@@ -32,7 +31,6 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _companyService = companyService;
         }
-
         [HttpPost("/AddInvoice")]
         public async Task<IActionResult> AddInvoice(InvoiceDTORequest invoiceDTORequest)
         {

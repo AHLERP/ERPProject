@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
-
+using System.Threading.Tasks; 
 namespace ERPProject.Business.Concrete
 {
     public class RequestManager : IRequestService
@@ -47,5 +47,6 @@ namespace ERPProject.Business.Concrete
             await _uow.RequestRepository.UpdateAsync(Entity);
             await _uow.SaveChangeAsync();
         }
+
     }
 }

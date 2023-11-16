@@ -30,6 +30,7 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
         }
 
+        [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/AddUser")]
         [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)
@@ -47,8 +48,8 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
+        [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpDelete("/RemoveUser/{userId}")]
-
         public async Task<IActionResult> RemoveUser(Int64 userId)
         {
             User user = await _userService.GetAsync(x=>x.Id == userId);
@@ -65,6 +66,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateUser")]
         [ValidationFilter(typeof(UserValidator))]
+        [Authorize(Roles = "İnsan Kaynakları Departman Müdürü,İnsan Kaynakları Personeli,Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);
@@ -143,9 +145,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
-
-        
-
 
 
         [HttpGet("/GetUsersByRole/{roleId}")]

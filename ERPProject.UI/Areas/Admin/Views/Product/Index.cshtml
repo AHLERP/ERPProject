@@ -32,7 +32,14 @@
                                     <td class="cell100 column1">@item.Name</td>
                                     <td class="cell100 column2">@item.CategoryName</td>
                                     <td class="cell100 column3">@item.BrandName</td>
+                                @if(item.Description == null)
+                                {
+                                    <td class="cell100 column4"> Açıklama Yok...</td>
+                                }
+                                else{
+
                                     <td class="cell100 column4">@item.Description</td>
+                                    }
                                     <td>
                                         <div class="dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,7 +72,7 @@
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Urun İsmi..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1">
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Urun İsmi..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1" required>
                     </div>
 
                     <div class="input-group mb-3">
@@ -73,7 +80,7 @@
                             <label class="input-group-text" for="inputKategori"><i class="bi bi-tags"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputKategori" name="CategoryId" required>
-                            <option selected>Kategori Seç...</option>
+                            <option value="" selected>Kategori Seç...</option>
                             @foreach (var item in Model.Categories)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -86,7 +93,7 @@
                             <label class="input-group-text" for="inputMarka"><i class="bi bi-bootstrap"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputMarka" name="BrandId" required>
-                            <option selected>Marka Seç...</option>
+                            <option value="" selected>Marka Seç...</option>
                             @foreach (var item in Model.Brands)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -117,7 +124,7 @@
             <form action="/Admin/UrunGuncelle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <input type="hidden" class="form-control" id="inputKategoriId" name="Id" value="" aria-describedby="basic-addon1">
+                        <input type="hidden" class="form-control" id="inputKategoriId" name="Id" value="" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
