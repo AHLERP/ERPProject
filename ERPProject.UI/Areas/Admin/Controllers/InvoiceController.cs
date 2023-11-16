@@ -21,8 +21,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("Department") == "Muhasebe" || HttpContext.Session.GetString("Role") == "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")
-            {
+            
                 var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
                 var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
                 if (val.StatusCode == 401)
@@ -39,7 +38,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     InvoiceDetail = val2.Data
                 };
                 return View(invoiceVM);
-            }
             return RedirectToAction("Index", "UserHome");
 
         }
