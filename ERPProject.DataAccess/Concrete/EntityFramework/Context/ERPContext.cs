@@ -48,11 +48,8 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
-
-        //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Ege
-
-
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\BILAL; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
+        //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Ege
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -274,9 +271,8 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasColumnName("AddedIP4VAdress");
                 entity.Property(e => e.AddedTime).HasColumnType("datetime");
                 entity.Property(e => e.Description).HasMaxLength(511);
-                entity.Property(e => e.AcceptedId).HasDefaultValue(0);
+                entity.Property(e => e.AcceptedId).IsRequired(false);
                 entity.Property(e => e.Title).HasMaxLength(50);
-                entity.Property(e => e.AcceptedId).HasDefaultValue(0);
                 entity.Property(e => e.UpdatedIPV4Address)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -288,6 +284,10 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Request_User");
+                entity.HasOne(d => d.AcceptedUser).WithMany(p => p.AcceptedRequests)
+                    .HasForeignKey(d => d.AcceptedId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Request_AcceptedRequests");
 
             });
 

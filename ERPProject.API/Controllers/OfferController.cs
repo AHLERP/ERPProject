@@ -9,6 +9,7 @@ using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Net.Mail;
 
 namespace ERPProject.API.Controllers
 {
@@ -19,11 +20,13 @@ namespace ERPProject.API.Controllers
     {
         private readonly IOfferService _offerService;
         private readonly IMapper _mapper;
+        private readonly IRequestService _requestService;
 
-        public OfferController(IMapper mapper, IOfferService offerService)
+        public OfferController(IMapper mapper, IOfferService offerService, IRequestService requestService)
         {
             _mapper = mapper;
             _offerService = offerService;
+            _requestService = requestService;
         }
 
         [HttpPost("/AddOffer")]
@@ -77,7 +80,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetOffer/{offerId}")]
         public async Task<IActionResult> GetOffer(int offerId)
         {
-            Offer offer = await _offerService.GetAsync(x => x.Id == offerId);
+            Offer offer = await _offerService.GetAsync(x => x.Id == offerId, "User", "Request");
             if (offer == null)
             {
                 return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
@@ -95,10 +98,10 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetOffers()
         {
 
-            var offers = await _offerService.GetAllAsync(x=>x.IsActive==true);
+            var offers = await _offerService.GetAllAsync(x => x.IsActive == true, "User", "Request");
             if (offers == null)
             {
-                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound()) ;
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
             }
             List<OfferDTOResponse> offerDTOResponseList = new();
             foreach (var offer in offers)

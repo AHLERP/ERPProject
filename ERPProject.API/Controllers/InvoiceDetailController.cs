@@ -5,6 +5,7 @@ using ERPProject.Entity.DTO.InvoiceDetailDTO;
 using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -12,6 +13,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
+    [Authorize]
     public class InvoiceDetailController : Controller
     {
         private readonly IInvoiceDetailService _invoiceDetailService;

@@ -217,11 +217,11 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Invoice", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddedIPV4Address")
                         .HasMaxLength(15)
@@ -236,9 +236,8 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<long?>("AddedUser")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("InvoiceDate")
                         .HasColumnType("datetime2");
@@ -246,64 +245,14 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SupplierName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedIPV4Address")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("char(15)")
-                        .HasColumnName("UpdatedIP4VAdress")
-                        .IsFixedLength();
-
-                    b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<long?>("UpdatedUser")
+                    b.Property<long>("OfferId")
                         .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Invoice", (string)null);
-                });
-
-            modelBuilder.Entity("ERPProject.Entity.Poco.InvoiceDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AddedIPV4Address")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("char(15)")
-                        .HasColumnName("AddedIP4VAdress")
-                        .IsFixedLength();
-
-                    b.Property<DateTime?>("AddedTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<long?>("AddedUser")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("InvoiceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,2)");
@@ -311,6 +260,14 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<short>("QuantityUnit")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("SupAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SupplierName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)
                         .IsUnicode(false)
@@ -326,9 +283,13 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvoiceId");
+                    b.HasIndex("CompanyId");
 
-                    b.ToTable("InvoiceDetail", (string)null);
+                    b.HasIndex("OfferId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Invoice", (string)null);
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
@@ -678,10 +639,6 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<long>("DelivererId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("DelivererName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
@@ -690,10 +647,6 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.Property<long>("RecieverId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("RecieverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("StockId")
                         .HasColumnType("bigint");
@@ -711,16 +664,13 @@ namespace ERPProject.DataAccess.Migrations
                     b.Property<long?>("UpdatedUser")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DelivererId");
 
-                    b.HasIndex("StockId");
+                    b.HasIndex("RecieverId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("StockId");
 
                     b.ToTable("StockDetail", (string)null);
                 });
@@ -815,15 +765,31 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("ERPProject.Entity.Poco.InvoiceDetail", b =>
+            modelBuilder.Entity("ERPProject.Entity.Poco.Invoice", b =>
                 {
-                    b.HasOne("ERPProject.Entity.Poco.Invoice", "Invoice")
-                        .WithMany("InvoiceDetails")
-                        .HasForeignKey("InvoiceId")
+                    b.HasOne("ERPProject.Entity.Poco.Company", "Company")
+                        .WithMany("Invoices")
+                        .HasForeignKey("CompanyId")
                         .IsRequired()
-                        .HasConstraintName("FK_InvoiceDetail_Invoice");
+                        .HasConstraintName("FK_Invoice_Company");
 
-                    b.Navigation("Invoice");
+                    b.HasOne("ERPProject.Entity.Poco.Offer", "Offer")
+                        .WithMany("Invoices")
+                        .HasForeignKey("OfferId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Invoice_Offer");
+
+                    b.HasOne("ERPProject.Entity.Poco.Product", "Product")
+                        .WithMany("Invoices")
+                        .HasForeignKey("ProductId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Invoice_Product");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
@@ -904,9 +870,15 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.StockDetail", b =>
                 {
-                    b.HasOne("ERPProject.Entity.Poco.User", "User")
+                    b.HasOne("ERPProject.Entity.Poco.User", "Deliverer")
                         .WithMany("StockDetailDeliverers")
                         .HasForeignKey("DelivererId")
+                        .IsRequired()
+                        .HasConstraintName("FK_StockDetail_User1");
+
+                    b.HasOne("ERPProject.Entity.Poco.User", "Reciever")
+                        .WithMany("StockDetailRecievers")
+                        .HasForeignKey("RecieverId")
                         .IsRequired()
                         .HasConstraintName("FK_StockDetail_User");
 
@@ -916,13 +888,11 @@ namespace ERPProject.DataAccess.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_StockDetail_Stock");
 
-                    b.HasOne("ERPProject.Entity.Poco.User", null)
-                        .WithMany("StockDetailRecievers")
-                        .HasForeignKey("UserId");
+                    b.Navigation("Deliverer");
+
+                    b.Navigation("Reciever");
 
                     b.Navigation("Stock");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.User", b =>
@@ -958,6 +928,8 @@ namespace ERPProject.DataAccess.Migrations
                 {
                     b.Navigation("Departments");
 
+                    b.Navigation("Invoices");
+
                     b.Navigation("Stocks");
                 });
 
@@ -966,13 +938,15 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("ERPProject.Entity.Poco.Invoice", b =>
+            modelBuilder.Entity("ERPProject.Entity.Poco.Offer", b =>
                 {
-                    b.Navigation("InvoiceDetails");
+                    b.Navigation("Invoices");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Product", b =>
                 {
+                    b.Navigation("Invoices");
+
                     b.Navigation("Stocks");
                 });
 

@@ -27,7 +27,7 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _productService = productService;
         }
-
+        [Authorize(Roles = "Satın Alma Departman Müdürü,Satın Alma Personeli, Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/AddProduct")]
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> AddProduct(ProductDTORequest productDTORequest)
@@ -49,6 +49,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
+        [Authorize(Roles = "Satın Alma Departman Müdürü,Satın Alma Personeli, Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpDelete("/RemoveProduct/{productId}")]
         public async Task<IActionResult> RemoveProduct(int productId)
         {
@@ -64,7 +65,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithoutData());
         }
-
+        [Authorize(Roles = "Satın Alma Departman Müdürü,Satın Alma Personeli, Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpPost("/UpdateProduct")]
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> UpdateProduct(ProductDTORequest productDTORequest)

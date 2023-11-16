@@ -10,5 +10,6 @@ namespace ERPProject.Business.Abstract
 {
     public interface IRequestService : IGenericService<Request>
     {
+        Task<Request> AddAsync(Request Entity);
     }
 }

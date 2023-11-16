@@ -114,4 +114,23 @@
         var id = button.data('id');
         $("#inputRequestId").val(id);
     });
+    $(document).ready(function () {
+        $("#inputCompany").change(function () {
+            var selectedCompanyId = $(this).val();
+            $.ajax({
+                url: "https://localhost:7075/GetDepartmentsByCompany/" + selectedCompanyId,
+                type: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                },
+                success: function (data) {
+                    // Departman seçeneklerini güncelle
+                    $("#inputDepartman").empty();
+                    $.each(data, function (index, item) {
+                        $("#inputDepartman").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                    });
+                }
+            });
+        });
+    }
 </script>

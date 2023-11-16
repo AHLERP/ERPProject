@@ -26,7 +26,6 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _departmentService = departmentService;
         }
-
         [HttpPost("/AddDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
@@ -49,8 +48,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
-
-
         [HttpDelete("/RemoveDepartment/{departmentId}")]
         public async Task<IActionResult> RemoveDepartment(int departmentId)
         {
@@ -67,7 +64,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithoutData());
         }
-
         [HttpPost("/UpdateDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
         public async Task<IActionResult> UpdateDepartment(DepartmentDTORequest departmentDTORequest)
