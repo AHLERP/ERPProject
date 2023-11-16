@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.BrandDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,14 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> AddBrand(BrandDTORequest brandDTORequest)
         {
             Brand brand = _mapper.Map<Brand>(brandDTORequest);
+
+            var existingBrand = await _brandService.GetAsync(x => x.Name == brand.Name);
+
+            if (existingBrand != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu marka zaten var"));
+            }
+
             await _brandService.AddAsync(brand);
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);
@@ -69,6 +78,14 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<BrandDTOResponse>.SuccessNoDataFound());
             }
             brand = _mapper.Map(brandDTORequest, brand);
+
+            var existingBrand = await _brandService.GetAsync(x => x.Name == brand.Name);
+
+            if (existingBrand != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu marka zaten var"));
+            }
+
             await _brandService.UpdateAsync(brand);
 
             BrandDTOResponse brandDTOResponse = _mapper.Map<BrandDTOResponse>(brand);

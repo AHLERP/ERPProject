@@ -5,6 +5,7 @@ using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -72,6 +73,14 @@ namespace ERPProject.API.Controllers
         {
 
             var role = _mapper.Map<Role>(roleDTORequest);
+
+            var existingRole = await _roleService.GetAsync(x => x.Name == role.Name);
+
+            if (existingRole != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu rol zaten var"));
+            }
+
             await _roleService.AddAsync(role);
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
 
@@ -93,6 +102,14 @@ namespace ERPProject.API.Controllers
             }
 
             _mapper.Map(roleDTORequest,role);
+
+            var existingRole = await _roleService.GetAsync(x => x.Name == role.Name);
+
+            if (existingRole != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu rol zaten var"));
+            }
+
             await _roleService.UpdateAsync(role);
 
             RoleDTOResponse roleDTOResponse = _mapper.Map<RoleDTOResponse>(role);
