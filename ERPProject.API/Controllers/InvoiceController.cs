@@ -15,7 +15,6 @@ namespace ERPProject.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;
@@ -196,6 +195,7 @@ namespace ERPProject.API.Controllers
 
         //    return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         //}
+
 
     }
 }

@@ -49,7 +49,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         {
             p.Id = 1;
             var val = await UpdateAsync(p, url + "UpdateRequest");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 

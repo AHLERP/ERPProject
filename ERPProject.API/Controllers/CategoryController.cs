@@ -18,7 +18,6 @@ namespace ERPProject.API.Controllers
     [ApiController]
     [Authorize]
 
-
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -29,7 +28,7 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _categoryService = categoryService;
         }
-        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı,Departman Müdürü")]
         [HttpPost("/AddCategory")]
         [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> AddCategory(CategoryDTORequest categoryDTORequest)
@@ -52,7 +51,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
 
-        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı,Departman Müdürü")]
         [HttpDelete("/RemoveCategory/{categoryId}")]
         public async Task<IActionResult> RemoveCategory(int categoryId)
         {
@@ -69,7 +68,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithoutData());
         }
 
-        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı,Departman Müdürü")]
         [HttpPost("/UpdateCategory")]
         [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> UpdateCategory(CategoryDTORequest categoryDTORequest)
@@ -97,7 +96,6 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
 
-        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
         [HttpGet("/GetCategory/{categoryId}")]
         public async Task<IActionResult> GetCategory(int categoryId)
         {
@@ -113,7 +111,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
-        [Authorize(Roles = "Admin,Satın Alma Personeli,Satın Alma Departman Müdürü,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+
         [HttpGet("/GetCategories")]
         public async Task<IActionResult> GetCategories()
         {

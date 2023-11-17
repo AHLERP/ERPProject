@@ -2,8 +2,10 @@
 using ERPProject.Entity.DTO.InvoiceDetailDTO;
 using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.UI.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Runtime.Intrinsics.Arm;
 using System.Xml;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -22,36 +24,63 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-
-           
-                var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
-                var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
-                if (val.StatusCode == 401)
-                {
-                    return RedirectToAction("Unauthorized", "Home");
-                }
-                else if (val.StatusCode == 403)
-                {
-                    return RedirectToAction("Forbidden", "Home");
-                }
-                InvoiceVM invoiceVM = new InvoiceVM()
-                {
-                    Invoices = val.Data,
-                    InvoiceDetail = val2.Data
-                };
-                return View(invoiceVM);
-            return RedirectToAction("Index", "UserHome");
-
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+            var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            InvoiceVM invoiceVM = new InvoiceVM()
+            {
+                Invoices = val.Data,
+                InvoiceDetail = val2.Data
+            };
+            return View(invoiceVM);
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<InvoiceDTOResponse>(url + "GetInvoice/" + id);
-            return View(val);
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
+            {
+                return View(val);
+            }
+            if (val== null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Forbidden", "Home");
         }
         [HttpPost("/Admin/FaturaEkle")]
         public async Task<IActionResult> Add(IFormFile FileUpload)
         {
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             XmlDocument xmlVerisi = new XmlDocument();
             xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             decimal usd = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
@@ -71,7 +100,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     using (var workbook = new XLWorkbook(ms))
                     {
                         var worksheet = workbook.Worksheet(1); // sayfa 
-                        // sayfada kaç sütun kullanılmış onu buluyoruz ve sütunları DataTable'a ekliyoruz, ilk satırda sütun başlıklarımız var
+                                                               // sayfada kaç sütun kullanılmış onu buluyoruz ve sütunları DataTable'a ekliyoruz, ilk satırda sütun başlıklarımız var
                         int i, n = worksheet.Columns().Count();
                         for (i = 1; i <= n; i++)
                         {
@@ -235,32 +264,58 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/FaturaGuncelle")]
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateInvoice");
-            if (val)
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data!=null)
             {
                 return RedirectToAction("Index", "Invoice");
 
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/FaturaSil")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveInvoice/" + id);
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val==null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val)
             {
                 return RedirectToAction("Index", "Invoice");
 
             }
-            return RedirectToAction("Index", "Home");
-
+            return RedirectToAction("Forbidden", "Home");
         }
         [HttpGet("/Admin/Raporlama")]
         public async Task<IActionResult> Report(DateTime startDate, DateTime endDate)
         {
-            if (HttpContext.Session.GetString("Department") == "Muhasebe" || HttpContext.Session.GetString("Role") == "Admin" || HttpContext.Session.GetString("Role") == "Şirket Müdürü" || HttpContext.Session.GetString("Role") == "Yönetim Kurulu Başkanı")
+            string dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yonetim")
             {
                 var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
                 var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
@@ -280,35 +335,39 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 };
                 return View(invoiceVM);
             }
-            return RedirectToAction("Index", "UserHome");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/Raporlama")]
         public async Task<IActionResult> Report(string datefilter)
         {
-            if (datefilter==null)
+            string dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yonetim")
             {
-                return RedirectToAction("Report", "Invoice");
-            }
-            var date = datefilter.Replace(" ", "").Replace("/", ".");
-            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoicesByDate/" + date);
-            var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
-            if (val.StatusCode == 401)
-            {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
+                if (datefilter == null)
+                {
+                    return RedirectToAction("Report", "Invoice");
+                }
+                var date = datefilter.Replace(" ", "").Replace("/", ".");
+                var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoicesByDate/" + date);
+                var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
 
-            InvoiceVM invoiceVM = new InvoiceVM()
-            {
-                Invoices = val.Data,
-                InvoiceDetail = val2.Data
-            };
-            return View(invoiceVM);
-
+                InvoiceVM invoiceVM = new InvoiceVM()
+                {
+                    Invoices = val.Data,
+                    InvoiceDetail = val2.Data
+                };
+                return View(invoiceVM);
+            }
+            return RedirectToAction("Forbidden", "Home");
         }
 
 

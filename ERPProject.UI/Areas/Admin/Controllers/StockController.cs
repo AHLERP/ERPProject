@@ -27,6 +27,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var val2 = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             var val3 = await GetAllAsync<StockDetailDTOResponse>(url + "StockDetails");
             var val4 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
+
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -35,7 +36,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             StockVM stockVM = new StockVM()
             {
                 Companies = val2.Data,
@@ -51,7 +60,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<StockDTOResponse>(url + "GetStock/" + id);
-            return View(val);
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Stock");
         }
         [HttpPost("/Admin/StokEkle")]
         public async Task<IActionResult> Add(StockDTORequest p)
@@ -59,12 +85,29 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddStock");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val.Data != null)
             {
                 return RedirectToAction("Index", "Stock");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/StokGuncelle")]
@@ -72,24 +115,50 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateStock");
-            if (val)
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Stock");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpGet("/Admin/StokSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveStock/" + id);
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val)
             {
                 return RedirectToAction("Index", "Stock");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
     }

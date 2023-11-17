@@ -23,7 +23,7 @@ namespace ERPProject.Entity.Result
             HataBilgisi = hataBilgisi;
             Mesaj = mesaj;
             Data = data;
-        }
+        }  
        
 
        

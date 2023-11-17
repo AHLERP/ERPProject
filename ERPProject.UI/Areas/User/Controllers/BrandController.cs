@@ -50,7 +50,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Update(BrandDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateBrand");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Brand");
 

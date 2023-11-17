@@ -14,39 +14,41 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public RequestController(HttpClient httpClient) : base(httpClient)
         {
         }
-        
+
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
-
+            string rol = HttpContext.Session.GetString("Role");
+            string dep = HttpContext.Session.GetString("DepartmentName");
             var id = HttpContext.Session.GetString("User");
 
-            if (HttpContext.Session.GetString("Role") == "Personel")
+            if (rol == "Personel")
             {
                 var val5 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
-                var val6= await GetAllAsync<RequestDTOResponse>(url + "RequestsByUser/"+id);
+                var val6 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByUser/" + id);
+
                 RequestVM requestVM2 = new RequestVM()
 
                 {
                     Requests = val6.Data,
                     Products = val5.Data,
-                    Users = null,
+
                 };
                 return View(requestVM2);
             }
             var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
 
-            if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
+            if (rol == "Departman Müdürü")
             {
-                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByDepartment/" + id);
+                val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByDepartment/" + id);
 
             }
-            else if (HttpContext.Session.GetString("Role") == "Şirket Müdürü")
+            else if (rol == "Şirket Müdürü")
             {
-                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
+                val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
 
             }
-            
+
             var val1 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             var val2 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
             if (val.StatusCode == 401)
@@ -70,7 +72,19 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<RequestDTOResponse>(url + "Request/" + id);
-            return View(val);
+            if (val.Data != null)
+            {
+                return View(val);
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost("/Admin/TalepEkle")]
         public async Task<IActionResult> AddRequest(RequestDTORequest p)
@@ -78,12 +92,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddRequest");
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Request");
 
         }
         [HttpPost("/Admin/TalepGuncelle")]
@@ -92,12 +118,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.AcceptedId = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateRequest");
-            if (val)
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Request");
 
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Request");
 
         }
         [HttpGet("/Admin/TalepSil/{id}")]

@@ -16,7 +16,8 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Satın Alma Departman Müdürü,Satın Alma Personeli, Admin,Şirket Müdürü,Yönetim Kurulu Başkanı")]
+    [Authorize]
+
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;
@@ -120,6 +121,11 @@ namespace ERPProject.API.Controllers
             request.RequestStatus = 2;
             await _requestService.UpdateAsync(request);
             var offer = _mapper.Map<Offer>(offerDTORequest);
+            var response = await _offerService.UpdateAllAsync(offer);
+            OfferDTOResponse offerDTOResponse1 = _mapper.Map<OfferDTOResponse>(offer);
+
+
+
 
             string AcceptRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz tamamlanmıştır.";
             string RefuseRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz reddedildi";
@@ -144,9 +150,33 @@ namespace ERPProject.API.Controllers
             }
             Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse);
 
+            if (offerDTOResponse.Count <= 1)
+            {
+                Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse1);
+                return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse1));
+            }
+            else
+            {
+                return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
+            }
+        }
 
-            return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
+        [HttpGet("/GetOffersByRequest/{requestId}")]
+        public async Task<IActionResult> GetOffersByRequest(long requestId)
+        {
+            var offers = await _offerService.GetAllAsync(x => x.IsActive == true && x.RequestId == requestId, "User", "Request");
+            if (offers == null)
+            {
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
+            }
+            List<OfferDTOResponse> offerDTOResponseList = new();
+            foreach (var offer in offers)
+            {
+                offerDTOResponseList.Add(_mapper.Map<OfferDTOResponse>(offer));
+            }
 
+            Log.Information("Offers => {@offerDTOResponse} => { Teklifleri İsteklere Göre Getir. }", offerDTOResponseList);
+            return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponseList));
         }
         [HttpGet("/GetOfferByjs/{requestId}")]
         public async Task<IActionResult> GetOfferByjs(long requestId)

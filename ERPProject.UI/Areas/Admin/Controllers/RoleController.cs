@@ -1,5 +1,8 @@
 ﻿using ERPProject.Entity.DTO.RoleDTO;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net;
+using System.Runtime.Intrinsics.Arm;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -15,6 +18,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<RoleDTOResponse>(url + "Roles");
+            if (val.Data != null)
+            {
+                return View(val);
+            }
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -23,14 +30,35 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
-            return View(val);
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpGet("/Admin/Rol")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<RoleDTOResponse>(url + "GetRole/" + id);
-            return View(val);
+            if (val.Data != null)
+            {
+                return View(val);
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost("/Admin/RolEkle")]
         public async Task<IActionResult> Add(RoleDTORequest p)
@@ -38,10 +66,26 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddRole");
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val.Data != null)
             {
                 return RedirectToAction("Index", "Role");
-
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
             }
             return RedirectToAction("Index", "Home");
 
@@ -51,10 +95,27 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateRole");
-            if (val)
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Role");
 
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
             }
             return RedirectToAction("Index", "Home");
 
@@ -63,6 +124,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(long id)
         {
             var val = await DeleteAsync(url + "RemoveRole/" + id);
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val)
             {
                 return RedirectToAction("Index", "Role");

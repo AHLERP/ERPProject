@@ -62,7 +62,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Update(CompanyDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateCompany");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Sirketler", "User");
 

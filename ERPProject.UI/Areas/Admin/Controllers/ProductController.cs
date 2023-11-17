@@ -42,13 +42,44 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 };
                 return View(productVM);
             }
-            return RedirectToAction("Index", "UserHome");
-
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            ProductVM productVM = new ProductVM()
+            {
+                Products = val.Data,
+                Brands = val2.Data,
+                Categories = val3.Data,
+            };
+            return View(productVM);
         }
         [HttpGet("/Admin/Urun")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<ProductDTOResponse>(url + "GetProduct/" + id);
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             return View(val);
         }
         [HttpPost("/Admin/UrunEkle")]
@@ -57,12 +88,29 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddProduct");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val.Data != null)
             {
                 return RedirectToAction("Index", "Product");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/UrunGuncelle")]
@@ -70,17 +118,39 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateProduct");
-            if (val)
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Product");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpGet("/Admin/UrunSil/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             var val = await DeleteAsync(url + "RemoveProduct/" + id);
             if (val)
             {

@@ -53,13 +53,13 @@
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
                 @{
                     string rol = Accessor.HttpContext.Session.GetString("Role");
-                    string departman = Accessor.HttpContext.Session.GetString("DepartmentName");
+                    string dep = Accessor.HttpContext.Session.GetString("DepartmentName");
                     <li class="nav-item">
                         <a href="/Admin/Anasayfa" class="nav-link text-truncate">
                             <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Anasayfa</span>
                         </a>
                     </li>
-                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin"))
+                    if ((dep == "Muhasebe") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li class="nav-item">
                             <a href="/Admin/Sirketler" class="nav-link text-truncate">
@@ -67,7 +67,7 @@
                             </a>
                         </li>
                     }
-                    if (rol == "Admin")
+                    if ((dep == "Admin"))
                     {
                         <li class="nav-item">
                             <a href="/Admin/Roller" class="nav-link text-truncate">
@@ -75,7 +75,7 @@
                             </a>
                         </li>
                     }
-                    if (rol == "Satın Alma Personeli" || rol == "Satın Alma Departman Müdürü" || rol == "Admin" || rol == "Şirket Müdürü")
+                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li>
                             <a href="/Admin/Urunler" class="nav-link text-truncate">
@@ -83,7 +83,7 @@
                             </a>
                         </li>
                     }
-                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "Satın Alma"))
+                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li>
                             <a href="/Admin/Kategoriler" class="nav-link text-truncate">
@@ -91,7 +91,7 @@
                             </a>
                         </li>
                     }
-                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "Satın Alma"))
+                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li>
                             <a href="/Admin/Markalar" class="nav-link text-truncate">
@@ -99,7 +99,7 @@
                             </a>
                         </li>
                     }
-                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "İnsan Kaynakları Departmanı"))
+                    if (rol != "Personel" || dep == "Insan Kaynaklari")
                     {
                         <li>
                             <a href="/Admin/Kullanicilar" class="nav-link text-truncate">
@@ -112,7 +112,7 @@
                             <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">İstekler</span>
                         </a>
                     </li>
-                    if ((rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin") || (departman == "Satın Alma"))
+                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li>
                             <a href="/Admin/Stoklar" class="nav-link text-truncate">
@@ -120,7 +120,7 @@
                             </a>
                         </li>
                     }
-                    if ((departman == "Muhasebe Departmanı") || (rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin"))
+                    if ((dep == "Muhasebe") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li>
                             <a href="/Admin/Faturalar" class="nav-link text-truncate">
@@ -128,7 +128,7 @@
                             </a>
                         </li>
                     }
-                    if ((departman == "Satın Alma") || (rol == "Şirket Müdürü") || (rol == "Yönetim Kurulu Başkanı") || (rol == "Admin"))
+                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
                     {
                         <li>
                             <a href="/Admin/Teklifler" class="nav-link text-truncate">
@@ -136,11 +136,15 @@
                             </a>
                         </li>
                     }
-                    <li>
-                      <a href="/Admin/Raporlama" class="nav-link text-truncate">
-                          <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Raporlar</span>
-                     </a>
-                    </li>
+                    if ((dep == "Muhasebe") || (dep == "Yonetim") || (dep == "Admin"))
+                    {
+                        <li>
+                            <a href="/Admin/Raporlama" class="nav-link text-truncate">
+                                <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Raporlar</span>
+                            </a>
+                        </li>
+                    }
+                }
                 }
             </ul>
         </div>
