@@ -12,8 +12,8 @@ namespace ERPProject.API.Mapper.OfferMap
                 ForMember(dest => dest.UserName, opt =>
                 {
                     opt.MapFrom(src => src.User.Name);
-                }).
-                ForMember(dest => dest.RequestName, opt =>
+                })
+                .ForMember(dest => dest.RequestName, opt =>
                 {
                     opt.MapFrom(src=>src.Request.Title);
                 }).ReverseMap();

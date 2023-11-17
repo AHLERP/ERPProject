@@ -11,7 +11,9 @@
 <script>
     document.getElementById('SearchBtn').style.display = 'none';
 </script>
-<section class="bg-light">
+<section class="bg-light" style="border-radius:15px;">
+    <br />
+    <br />
     <div class="container">
         <div class="row">
             <div class="col-lg-12 mb-4 mb-sm-5">
@@ -19,7 +21,7 @@
                     <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
                         <div class="row align-items-center">
                             <div class="col-lg-6 mb-4 mb-lg-0">
-                                <img src="~/Admin/img/profil.jpg" style="max-height:300px; max-width:300px;" alt="...">
+                                <img src="~/@Model.Image" style="max-height:300px; max-width:300px;" alt="...">
                             </div>
                             <div class="col-lg-6 px-xl-10">
                                 <div class="d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
@@ -27,7 +29,7 @@
                                     <span class="text-dark">Pozisyon: @Model.RoleName</span>
                                 </div>
                                 <ul class="list-unstyled mb-1-9">
-                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Şirket:</span>Şirket Gelecek</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Şirket:</span>@Model.CompanyName</li>
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Departman:</span> @Model.DepartmentName</li>
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email:</span> @Model.Email</li>
                                     <li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> 0 @Model.Phone</li>

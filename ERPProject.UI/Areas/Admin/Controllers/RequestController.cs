@@ -13,12 +13,27 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         private readonly string url = "https://localhost:7075/";
         public RequestController(HttpClient httpClient) : base(httpClient)
         {
-
         }
+        
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
+
             var id = HttpContext.Session.GetString("User");
+
+            if (HttpContext.Session.GetString("Role") == "Personel")
+            {
+                var val5 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
+                var val6= await GetAllAsync<RequestDTOResponse>(url + "RequestsByUser/"+id);
+                RequestVM requestVM2 = new RequestVM()
+
+                {
+                    Requests = val6.Data,
+                    Products = val5.Data,
+                    Users = null,
+                };
+                return View(requestVM2);
+            }
             var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
 
             if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
@@ -99,6 +114,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(RequestDTORequest p)
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            p.AcceptedId = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateRequest");
             if (val == null)
             {

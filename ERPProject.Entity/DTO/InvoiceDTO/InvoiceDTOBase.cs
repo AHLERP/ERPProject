@@ -14,6 +14,8 @@ namespace ERPProject.Entity.DTO.InvoiceDTO
         public decimal TotalPrice { get; set; }
         public string SupplierName { get; set; }
         public string CompanyName { get; set; }
+        public string PriceStatus { get; set; }
+        public decimal Rate { get; set; }
 
 
     }

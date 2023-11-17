@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Runtime.Intrinsics.Arm;
+using System.Xml;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -44,7 +45,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 InvoiceDetail = val2.Data
             };
             return View(val);
-            
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)
@@ -81,6 +81,12 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
+            XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
+            decimal usd = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
+            decimal eur = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "EUR")).InnerText.Replace('.', ','));
+            decimal jpy = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "JPY")).InnerText.Replace('.', ','));
+
             if (FileUpload != null)
             {
             System.Data.DataTable dt = new System.Data.DataTable();
@@ -159,6 +165,127 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                         if (val2 == null)
                         {
                             return RedirectToAction("Forbidden", "Home");
+                            DataRow row = dt.Rows[i];
+                            dTORequest = new InvoiceDTORequest
+                            {
+                                SupplierName = row["Tedarikci"].ToString(),
+                                CompanyName = row["Şirket"].ToString(),
+                                TotalPrice = Convert.ToInt32(row["Fiyat"]),
+                                PriceStatus = row["Para Birimi"].ToString(),
+                                InvoiceDate = Convert.ToDateTime(row["Tarih"])
+                            };
+                        }
+                        if (dTORequest.PriceStatus == "USD")
+                        {
+                            dTORequest.PriceStatus = "1";
+                            dTORequest.Rate = usd;
+                        }
+                        else if (dTORequest.PriceStatus == "EUR")
+                        {
+                            dTORequest.PriceStatus = "2";
+                            dTORequest.Rate = eur;
+                        }
+                        else if (dTORequest.PriceStatus == "JPY")
+                        {
+                            dTORequest.PriceStatus = "3";
+                            dTORequest.Rate = jpy;
+                        }
+                        else if (dTORequest.PriceStatus == "TRY")
+                        {
+                            dTORequest.PriceStatus = "0";
+                            dTORequest.Rate = 1;
+                        }
+                        dTORequest.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                        dTORequest.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                        var val = await AddAsync(dTORequest, url + "AddInvoice");
+                        id = val.Data.Id;
+                        InvoiceDetailDTORequest invoiceDetailDTORequest = null;
+                        for (i = 0; i < n - 2; i++)
+                        {
+                            DataRow row = dt.Rows[i];
+                            invoiceDetailDTORequest = new InvoiceDetailDTORequest
+                            {
+                                ProductName = row["Tedarikci"].ToString(),
+                                Price = Convert.ToInt32(row["Fiyat"]),
+                                Quantity = Convert.ToInt32(row["Miktar"]),
+                                QuantityUnit = row["Birim"].ToString(),
+                                PriceStatus = row["Para Birimi"].ToString(),
+                                InvoiceId = id,
+                            };
+                            #region birim
+                            if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("metre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "1";
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("kilometre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "2";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("mililitre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "3";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("litre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "4";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("kilogram"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "5";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("ton"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "6";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("adet"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "7";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("koli"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "8";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("metrekare") || invoiceDetailDTORequest.QuantityUnit == "m²")
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "9";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("metreküp") || invoiceDetailDTORequest.QuantityUnit == "m³")
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "10";
+
+                            }
+                            #endregion
+                            #region money
+                            if (dTORequest.PriceStatus == "USD")
+                            {
+                                dTORequest.PriceStatus = "1";
+                                dTORequest.Rate = usd;
+                            }
+                            else if (dTORequest.PriceStatus == "EUR")
+                            {
+                                dTORequest.PriceStatus = "2";
+                                dTORequest.Rate = eur;
+                            }
+                            else if (dTORequest.PriceStatus == "JPY")
+                            {
+                                dTORequest.PriceStatus = "3";
+                                dTORequest.Rate = jpy;
+                            }
+                            else if (dTORequest.PriceStatus == "TRY")
+                            {
+                                dTORequest.PriceStatus = "0";
+                                dTORequest.Rate = 1;
+                            }
+                            #endregion
+                            var val2 = await AddAsync(invoiceDetailDTORequest, url + "AddInvoiceDetail");
                         }
                     }
                     if (val.StatusCode == 401)
@@ -230,6 +357,61 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             return RedirectToAction("Forbidden", "Home");
         }
+        [HttpGet("/Admin/Raporlama")]
+        public async Task<IActionResult> Report(DateTime startDate, DateTime endDate)
+        {
+            if (HttpContext.Session.GetString("Department") == "Muhasebe" || HttpContext.Session.GetString("Role") == "Admin" || HttpContext.Session.GetString("Role") == "Şirket Müdürü" || HttpContext.Session.GetString("Role") == "Yönetim Kurulu Başkanı")
+            {
+                var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+                var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+
+                InvoiceVM invoiceVM = new InvoiceVM()
+                {
+                    Invoices = val.Data,
+                    InvoiceDetail = val2.Data
+                };
+                return View(invoiceVM);
+            }
+            return RedirectToAction("Index", "UserHome");
+
+        }
+        [HttpPost("/Admin/Raporlama")]
+        public async Task<IActionResult> Report(string datefilter)
+        {
+            if (datefilter==null)
+            {
+                return RedirectToAction("Report", "Invoice");
+            }
+            var date = datefilter.Replace(" ", "").Replace("/", ".");
+            var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoicesByDate/" + date);
+            var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+
+            InvoiceVM invoiceVM = new InvoiceVM()
+            {
+                Invoices = val.Data,
+                InvoiceDetail = val2.Data
+            };
+            return View(invoiceVM);
+
+        }
+
+
     }
 }
 

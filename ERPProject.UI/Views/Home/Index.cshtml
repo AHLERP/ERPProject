@@ -7,48 +7,52 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </head>
 @{
-        var name1 = TempData["HATA"] as string;
+    var name1 = TempData["HATA"] as string;
 }
-<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
-    <div class="container">
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center" style="background-color:#dce9fa !important;">
+    <div class="container" >
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card-group d-block d-md-flex row">
-                    <div class="container"><h2> LOGO FALAN EKLENECEK <br><br><br><br><br></h2></div>
-                    <div class="card col-md-7 p-4 mb-0">
-                        <div class="card-body">
-                            
-                            <form action="/Admin/GirisYap" method="post">
-                                
-                                <h1>Giriş Yap</h1>
-                                <p class="text-medium-emphasis">Bilgileriniz doğru girdiğinizden emin olun</p>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">
-                                    </span>
-                                    <input class="form-control" type="email" name="KullaniciAdi" id="Email" placeholder="Email..." required>
-                                </div>
-                                <div class="input-group mb-4">
-                                    <span class="input-group-text">
-                                    </span>
-                                    <input class="form-control" type="password" name="Sifre" id="Password" placeholder="Şifre..." required>
-                                </div>
-                                <div class="text-danger">
-                                    @name1
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="col-6">
-                                            <button class="btn btn-primary px-4" type="submit">Login</button>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="col-12">
-                                            <a class="text-danger px-4 text-decoration-none" onclick="alert('Şifremi unuttum eklenecek');">Şifremi Unuttum?</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
 
+                    <div class="card col-md-7 p-4 mb-0">
+                        <img src="/Admin/img/Ahlatci-Holding.jpeg">
+                        <div class="container col col-md-9">
+
+                            <div class="card-body">
+
+                                <form action="/Admin/GirisYap" method="post">
+
+                                    <h1>Giriş Yap</h1>
+                                    <p class="text-medium-emphasis">Kullanıcı Bilgilerinizi Doğru Girdiğinizden Emin Olun!!!</p>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">
+                                        </span>
+                                        <input class="form-control" type="email" name="KullaniciAdi" id="Email" placeholder="Email..." required>
+                                    </div>
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">
+                                        </span>
+                                        <input class="form-control" type="password" name="Sifre" id="Password" placeholder="Şifre..." required>
+                                    </div>
+                                    <div class="text-danger">
+                                        @name1
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="col-6">
+                                                <button class="btn btn-primary px-4" type="submit">Giriş Yap</button>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="col-12">
+                                                <a class="text-danger px-4 text-decoration-none" onclick="alert('Şifremi unuttum eklenecek');">Şifremi Unuttum?</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>

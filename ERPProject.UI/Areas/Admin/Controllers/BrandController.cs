@@ -17,16 +17,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Markalar")]
         public async Task<IActionResult> Index()
         {
-            var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
-            {
-                return RedirectToAction("Forbidden", "Home"); 
-            }
             var val = await GetAllAsync<BrandDTOResponse>(url + "GetBrands");
-            if (val == null)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -35,8 +26,16 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home"); 
+            }
             return View(val);
-            
         }
         [HttpGet("/Admin/Marka")]
         public async Task<IActionResult> Get(long id)

@@ -4,6 +4,7 @@ using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.DTO.CategoryDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +17,7 @@ namespace ERPProject.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -26,12 +28,20 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _categoryService = categoryService;
         }
-
+        [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı,Departman Müdürü")]
         [HttpPost("/AddCategory")]
         [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> AddCategory(CategoryDTORequest categoryDTORequest)
         {
             Category category = _mapper.Map<Category>(categoryDTORequest);
+
+            var existingCategory = await _categoryService.GetAsync(x => x.Name == category.Name);
+
+            if (existingCategory != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kategori zaten var"));
+            }
+
             await _categoryService.AddAsync(category);
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
@@ -40,6 +50,8 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
+
+        [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı,Departman Müdürü")]
         [HttpDelete("/RemoveCategory/{categoryId}")]
         public async Task<IActionResult> RemoveCategory(int categoryId)
         {
@@ -56,6 +68,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithoutData());
         }
 
+        [Authorize(Roles = "Admin,Şirket Müdürü,Yönetim Kurulu Başkanı,Departman Müdürü")]
         [HttpPost("/UpdateCategory")]
         [ValidationFilter(typeof(CategoryValidator))]
         public async Task<IActionResult> UpdateCategory(CategoryDTORequest categoryDTORequest)
@@ -66,6 +79,14 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<CategoryDTOResponse>.SuccessNoDataFound());
             }
             category = _mapper.Map(categoryDTORequest, category);
+
+            var existingCategory = await _categoryService.GetAsync(x => x.Name == category.Name);
+
+            if (existingCategory != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kategori zaten var"));
+            }
+
             await _categoryService.UpdateAsync(category);
 
             CategoryDTOResponse categoryDTOResponse = _mapper.Map<CategoryDTOResponse>(category);
@@ -90,6 +111,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CategoryDTOResponse>.SuccessWithData(categoryDTOResponse));
         }
+
         [HttpGet("/GetCategories")]
         public async Task<IActionResult> GetCategories()
         {

@@ -52,50 +52,65 @@
         });
     });
 </script>
-<div id="notFoundMessage" class="text-danger" style="display: none;">Sonuç bulunamadı...</div>
-<table class="table table-hover table-striped" id="example">
-    <thead>
-        <tr>
-            <th scope="col">Ad</th>
-            <th scope="col">Soyad</th>
-            <th scope="col">Email</th>
-            <th scope="col">Telefon</th>
-            <th scope="col">Yetki</th>
-            <th scope="col">Departman</th>
-            <th scope="col">Şirket</th>
-            <th scope="col">İşlemler</th>
+    <div class="container-table100" style="border-radius:8px;">
+        <div class="wrap-table100">
+            <div class="table100 ver5 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                            <tr class="row100 head bg-secondary bg-opacity-75">
+                                <th class="class="cell100 column2 text-light"">Fotoğraf</th>
+                            <th class="cell100 column2 text-light" style="padding-left:5px;">Ad</th>
+                                <th class="cell100 column2 text-light">Soyad</th>
+                                <th class="cell100 column2 text-light">Email</th>
+                                <th class="cell100 column2 text-light">Telefon</th>
+                                <th class="cell100 column2 text-light">Yetki</th>
+                                <th class="cell100 column2 text-light">Departman</th>
+                                <th class="cell100 column2 text-light">Şirket</th>
+                                <th class="cell100 column8 text-light">İşlemler</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="table100-body js-pscroll ps ps--active-y">
+                <table id="example" style="min-height:350px;">
+                        <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr class="row100 body">
+                                    <td class="cell100 column2">
+                                        <img src="~/@user.Image" style="max-height:80px; max-width:80px;" alt="...">
+                                    </td>
+                                    <td class="cell100 column2" style="padding-left:5px;">@user.Name</td>
+                                    <td class="cell100 column2">@user.LastName</td>
+                                    <td class="cell100 column2">@user.Email</td>
+                                    <td class="cell100 column2">@user.Phone</td>
+                                    <td class="cell100 column2">@user.RoleName</td>
+                                    <td class="cell100 column2">@user.DepartmentName</td>
+                                    <td class="cell100 column2">@user.CompanyName</td>
+                                    <td>
+                                        <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                İşlemler
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@user.Id" data-name="@user.Name" data-lastname="@user.LastName" data-email="@user.Email" data-phone="@user.Phone" data-password="@user.Password" data-rol="@user.RoleId" data-departman="@user.DepartmentId">Düzenle</li>
+                                                <hr>
+                                                <li class="dropdown-item text-danger" onclick="confirmUserDelete(@user.Id)">Sil</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>@user.Name</td>
-                <td>@user.LastName</td>
-                <td>@user.Email</td>
-                <td>@user.Phone</td>
-                <td>@user.RoleName</td>
-                <td>@user.DepartmentName</td>
-                <td>@user.CompanyName</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            İşlemler
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@user.Id" data-name="@user.Name" data-lastname="@user.LastName" data-email="@user.Email" data-phone="@user.Phone" data-password="@user.Password" data-rol="@user.RoleId" data-departman="@user.DepartmentId">Düzenle</li>
-                            <hr>
-                            <li class="dropdown-item text-danger" onclick="confirmUserDelete(@user.Id)">Sil</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        }
-
-
-    </tbody>
-</table>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -103,7 +118,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Personel Ekle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/KullaniciEkle" method="post">
+            <form enctype="multipart/form-data" class= action="/Admin/KullaniciEkle" method="post">
                 <div class="modal-body">
 
                     <div class="input-group mb-3">
@@ -116,7 +131,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-at-fill"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Email..." id="inputEmails" name="Email" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="email" class="form-control" placeholder="Email..." id="inputEmails" name="Email" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
@@ -132,7 +147,7 @@
                             <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputYetki" name="RoleId" required>
-                            <option selected>Yetki Seç...</option>
+                            <option value="" selected>Yetki Seç...</option>
                             @foreach (var item in Model.Roles)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -145,7 +160,7 @@
                             <label class="input-group-text" for="inputDeparman"><i class="bi bi-building"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputCompany" name="CompanyId" required>
-                            <option selected>Şirket Seç...</option>
+                            <option value="" selected>Şirket Seç...</option>
                             @foreach (var company in Model.Companies)
                             {
                                 <option value="@company.Id">@company.Name</option>
@@ -158,8 +173,12 @@
                             <label class="input-group-text" for="inputDepartman"><i class="bi bi-building"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputDepartman" name="DepartmentId" required>
-                            <option selected>Departman Seç...</option>
+                            <option value="d" selected>Departman Seç...</option>
                         </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
+                        <input type="file" name="imageFile" value="" required />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -178,7 +197,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Personel Güncelle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/KullaniciGuncelle" method="post">
+            <form enctype="multipart/form-data" action="/Admin/KullaniciGuncelle" method="post">
                 <div class="modal-body">
                     <input autocomplete="off" id="inputUserId" name="Id" class="form-control" type="hidden">
                     <div class="input-group mb-3">
@@ -197,7 +216,7 @@
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
                         <input autocomplete="off" class="form-control" id="inputPhone1" type="text" name="Phone" aria-label="Please enter your phone number" placeholder="(111)-111-1111" maxlength="10" minlength="10" required>
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3" hidden="hidden">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-incognito"></i></span>
                         <input autocomplete="off" type="password" class="form-control" placeholder="Şifre..." id="inputSifre1" name="Password" aria-describedby="basic-addon1" required>
                         <button id="togglePassword1" class="btn btn-light" type="button"><i class="bi bi-eye-slash"></i><i class="bi bi-eye"></i></button>
@@ -234,6 +253,11 @@
                             <option selected>Departman Seç...</option>
                         </select>
                     </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
+                        <input type="file" name="imageFile" value="" required />
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
@@ -247,6 +271,12 @@
 
 <script>
     var token = $("#token").val();
+    $('.js-pscroll').each(function () {
+        var ps = new PerfectScrollbar(this);
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
     function phoneMask() {
         var num = $("#inputPhone").val().replace(/\D/g, '');
         $(this).val(num.substring(0, 10));
@@ -300,6 +330,7 @@
                 }
             });
         });
+        
         $("#inputCompany1").change(function () {
             var selectedCompanyId = $(this).val();
             $.ajax({
