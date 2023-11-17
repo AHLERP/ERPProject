@@ -24,6 +24,9 @@ namespace ERPProject.Entity.DTO.UserDTO
 
         public string Password { get; set; } = null!;
         public string Image { get; set; } = null!;
+        public long? AddedUser { get; set; }
+        public long? UpdatedUser { get; set; }
+
 
 
     }

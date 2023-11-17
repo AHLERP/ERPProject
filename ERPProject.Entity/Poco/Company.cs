@@ -9,6 +9,7 @@ public partial class Company : BaseEntity
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
