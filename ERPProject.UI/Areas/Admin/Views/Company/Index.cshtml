@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <img src="~/Admin/img/ahlatci.jpg" class="card-img-top" alt="ahlatcilogo" style="height:350px!important;">
+                        <img src="~/@item.Image" class="card-img-top" alt="ahlatcilogo" style="height:350px!important;">
                         <h5 class="card-title">@item.Name</h5>
                     </div>
                 </div>
@@ -81,11 +81,18 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Şirket Ekle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/Admin/SirketEkle" method="post">
+            <form action="/Admin/SirketEkle" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Şirket İsmi</span>
                         <input autocomplete="off" type="text" class="form-control" placeholder="Şirket İsmi..." id="inputSirketAd" name="Name" aria-describedby="basic-addon1" required>
+
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Şirket Resmi</span>
+                        <input type="file" name="compImage" />
+                        <input hidden="hidden" type="text" name="Image" id="inputImage" />
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -140,6 +147,12 @@
                     <span class="input-group-text" id="basic-addon1">Departman İsmi</span>
                     <input autocomplete="off" type="text" class="form-control" placeholder="Departman İsmi..." id="inputDepartmanName" name="Name" aria-describedby="basic-addon1">
                 </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Şirket Resmi</span>
+                    <input type="file" name="compImage" />
+                    <input hidden="hidden" type="text" name="Image" id="inputImage" />
+
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
@@ -156,7 +169,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Şirket düzenle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="SirketGuncelle" method="post">
+            <form action="SirketGuncelle" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <input type="hidden" class="form-control" id="inputCompanyId" name="Id" value="" aria-describedby="basic-addon1">

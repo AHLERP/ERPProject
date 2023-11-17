@@ -95,7 +95,7 @@
                                                 İşlemler
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@user.Id" data-name="@user.Name" data-lastname="@user.LastName" data-email="@user.Email" data-phone="@user.Phone" data-password="@user.Password" data-rol="@user.RoleId" data-departman="@user.DepartmentId">Düzenle</li>
+                                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@user.Id" data-name="@user.Name" data-lastname="@user.LastName" data-email="@user.Email" data-phone="@user.Phone" data-password="@user.Password" data-rol="@user.RoleId" data-departman="@user.DepartmentId" data-addeduser="@user.AddedUser" data-image="@user.Image">Düzenle</li>
                                                 <hr>
                                                 <li class="dropdown-item text-danger" onclick="confirmUserDelete(@user.Id)">Sil</li>
                                             </ul>
@@ -200,6 +200,7 @@
             <form enctype="multipart/form-data" action="/Admin/KullaniciGuncelle" method="post">
                 <div class="modal-body">
                     <input autocomplete="off" id="inputUserId" name="Id" class="form-control" type="hidden">
+                    <input autocomplete="off" id="inputAddedUser" name="AddedUser" class="form-control" type="hidden">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
                         <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputUserAd" name="Name" aria-describedby="basic-addon1" required>
@@ -255,7 +256,8 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
-                        <input type="file" name="imageFile" value="" required />
+                        <input type="file" name="imageFile" value="" />
+                        <input hidden="hidden" type="text" name="Image" id="inputImage"/>
                     </div>
                     
                 </div>
@@ -297,6 +299,8 @@
         var pass = button.data('password');
         var rol = button.data('rol');
         var dep = button.data('departman');
+        var added = button.data('addeduser');
+        var image = button.data('image');
         $("#inputUserId").val(id);
         $("#inputUserAd").val(name);
         $("#inputUserSoyad").val(lastname);
@@ -305,6 +309,8 @@
         $("#inputSifre1").val(pass);
         $("#inputYetki1").val(rol);
         $("#inputDeparman1").val(dep);
+        $("#inputAddedUser").val(added);
+        $("#inputImage").val(image);
     });
     function confirmUserDelete(id) {
         var result = confirm("Bu personeli silmek istediğinizden emin misiniz?");
