@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using FluentValidation.Internal;
@@ -30,13 +31,21 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _userService = userService;
         }
-        
+
         [HttpPost("/AddCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
         [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
+
+            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
+
             await _companyService.AddAsync(company);
 
 
@@ -46,8 +55,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-
-
+        
         [HttpDelete("/RemoveCompany/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RemoveCompany(int id)
@@ -79,6 +87,13 @@ namespace ERPProject.API.Controllers
 
             company = _mapper.Map(companyDTORequest, company);
 
+            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
+
             await _companyService.UpdateAsync(company);
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);
@@ -87,7 +102,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-        
+
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
@@ -104,7 +119,6 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
 
-        
         [HttpGet("/GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {

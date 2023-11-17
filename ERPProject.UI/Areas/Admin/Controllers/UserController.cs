@@ -1,4 +1,5 @@
-﻿using ERPProject.Entity.DTO.CompanyDTO;
+﻿using DocumentFormat.OpenXml.Vml;
+using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
@@ -12,9 +13,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public UserController(HttpClient httpClient) : base(httpClient)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public UserController(HttpClient httpClient, IWebHostEnvironment hostingEnvironment) : base(httpClient)
         {
-
+            _hostingEnvironment = hostingEnvironment;
         }
         [HttpGet("/Admin/Kullanicilar")]
         public async Task<IActionResult> Index()
@@ -69,7 +71,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kullanici")]
         public async Task<IActionResult> Profile()
         {
-            var userId = Convert.ToInt64(HttpContext.Session.GetString("User"));  
+            var userId = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await GetAsync<UserDTOResponse>(url + "GetUser/" + userId);
             if (val.StatusCode == 401)
             {
@@ -163,7 +165,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 }
             }
             return RedirectToAction("Forbidden", "Home");
-
         }
         [HttpGet("/Admin/KullaniciSil/{id}")]
         public async Task<IActionResult> Delete(Int64 id)

@@ -19,6 +19,8 @@ namespace ERPProject.Entity.DTO.OfferDTO
         public decimal Price { get; set; }
 
         public string PriceStatus { get; set; } = null!;
+        public decimal Rate { get; set; }
+
 
         public int Status { get; set; }
         public long? AddedUser { get; set; }

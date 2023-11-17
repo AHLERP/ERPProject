@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Runtime.Intrinsics.Arm;
+using System.Xml;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -80,6 +81,12 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
+            XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
+            decimal usd = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
+            decimal eur = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "EUR")).InnerText.Replace('.', ','));
+            decimal jpy = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "JPY")).InnerText.Replace('.', ','));
+
             if (FileUpload != null)
             {
                 System.Data.DataTable dt = new System.Data.DataTable();

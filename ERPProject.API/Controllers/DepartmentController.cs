@@ -4,6 +4,7 @@ using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.DTO.DepartmentDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +16,7 @@ namespace ERPProject.API.Controllers
     [ApiController]
     [Route("[action]")]
     [Authorize]
+    
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
@@ -25,13 +27,20 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _departmentService = departmentService;
         }
-
         [HttpPost("/AddDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
         [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = _mapper.Map<Department>(departmentDTORequest);
+
+            var existingDepartment = await _departmentService.GetAsync(x => x.Name == department.Name);
+
+            if (existingDepartment != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu departman zaten var"));
+            }
+
             await _departmentService.AddAsync(department);
 
 
@@ -41,8 +50,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
-
-
         [HttpDelete("/RemoveDepartment/{departmentId}")]
         [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
         public async Task<IActionResult> RemoveDepartment(int departmentId)
@@ -60,7 +67,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithoutData());
         }
-
         [HttpPost("/UpdateDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
         [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
@@ -72,6 +78,13 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<DepartmentDTOResponse>.SuccessNoDataFound());
             }
             _mapper.Map(departmentDTORequest,department);
+
+            var existingDepartment = await _departmentService.GetAsync(x => x.Name == department.Name);
+
+            if (existingDepartment != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu departman zaten var"));
+            }
 
             await _departmentService.UpdateAsync(department);
 

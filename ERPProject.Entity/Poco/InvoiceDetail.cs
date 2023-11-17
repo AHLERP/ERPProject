@@ -16,5 +16,7 @@ namespace ERPProject.Entity.Poco
         public string ProductName { get; set; }
         public Invoice Invoice { get; set; }
         public long InvoiceId { get; set; }
+        public string PriceStatus { get; set; }
+        public decimal Rate { get; set; }
     }
 }

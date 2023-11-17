@@ -3,6 +3,7 @@ using ERPProject.Business.Abstract;
 using ERPProject.Business.ValidationRules.FluentValidation;
 using ERPProject.Core.Aspects;
 using ERPProject.Entity.DTO.ProductDTO;
+using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("[action]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
 
     public class ProductController : ControllerBase
     {
@@ -26,11 +27,20 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _productService = productService;
         }
+
         [HttpPost("/AddProduct")]
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> AddProduct(ProductDTORequest productDTORequest)
         {
             Product product = _mapper.Map<Product>(productDTORequest);
+
+            var existingProduct = await _productService.GetAsync(x => x.Name == product.Name);
+
+            if (existingProduct != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu ürün zaten var"));
+            }
+
             await _productService.AddAsync(product);
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
@@ -54,6 +64,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithoutData());
         }
+
         [HttpPost("/UpdateProduct")]
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> UpdateProduct(ProductDTORequest productDTORequest)
@@ -64,6 +75,14 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<ProductDTOResponse>.SuccessNoDataFound());
             }
             product = _mapper.Map(productDTORequest,product);
+
+            var existingProduct = await _productService.GetAsync(x => x.Name == product.Name);
+
+            if (existingProduct != null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu ürün zaten var"));
+            }
+
             await _productService.UpdateAsync(product);
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);

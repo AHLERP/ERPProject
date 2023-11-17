@@ -25,9 +25,11 @@ public partial class User : BaseEntity
     public string Phone { get; set; } = null!;
 
     public string Password { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
 
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
+    public virtual ICollection<Request> AcceptedRequests { get; set; }=new List<Request>();
 
     public virtual ICollection<StockDetail> StockDetailDeliverers { get; set; } = new List<StockDetail>();
     public virtual ICollection<Offer> Offers { get; set; } = new List<Offer>();

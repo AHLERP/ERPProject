@@ -15,6 +15,7 @@ namespace ERPProject.API.Controllers
     [ApiController]
     [Route("[action]")]
     [Authorize]
+
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -35,6 +36,13 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)
         {
             User user = _mapper.Map<User>(userDTORequest);
+
+            var existingUser = await _userService.GetAsync(x=>x.Email == user.Email);
+
+            if (existingUser!= null)
+            {
+                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
+            }
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
@@ -75,7 +83,7 @@ namespace ERPProject.API.Controllers
             }
             var existingUser = await _userService.GetAsync(x => x.Email == user.Email);
 
-            if (existingUser.Email != userDTORequest.Email)
+            if (existingUser != null)
             {
                 return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
             }
@@ -93,7 +101,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetUser/{userId}")]
         public async Task<IActionResult> GetUser(long userId)
         {
-            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department");
+            User user = await _userService.GetAsync(x=>x.Id == userId,"Role","Department","Department.Company");
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
@@ -107,6 +115,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpGet("/GetUsers")]
+
         public async Task<IActionResult> GetUsers()
         {
             
@@ -150,9 +159,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
-
-        
-
 
 
         [HttpGet("/GetUsersByRole/{roleId}")]

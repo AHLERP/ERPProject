@@ -25,5 +25,8 @@ namespace ERPProject.Entity.DTO.RequestDTO
         public decimal QuantityUnit { get; set; }
         
         public int RequestStatus { get; set; }
+        public long? AddedUser { get; set; }
+
+        public long? UpdatedUser { get; set; }
     }
 }

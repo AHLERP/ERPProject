@@ -31,7 +31,6 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _companyService = companyService;
         }
-
         [HttpPost("/AddInvoice")]
         public async Task<IActionResult> AddInvoice(InvoiceDTORequest invoiceDTORequest)
         {
@@ -98,6 +97,28 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetInvoices()
         {
             var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true);
+            if (invoices == null)
+            {
+                return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
+            }
+
+            List<InvoiceDTOResponse> invoiceDTOResponseList = new();
+            foreach (var invoice in invoices)
+            {
+                invoiceDTOResponseList.Add(_mapper.Map<InvoiceDTOResponse>(invoice));
+            }
+
+            Log.Information("Invoices => {@invoiceDTOResponse} => { Faturalar Getirildi. }", invoiceDTOResponseList);
+
+            return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
+        }
+        [HttpGet("/GetInvoicesByDate/{date}")]
+        public async Task<IActionResult> GetInvoicesByDate(string date)
+        {
+            string[] parcalar = date.Split('-');
+            DateTime startDate = Convert.ToDateTime(parcalar[0]);
+            DateTime endDate = Convert.ToDateTime(parcalar[1]);
+            var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true && x.InvoiceDate >= startDate && x.InvoiceDate <= endDate);
             if (invoices == null)
             {
                 return NotFound(Sonuc<InvoiceDTOResponse>.SuccessNoDataFound());
