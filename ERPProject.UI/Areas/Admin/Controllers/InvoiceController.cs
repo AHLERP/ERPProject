@@ -24,7 +24,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -43,15 +43,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 Invoices = val.Data,
                 InvoiceDetail = val2.Data
             };
-            return View(val);
-            
+            return View(invoiceVM);
         }
         [HttpGet("/Admin/Fatura")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<InvoiceDTOResponse>(url + "GetInvoice/" + id);
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -77,106 +76,181 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(IFormFile FileUpload)
         {
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
             if (FileUpload != null)
             {
-            System.Data.DataTable dt = new System.Data.DataTable();
+                System.Data.DataTable dt = new System.Data.DataTable();
 
-            // excel dosyamızı stream'e çeviriyoruz
-            using (var ms = new MemoryStream())
-            {
-                FileUpload.CopyTo(ms);
-
-                // excel dosyamızı streamden okuyoruz
-                using (var workbook = new XLWorkbook(ms))
+                // excel dosyamızı stream'e çeviriyoruz
+                using (var ms = new MemoryStream())
                 {
-                    var worksheet = workbook.Worksheet(1); // sayfa 
-                    // sayfada kaç sütun kullanılmış onu buluyoruz ve sütunları DataTable'a ekliyoruz, ilk satırda sütun başlıklarımız var
-                    int i, n = worksheet.Columns().Count();
-                    for (i = 1; i <= n; i++)
-                    {
-                        dt.Columns.Add(worksheet.Cell(1, i).Value.ToString());
-                    }
+                    FileUpload.CopyTo(ms);
 
-                    // sayfada kaç satır kullanılmış onu buluyoruz ve DataTable'a satırlarımızı ekliyoruz
-                    n = worksheet.Rows().Count();
-                    for (i = 2; i <= n; i++)
+                    // excel dosyamızı streamden okuyoruz
+                    using (var workbook = new XLWorkbook(ms))
                     {
-                        DataRow dr = dt.NewRow();
-
-                        int j, k = worksheet.Columns().Count();
-                        for (j = 1; j <= k; j++)
+                        var worksheet = workbook.Worksheet(1); // sayfa 
+                                                               // sayfada kaç sütun kullanılmış onu buluyoruz ve sütunları DataTable'a ekliyoruz, ilk satırda sütun başlıklarımız var
+                        int i, n = worksheet.Columns().Count();
+                        for (i = 1; i <= n; i++)
                         {
-                            // i= satır index, j=sütun index, closedXML worksheet için indexler 1'den başlıyor, ama datatable için 0'dan başladığı için j-1 diyoruz
-                            dr[j - 1] = worksheet.Cell(i, j).Value;
+                            dt.Columns.Add(worksheet.Cell(1, i).Value.ToString());
                         }
 
-                        dt.Rows.Add(dr);
-                    }
-                    InvoiceDTORequest dTORequest = null;
-                    long id = 0;
-                    for (i = 0; i < n - 1; i++)
-                    {
-                        DataRow row = dt.Rows[i];
-                        dTORequest = new InvoiceDTORequest
+                        // sayfada kaç satır kullanılmış onu buluyoruz ve DataTable'a satırlarımızı ekliyoruz
+                        n = worksheet.Rows().Count();
+                        for (i = 2; i <= n; i++)
                         {
-                            SupplierName = row["Tedarikci"].ToString(),
-                            CompanyName = row["Şirket"].ToString(),
-                            TotalPrice = Convert.ToInt32(row["Fiyat"]),
-                            InvoiceDate = Convert.ToDateTime(row["Tarih"])
-                        };
+                            DataRow dr = dt.NewRow();
+
+                            int j, k = worksheet.Columns().Count();
+                            for (j = 1; j <= k; j++)
+                            {
+                                // i= satır index, j=sütun index, closedXML worksheet için indexler 1'den başlıyor, ama datatable için 0'dan başladığı için j-1 diyoruz
+                                dr[j - 1] = worksheet.Cell(i, j).Value;
+                            }
+
+                            dt.Rows.Add(dr);
+                        }
+                        InvoiceDTORequest dTORequest = null;
+                        long id = 0;
+                        for (i = 0; i < n - 1; i++)
+                        {
+                            DataRow row = dt.Rows[i];
+                            dTORequest = new InvoiceDTORequest
+                            {
+                                SupplierName = row["Tedarikci"].ToString(),
+                                CompanyName = row["Şirket"].ToString(),
+                                TotalPrice = Convert.ToInt32(row["Fiyat"]),
+                                PriceStatus = row["Para Birimi"].ToString(),
+                                InvoiceDate = Convert.ToDateTime(row["Tarih"])
+                            };
+                        }
+                        if (dTORequest.PriceStatus == "USD")
+                        {
+                            dTORequest.PriceStatus = "1";
+                            dTORequest.Rate = usd;
+                        }
+                        else if (dTORequest.PriceStatus == "EUR")
+                        {
+                            dTORequest.PriceStatus = "2";
+                            dTORequest.Rate = eur;
+                        }
+                        else if (dTORequest.PriceStatus == "JPY")
+                        {
+                            dTORequest.PriceStatus = "3";
+                            dTORequest.Rate = jpy;
+                        }
+                        else if (dTORequest.PriceStatus == "TRY")
+                        {
+                            dTORequest.PriceStatus = "0";
+                            dTORequest.Rate = 1;
+                        }
+                        dTORequest.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                        dTORequest.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                        var val = await AddAsync(dTORequest, url + "AddInvoice");
+                        id = val.Data.Id;
+                        InvoiceDetailDTORequest invoiceDetailDTORequest = null;
+                        for (i = 0; i < n - 2; i++)
+                        {
+                            DataRow row = dt.Rows[i];
+                            invoiceDetailDTORequest = new InvoiceDetailDTORequest
+                            {
+                                ProductName = row["Tedarikci"].ToString(),
+                                Price = Convert.ToInt32(row["Fiyat"]),
+                                Quantity = Convert.ToInt32(row["Miktar"]),
+                                QuantityUnit = row["Birim"].ToString(),
+                                PriceStatus = row["Para Birimi"].ToString(),
+                                InvoiceId = id,
+                            };
+                            #region birim
+                            if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("metre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "1";
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("kilometre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "2";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("mililitre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "3";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("litre"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "4";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("kilogram"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "5";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("ton"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "6";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("adet"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "7";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("koli"))
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "8";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("metrekare") || invoiceDetailDTORequest.QuantityUnit == "m²")
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "9";
+
+                            }
+                            else if (invoiceDetailDTORequest.QuantityUnit.ToLower().Contains("metreküp") || invoiceDetailDTORequest.QuantityUnit == "m³")
+                            {
+                                invoiceDetailDTORequest.QuantityUnit = "10";
+
+                            }
+                            #endregion
+                            #region money
+                            if (dTORequest.PriceStatus == "USD")
+                            {
+                                dTORequest.PriceStatus = "1";
+                                dTORequest.Rate = usd;
+                            }
+                            else if (dTORequest.PriceStatus == "EUR")
+                            {
+                                dTORequest.PriceStatus = "2";
+                                dTORequest.Rate = eur;
+                            }
+                            else if (dTORequest.PriceStatus == "JPY")
+                            {
+                                dTORequest.PriceStatus = "3";
+                                dTORequest.Rate = jpy;
+                            }
+                            else if (dTORequest.PriceStatus == "TRY")
+                            {
+                                dTORequest.PriceStatus = "0";
+                                dTORequest.Rate = 1;
+                            }
+                            #endregion
+                            var val2 = await AddAsync(invoiceDetailDTORequest, url + "AddInvoiceDetail");
+                        }
+
+                        //if (val)
+                        //{
+                        //    return RedirectToAction("Index", "Invoice");
+
+                        //}
+                        return RedirectToAction("Index", "Invoice");
 
                     }
-                    dTORequest.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
-                    dTORequest.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
-                    var val = await AddAsync(dTORequest, url + "AddInvoice");
-                        
-                    id = val.Data.Id;
-                    InvoiceDetailDTORequest ınvoiceDetailDTORequest = null;
-                    for (i = 0; i < n - 2; i++)
-                    {
-                        DataRow row = dt.Rows[i];
-                        ınvoiceDetailDTORequest = new InvoiceDetailDTORequest
-                        {
-                            ProductName = row["Tedarikci"].ToString(),
-                            Price = Convert.ToInt32(row["Fiyat"]),
-                            Quantity = Convert.ToInt32(row["Miktar"]),
-                            QuantityUnit = Convert.ToInt16(row["Birim"]),
-                            InvoiceId = id,
-                        };
-                        var val2 = await AddAsync(ınvoiceDetailDTORequest, url + "AddInvoiceDetail");
-                        if (val2.StatusCode == 401)
-                        {
-                            return RedirectToAction("Unauthorized", "Home");
-                        }
-                        else if (val2.StatusCode == 403)
-                        {
-                            return RedirectToAction("Forbidden", "Home");
-                        }
-                        if (val2 == null)
-                        {
-                            return RedirectToAction("Forbidden", "Home");
-                        }
-                    }
-                    if (val.StatusCode == 401)
-                    {
-                        return RedirectToAction("Unauthorized", "Home");
-                    }
-                    else if (val.StatusCode == 403)
-                    {
-                        return RedirectToAction("Forbidden", "Home");
-                    }
-                    if (val == null)
-                    {
-                        return RedirectToAction("Forbidden", "Home");
-                    }
-                    return RedirectToAction("Index", "Invoice");
-
                 }
-            }
             }
             return RedirectToAction("Index", "Invoice");
         }
@@ -184,7 +258,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -215,7 +289,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await DeleteAsync(url + "RemoveInvoice/" + id);
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -230,6 +304,66 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             return RedirectToAction("Forbidden", "Home");
         }
+        [HttpGet("/Admin/Raporlama")]
+        public async Task<IActionResult> Report(DateTime startDate, DateTime endDate)
+        {
+            string dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yonetim")
+            {
+                var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
+                var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+
+                InvoiceVM invoiceVM = new InvoiceVM()
+                {
+                    Invoices = val.Data,
+                    InvoiceDetail = val2.Data
+                };
+                return View(invoiceVM);
+            }
+            return RedirectToAction("Forbidden", "Home");
+
+        }
+        [HttpPost("/Admin/Raporlama")]
+        public async Task<IActionResult> Report(string datefilter)
+        {
+            string dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yonetim")
+            {
+                if (datefilter == null)
+                {
+                    return RedirectToAction("Report", "Invoice");
+                }
+                var date = datefilter.Replace(" ", "").Replace("/", ".");
+                var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoicesByDate/" + date);
+                var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
+                if (val.StatusCode == 401)
+                {
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+                else if (val.StatusCode == 403)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+
+                InvoiceVM invoiceVM = new InvoiceVM()
+                {
+                    Invoices = val.Data,
+                    InvoiceDetail = val2.Data
+                };
+                return View(invoiceVM);
+            }
+            return RedirectToAction("Forbidden", "Home");
+        }
+
+
     }
 }
 

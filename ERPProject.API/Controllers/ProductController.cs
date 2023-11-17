@@ -26,7 +26,6 @@ namespace ERPProject.API.Controllers
             _mapper = mapper;
             _productService = productService;
         }
-
         [HttpPost("/AddProduct")]
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> AddProduct(ProductDTORequest productDTORequest)
@@ -55,7 +54,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithoutData());
         }
-
         [HttpPost("/UpdateProduct")]
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> UpdateProduct(ProductDTORequest productDTORequest)

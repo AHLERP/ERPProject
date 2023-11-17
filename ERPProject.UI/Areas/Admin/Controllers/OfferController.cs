@@ -36,7 +36,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
                 var val4 = await GetAllAsync<OfferDTOResponse>(url + "GetOffersByRequest/" + id);
-                if (dep == "Yonetim")
+                if (dep == "Yonetim" || dep == "Satın Alma")
                 {
                     var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
                     OfferVM offerVM = new OfferVM()
@@ -48,12 +48,13 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     };
                     return View(offerVM);
                 }
-                else if (dep == "Admin" || dep == "Satın Alma")
+                else if (dep == "Admin" )
                 {
                     var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
                     OfferVM offerVM = new OfferVM()
+
                     {
-                        Offers = val4.Data,
+                        Offers = null,
                         Users = val2.Data,
                         Requests = val3.Data,
 
@@ -61,8 +62,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     return View(offerVM);
                 }
             }
-            return RedirectToAction("Forbidden", "Home");
-
+          return RedirectToAction("Forbidden", "Home");
         }
         [HttpGet("/Admin/Teklif")]
         public async Task<IActionResult> Get(long id)

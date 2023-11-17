@@ -24,8 +24,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var id = HttpContext.Session.GetString("User");
-            var dep = HttpContext.Session.GetString("DepartmanName");
-            if (dep == "Admin" || dep == "Yönetim")
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Admin" || dep == "Yonetim")
             {
                 val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
                 if (val == null)

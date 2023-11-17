@@ -119,6 +119,22 @@ namespace ERPProject.API.Controllers
 
 
 
+
+            string AcceptRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz tamamlanmıştır.";
+            string RefuseRequestMessage = request.User.Name + " " + request.User.LastName + " adlı personelimiz " + request.Title + " başlıklı isteğiniz reddedildi";
+            if (request.RequestStatus == 2)
+            {
+                SendMail(request.User.Email, AcceptRequestMessage);
+
+            }
+            if (request.RequestStatus == 3)
+            {
+                SendMail(request.User.Email, RefuseRequestMessage);
+            }
+
+
+
+            response = await _offerService.UpdateAllAsync(offer);
             List<OfferDTOResponse> offerDTOResponse = new();
             foreach (var item in response)
             {

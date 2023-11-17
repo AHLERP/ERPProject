@@ -14,8 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize(Roles = "Admin")]
-
+    [Authorize]
     public class RequestController : Controller
     {
         private readonly IMapper _mapper;
@@ -173,6 +172,52 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
+        }
+
+        [HttpGet("/RequestsByDepartment/{userId}")]
+        public async Task<IActionResult> GetRequestsByDepartment(long userId)
+        {
+            User user = await _userService.GetAsync(x => x.Id == userId);
+            Department department = await _departmentService.GetAsync(x => x.Id == user.DepartmentId);
+
+            var requests = await _requestService.GetAllAsync(x => x.IsActive == true && x.User.DepartmentId == department.Id, "User", "Product");
+
+            if (requests == null)
+            {
+                return NotFound(Sonuc<List<RequestDTOResponse>>.SuccessNoDataFound());
+            }
+
+            List<RequestDTOResponse> requestDTOResponseList = new();
+
+            foreach (var request in requests)
+            {
+                requestDTOResponseList.Add(_mapper.Map<RequestDTOResponse>(request));
+            }
+
+            Log.Information("Requests => {@requestDTOResponse} => { İstekler Getirildi. }", requestDTOResponseList);
+
+            return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
+
+        }
+        private void SendMail(string mail, string body)
+        {
+
+            MailMessage mesaj = new MailMessage();
+            mesaj.From = new MailAddress("stokbilgilendirmeahl@hotmail.com");
+            mesaj.To.Add(mail);
+            mesaj.Subject = "İstek Sonuçlandı";
+            mesaj.Body = body;
+            mesaj.IsBodyHtml = true;
+            mesaj.BodyEncoding = Encoding.UTF8;
+            SmtpClient a = new SmtpClient();
+            a.Credentials = new System.Net.NetworkCredential("stokbilgilendirmeahl@hotmail.com", "HakanC19/");
+            a.Port = 587;
+            a.Host = "smtp.office365.com";
+            a.EnableSsl = true;
+            object userState = mesaj;
+
+
+            a.Send(mesaj);
         }
 
         [HttpGet("/RequestsByDepartment/{userId}")]
