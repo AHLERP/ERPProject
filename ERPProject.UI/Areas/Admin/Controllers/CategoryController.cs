@@ -34,7 +34,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -57,7 +57,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -82,7 +82,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -111,7 +111,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -131,7 +131,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await DeleteAsync(url + "RemoveCategory/" + id);
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
+            if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
