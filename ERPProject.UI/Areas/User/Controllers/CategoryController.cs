@@ -49,7 +49,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Update(CategoryDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateCategory");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Category");
 

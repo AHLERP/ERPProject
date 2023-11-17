@@ -15,8 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-
-
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -31,9 +30,10 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _userService = userService;
         }
-
+        
         [HttpPost("/AddCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
@@ -49,6 +49,7 @@ namespace ERPProject.API.Controllers
 
 
         [HttpDelete("/RemoveCompany/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
             Company company = await _companyService.GetAsync(x => x.Id == id);
@@ -67,6 +68,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = await _companyService.GetAsync(x => x.Id == companyDTORequest.Id);
@@ -85,8 +87,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-
-
+        
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
@@ -122,7 +123,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<CompanyDTOResponse>>.SuccessWithData(companyDTOResponseList));
         }
-
         [HttpGet("/GetCompaniesByUser/{userId}")]
         public async Task<IActionResult> GetCompaniesByUser(long userId)
         {

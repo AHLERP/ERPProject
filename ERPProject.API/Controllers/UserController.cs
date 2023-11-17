@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize(Roles ="Admin")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -65,6 +65,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateUser")]
         [ValidationFilter(typeof(UserValidator))]
+
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);

@@ -48,7 +48,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Update(RoleDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateRole");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Index", "Role");
 

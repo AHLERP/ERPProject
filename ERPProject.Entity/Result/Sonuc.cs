@@ -45,14 +45,14 @@ namespace ERPProject.Entity.Result
         }
         public static Sonuc<T> SuccessWithData(T data, string message = "İşlem Başarılı", int statusCode = (int)HttpStatusCode.OK)
         {
-            return new Sonuc<T>(data, message, statusCode, null);
+            return new Sonuc<T>(data, message, statusCode,null);
         }
 
         public static Sonuc<T> SuccessWithoutData(string message = "İşlem Başarılı", int statusCode = (int)HttpStatusCode.OK)
         {
             return new Sonuc<T>(message, statusCode, null);
         }
-
+        
 
         public static Sonuc<T> SuccessNoDataFound(string message = "Sonuç Bulunamadı", int statusCode = (int)HttpStatusCode.NotFound)
         {

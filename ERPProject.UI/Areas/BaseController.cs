@@ -1,5 +1,6 @@
 ﻿using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace ERPProject.UI.Areas
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("http://localhost:7075/api/");
         }
-        protected async Task<bool> UpdateAsync<T>(T p, string url) where T : class
+        protected async Task<ApiResponse<T>> UpdateAsync<T>(T p, string url) where T : class
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("Token"));
             var jsonData = JsonConvert.SerializeObject(p);
@@ -25,11 +26,13 @@ namespace ERPProject.UI.Areas
             var responseMessage = await _httpClient.PostAsync(url, stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
+                var jsonDataw = await responseMessage.Content.ReadAsStringAsync();
+                var value = JsonConvert.DeserializeObject<ApiResponse<T>>(jsonDataw);
                 _httpClient.DefaultRequestHeaders.Remove("Authorization");
-                return true;
+                return value;
             }
 
-            return false;
+            return null;
         }
         protected async Task<ApiResponse<T>> AddAsync<T>(T p, string url) where T : class
         {

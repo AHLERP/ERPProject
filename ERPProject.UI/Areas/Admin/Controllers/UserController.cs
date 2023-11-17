@@ -21,19 +21,26 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var id = HttpContext.Session.GetString("User");
             var val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByCompany/"+id);
-            if (HttpContext.Session.GetString("Role") == "Admin")
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Admin")
             {
                 val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
             }
             if (HttpContext.Session.GetString("Role") == "Departman Müdürü")
             {
                 val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByDepartment/" + id);
-
             }
-            else if (HttpContext.Session.GetString("Role") == "Şirket Müdürü")
+            if (HttpContext.Session.GetString("Role") == "Şirket Müdürü")
             {
                 val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByCompany/" + id);
-
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
             }
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             var val3 = await GetAllAsync<RoleDTOResponse>(url + "Roles");
@@ -74,12 +81,29 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddUser");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Insan Kaynaklari" || dep != "Yonetim" || dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val.Data != null)
             {
                 return RedirectToAction("Index", "User");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/KullaniciGuncelle")]
@@ -87,24 +111,46 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateUser");
-            if (val)
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Insan Kaynaklari" || dep != "Yonetim" || dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
             {
                 return RedirectToAction("Kullanicilar", "Admin");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpGet("/Admin/KullaniciSil/{id}")]
         public async Task<IActionResult> Delete(Int64 id)
         {
             var val = await DeleteAsync(url + "RemoveUser/" + id);
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep != "Insan Kaynaklari" || dep != "Yonetim" || dep != "Admin")
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val)
             {
                 return RedirectToAction("Kullanicilar", "Admin");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
     }

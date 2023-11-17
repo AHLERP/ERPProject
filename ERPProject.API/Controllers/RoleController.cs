@@ -15,7 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
 
     public class RoleController : Controller
     {
@@ -68,6 +68,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/AddRole")]
         [ValidationFilter(typeof(RoleValidator))]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole(RoleDTORequest roleDTORequest)
         {
 
@@ -80,7 +81,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("/UpdateRole")]
         [ValidationFilter(typeof(RoleValidator))]
         public async Task<IActionResult> UpdateRole(RoleDTORequest roleDTORequest)
@@ -101,7 +102,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("/RemoveRole/{roleId}")]
         public async Task<IActionResult> RemoveRole(int roleId)
         {

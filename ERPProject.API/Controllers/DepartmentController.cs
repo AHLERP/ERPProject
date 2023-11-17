@@ -14,8 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize(Roles = "Admin")]
-
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
@@ -29,6 +28,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/AddDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = _mapper.Map<Department>(departmentDTORequest);
@@ -44,6 +44,7 @@ namespace ERPProject.API.Controllers
 
 
         [HttpDelete("/RemoveDepartment/{departmentId}")]
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
         public async Task<IActionResult> RemoveDepartment(int departmentId)
         {
             Department department = await _departmentService.GetAsync(x=>x.Id == departmentId);
@@ -62,6 +63,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
+        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
         public async Task<IActionResult> UpdateDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = await _departmentService.GetAsync(x=>x.Id == departmentDTORequest.Id);
@@ -120,7 +122,7 @@ namespace ERPProject.API.Controllers
 
 
         [HttpGet("/GetDepartmentsByCompany/{companyId}")]
-        public async Task<IActionResult> GetDepartments(int companyId)
+        public async Task<IActionResult> GetDepartmentsByCompany(int companyId)
         {
             var departments = await _departmentService.GetAllAsync(x => x.IsActive == true && x.CompanyId == companyId, "Company");
 
@@ -139,5 +141,8 @@ namespace ERPProject.API.Controllers
 
             return Ok(departmentDTOResponseList);
         }
+
+        
     }
+    
 }

@@ -6,6 +6,7 @@ using ERPProject.Entity.DTO.InvoiceDTO;
 using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -14,7 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class OfferController : ControllerBase
     {
         private readonly IOfferService _offerService;
@@ -77,7 +78,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/GetOffer/{offerId}")]
         public async Task<IActionResult> GetOffer(int offerId)
         {
-            Offer offer = await _offerService.GetAsync(x => x.Id == offerId);
+            Offer offer = await _offerService.GetAsync(x => x.Id == offerId, "User", "Request");
             if (offer == null)
             {
                 return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
@@ -95,10 +96,10 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetOffers()
         {
 
-            var offers = await _offerService.GetAllAsync(x=>x.IsActive==true);
+            var offers = await _offerService.GetAllAsync(x => x.IsActive == true, "User", "Request");
             if (offers == null)
             {
-                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound()) ;
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
             }
             List<OfferDTOResponse> offerDTOResponseList = new();
             foreach (var offer in offers)
@@ -114,18 +115,45 @@ namespace ERPProject.API.Controllers
         {
             var offer = _mapper.Map<Offer>(offerDTORequest);
             var response = await _offerService.UpdateAllAsync(offer);
+            OfferDTOResponse offerDTOResponse1 = _mapper.Map<OfferDTOResponse>(offer);
+
+
 
             List<OfferDTOResponse> offerDTOResponse = new();
-            foreach (var item in response) 
+            foreach (var item in response)
             {
 
                 offerDTOResponse.Add(_mapper.Map<OfferDTOResponse>(item));
             }
             Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse);
 
+            if (offerDTOResponse.Count <= 1)
+            {
+                Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse1);
+                return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse1));
+            }
+            else
+            {
+                return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
+            }
+        }
 
-            return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
+        [HttpGet("/GetOffersByRequest/{requestId}")]
+        public async Task<IActionResult> GetOffersByRequest(long requestId)
+        {
+            var offers = await _offerService.GetAllAsync(x => x.IsActive == true && x.RequestId == requestId, "User", "Request");
+            if (offers == null)
+            {
+                return NotFound(Sonuc<OfferDTOResponse>.SuccessNoDataFound());
+            }
+            List<OfferDTOResponse> offerDTOResponseList = new();
+            foreach (var offer in offers)
+            {
+                offerDTOResponseList.Add(_mapper.Map<OfferDTOResponse>(offer));
+            }
 
+            Log.Information("Offers => {@offerDTOResponse} => { Teklifleri İsteklere Göre Getir. }", offerDTOResponseList);
+            return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponseList));
         }
     }
 }

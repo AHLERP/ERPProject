@@ -12,7 +12,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
 
     public class StockDetailController : Controller
     {
@@ -49,7 +49,6 @@ namespace ERPProject.API.Controllers
 
 
         [HttpDelete("/RemoveStockDetail/{stockDetailId}")]
-
         public async Task<IActionResult> RemoveStockDetail(long stockDetailId)
         {
             StockDetail stockDetail = await _stockDetailService.GetAsync(x=>x.Id == stockDetailId);
@@ -103,7 +102,7 @@ namespace ERPProject.API.Controllers
         [HttpGet("/StockDetails")]
         public async Task<IActionResult> GetStockDetails()
         {
-            var stockDetails = await _stockDetailService.GetAllAsync(x=>x.IsActive == true , "Stock.Product", "User");
+            var stockDetails = await _stockDetailService.GetAllAsync(x => x.IsActive == true, "Stock.Product", "User");
             if (stockDetails == null)
             {
                 return NotFound(Sonuc<StockDetailDTOResponse>.SuccessNoDataFound());
@@ -138,10 +137,6 @@ namespace ERPProject.API.Controllers
             Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stoğa Göre Stok Detayları Getirildi. }", stockDetailDTOResponseList);
 
             return Ok(stockDetailDTOResponseList);
-        }
-
-        // StockDetailsByUser ???
-
-        
+        }        
     }
 }
