@@ -56,6 +56,13 @@ namespace ERPProject.Business.Concrete
             Entity.Status = 4;
             Entity.IsActive = true;
             await _uow.OfferRepository.UpdateAsync(Entity);
+
+            if (updateofferList.ToList().Count==1)
+            {
+                await _uow.SaveChangeAsync();
+
+                return updateofferList;
+            }
             foreach (var val in updateofferList)
             {
                 if (val.Id != Entity.Id)
@@ -63,6 +70,7 @@ namespace ERPProject.Business.Concrete
                     val.Status = 3;
                     await _uow.OfferRepository.UpdateAsync(val);
                 }
+                
             }
             await _uow.SaveChangeAsync();
 

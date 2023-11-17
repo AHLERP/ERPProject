@@ -50,7 +50,7 @@ namespace ERPProject.UI.Areas.User.Controllers
         public async Task<IActionResult> Update(DepartmentDTORequest p)
         {
             var val = await UpdateAsync(p, url + "UpdateDepartment");
-            if (val)
+            if (val.Data != null)
             {
                 return RedirectToAction("Sirketler", "User");
 

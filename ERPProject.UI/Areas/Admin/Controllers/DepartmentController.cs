@@ -26,13 +26,25 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            return View(val);
+            return RedirectToAction("Index", "Company");
         }
         [HttpGet("/Admin/Departman")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<DepartmentDTOResponse>(url + "GetDepartment/" + id);
-            return View(val);
+            if (val.Data != null)
+            {
+                return View(val);
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost("/Admin/DepartmanEkle")]
         public async Task<IActionResult> Add(DepartmentDTORequest p)
@@ -40,12 +52,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await AddAsync(p, url + "AddDepartment");
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             if (val.Data != null)
             {
-                return RedirectToAction("Sirketler", "Admin");
+                return RedirectToAction("Index", "Company");
 
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Company");
 
         }
         [HttpPost("/Admin/DepartmanGuncelle")]
@@ -53,13 +77,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateDepartment");
-            if (val)
+            if (val == null)
             {
-                return RedirectToAction("Sirketler", "Admin");
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (val.Data != null)
+            {
+                return RedirectToAction("Index", "Company");
 
             }
-
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Index", "Company");
 
         }
         [HttpGet("/Admin/DepartmanSil/{id}")]

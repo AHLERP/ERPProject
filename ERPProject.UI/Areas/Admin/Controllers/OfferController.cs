@@ -1,5 +1,4 @@
-﻿using ERPProject.Entity.DTO.InvoiceDTO;
-using ERPProject.Entity.DTO.OfferDTO;
+﻿using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
@@ -27,14 +26,35 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var id = HttpContext.Session.GetString("User");
             var dep = HttpContext.Session.GetString("DepartmentName");
-            var role = HttpContext.Session.GetString("Role");
-            if (dep == "Satın Alma" || role == "Şirket Müdürü")
+            var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
+            if (val == null)
+                return RedirectToAction("Forbidden", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
             {
                 var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-                var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
-                var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-                OfferVM offerVM = null;
-                if (val == null)
+                var val4 = await GetAllAsync<OfferDTOResponse>(url + "GetOffersByRequest/" + id);
+                if (dep == "Yonetim")
+                {
+
+                    var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
+                    OfferVM offerVM = new OfferVM()
+                    {
+                        Offers = val4.Data,
+                        Users = val2.Data,
+                        Requests = val3.Data,
+
+                    };
+                    return View(offerVM);
+                }
+                else if (dep == "Admin" || dep == "Satın Alma")
                 {
                     offerVM = new OfferVM()
 
@@ -45,72 +65,28 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
                         };
                         return View(offerVM);
-                    }
-
-                    if (val.StatusCode == 401)
-                    {
-                        return RedirectToAction("Unauthorized", "Home");
-                    }
-                    else if (val.StatusCode == 403)
-                    {
-                        return RedirectToAction("Forbidden", "Home");
-                    }
-                    offerVM = new OfferVM()
-
-                    {
-                        Offers = val.Data,
-                        Users = val2.Data,
-                        Requests = val3.Data,
-
-                };
-                return View(offerVM);
+                }
+                return RedirectToAction("Forbidden", "Home");
             }
-            else if (role == "Admin" || role == "Yönetim Kurulu Başkanı")
-            {
-                var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
-                var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
-                var val = await GetAllAsync<OfferDTOResponse>(url + "GetOffers");
-                OfferVM offerVM = null;
-                if (val == null)
-                {
-                    offerVM = new OfferVM()
-
-                    {
-                        Offers = null,
-                        Users = val2.Data,
-                        Requests = val3.Data,
-
-                    };
-                    return View(offerVM);
-                }
-
-                if (val.StatusCode == 401)
-                {
-                    return RedirectToAction("Unauthorized", "Home");
-                }
-                else if (val.StatusCode == 403)
-                {
-                    return RedirectToAction("Forbidden", "Home");
-                }
-                offerVM = new OfferVM()
-
-                {
-                    Offers = val.Data,
-                    Users = val2.Data,
-                    Requests = val3.Data,
-
-                };
-                return View(offerVM);
-            }
-
-            return RedirectToAction("Index", "Home");
-
+          
         }
         [HttpGet("/Admin/Teklif")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<OfferDTOResponse>(url + "GetOffer/" + id);
-            return View(val);
+            if (val.Data != null)
+            {
+                return View(val);
+            }
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Forbidden", "Home");
         }
         [HttpPost("/Admin/TeklifEkle")]
         public async Task<IActionResult> Add(OfferDTORequest p)
@@ -139,13 +115,29 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            var dep = HttpContext.Session.GetString("DepartmentName");
             var val = await AddAsync(p, url + "AddOffer");
-            if (val != null)
+            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
             {
-                return RedirectToAction("Index", "Offer");
+                if (val == null)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                if (val.Data != null)
+                {
+                    return RedirectToAction("Index", "Offer");
 
+                }
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/TeklifGuncelle")]
@@ -153,12 +145,28 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateOffer");
-            if (val)
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
             {
-                return RedirectToAction("Index", "Offer");
+                if (val == null)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                if (val.Data != null)
+                {
+                    return RedirectToAction("Index", "Offer");
 
+                }
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/TeklifSil")]
@@ -170,7 +178,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Offer");
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Forbidden", "Home");
 
         }
         [HttpPost("/Admin/TeklifTopluGuncelle")]
@@ -178,12 +186,28 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateAllOffer");
-            if (val)
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
             {
-                return RedirectToAction("Index", "Offer");
+                if (val == null)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
+                if (val.Data != null)
+                {
+                    return RedirectToAction("Index", "Offer");
 
+                }
             }
-            return RedirectToAction("Index", "Home");
+            if (val.StatusCode == 401)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            return RedirectToAction("Forbidden", "Home");
 
         }
     }
