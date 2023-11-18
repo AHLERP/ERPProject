@@ -28,7 +28,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 var id = HttpContext.Session.GetString("User");
                 var val = await GetAllAsync<UserDTOResponse>(url + "GetUsersByDepartment/" + id);
 
-                if (dep == "Admin")
+                if (rol == "Admin")
                 {
                     val = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
                 }
