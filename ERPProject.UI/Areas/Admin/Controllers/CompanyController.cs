@@ -23,24 +23,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
-            var id = HttpContext.Session.GetString("User");
-            var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Admin" || dep == "Yonetim")
-            {
-                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
-                if (val == null)
-                {
-                    return RedirectToAction("Forbidden", "Home");
-                }
-            }
-            else
-            {
-                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/" + id);
-                if (val == null)
-                {
-                    return RedirectToAction("Forbidden", "Home");
-                }
-            }
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -49,27 +31,31 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
+            if (val == null)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var id = HttpContext.Session.GetString("User");
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (dep == "Admin" || dep == "Yonetim")
+            {
+                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            }
+            else
+            {
+                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/" + id);
+            }
             CompanyVM companyVM = new CompanyVM()
             {
                 Companies = val.Data,
                 Departments = val2.Data,
             };
-
             return View(companyVM);
         }
         [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
-            var dep = HttpContext.Session.GetString("DepartmanName");
-            if (dep == "Admin" || dep == "Yönetim")
-            {
-                val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
-            }
-            else
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
             if (val == null)
             {
                 return RedirectToAction("Forbidden", "Home");
@@ -79,6 +65,15 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Unauthorized", "Home");
             }
             else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmanName");
+            if (dep == "Admin" || dep == "Yönetim")
+            {
+                val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
+            }
+            else
             {
                 return RedirectToAction("Forbidden", "Home");
             }

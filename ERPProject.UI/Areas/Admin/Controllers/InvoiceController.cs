@@ -24,11 +24,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Faturalar")]
         public async Task<IActionResult> Index()
         {
-            var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
             var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
             var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
             if (val.StatusCode == 401)
@@ -36,6 +31,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Unauthorized", "Home");
             }
             else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var dep = HttpContext.Session.GetString("DepartmentName");
+            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }

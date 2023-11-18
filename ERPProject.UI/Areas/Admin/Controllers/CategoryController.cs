@@ -16,18 +16,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Kategoriler")]
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("Department") == "Satın Alma" || HttpContext.Session.GetString("Role") == "Admin")
+
+            var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
+            if (val.StatusCode == 401)
             {
-                var val = await GetAllAsync<CategoryDTOResponse>(url + "GetCategories");
-                if (val.StatusCode == 401)
-                {
-                    return RedirectToAction("Unauthorized", "Home");
-                }
-                else if (val.StatusCode == 403)
-                {
-                    return RedirectToAction("Forbidden", "Home");
-                }
-                return View(val);
+                return RedirectToAction("Unauthorized", "Home");
             }
             else if (val.StatusCode == 403)
             {

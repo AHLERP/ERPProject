@@ -22,6 +22,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Unauthorized", "Home");
             }
+            else if (val.StatusCode == 403)
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
             var dep = HttpContext.Session.GetString("DepartmentName");
             if (!(dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin"))
             {
@@ -30,11 +34,6 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             if (val == null)
             {
                 return RedirectToAction("Forbidden", "Home");
-            }
-            var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep != "Satın Alma" || dep != "Yonetim" || dep != "Admin")
-            {
-                return RedirectToAction("Forbidden", "Home"); 
             }
             return View(val);
         }
