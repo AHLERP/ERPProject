@@ -34,7 +34,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/AddCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
-        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
+        //[Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         public async Task<ActionResult> AddCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = _mapper.Map<Company>(companyDTORequest);
@@ -43,7 +43,7 @@ namespace ERPProject.API.Controllers
 
             if (existingCompany != null)
             {
-                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+                return BadRequest(Sonuc<CompanyDTOResponse>.ExistingError("Bu şirket zaten var"));
             }
 
             await _companyService.AddAsync(company);
@@ -80,20 +80,28 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = await _companyService.GetAsync(x => x.Id == companyDTORequest.Id);
+            var companylist = await _companyService.GetAllAsync();
             if (company == null)
             {
-                return NotFound(Sonuc<CompanyDTOResponse>.SuccessNoDataFound());
+                return NotFound(Sonuc<CompanyDTORequest>.SuccessNoDataFound());
             }
-
-            company = _mapper.Map(companyDTORequest, company);
-
-            var existingCompany = await _companyService.GetAsync(x => x.Name == company.Name);
-
-            if (existingCompany != null)
+            else if (company.Name == companyDTORequest.Name)
             {
-                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu şirket zaten var"));
+                company = _mapper.Map(companyDTORequest, company);
+                await _companyService.UpdateAsync(company);
+
+                CompanyDTOResponse companyDTOResponse2 = _mapper.Map<CompanyDTOResponse>(company);
+
+                Log.Information("Companies => {@companyDTOResponse} => { Kullanıcı Güncellendi. }", companyDTOResponse2);
+
+                return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse2));
             }
 
+            else if (companylist.Any(x => x.Name == companyDTORequest.Name))
+            {
+                return BadRequest(Sonuc<CompanyDTOResponse>.ExistingError("Bu şirket zaten var"));
+            }
+            company = _mapper.Map(companyDTORequest, company);
             await _companyService.UpdateAsync(company);
 
             CompanyDTOResponse companyDTOResponse = _mapper.Map<CompanyDTOResponse>(company);

@@ -291,6 +291,7 @@
     </div>
 </div>
 <script>
+    var token = $("#token").val();
     function confirmRolDelete(id) {
         var result = confirm("Bu stok'u silmek istediğinizden emin misiniz?");
         if (result) {
@@ -341,21 +342,29 @@
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i].quantity < 0) {
                         html += `<tr><td>`;
-                        html += `${arr[i].productName} ürünü "${arr[i].recieverName}" adlı personele "${arr[i].delivererName}" tarafından ${Math.abs(arr[i].quantity)} adet verildi. Tarih: (${arr[i].addedTime})`
+                        html += `${arr[i].productName} ürünü "${arr[i].recieverName}" adlı personele ${Math.abs(arr[i].quantity)} adet verildi. (İşlemi Yapan Personel: ${arr[i].delivererName}) Tarih: (${formatDate(arr[i].addedTime)})`
                         html += `</td></tr>`;
                     } else {
                         html += `<tr><td>`;
-                        html += `${arr[i].productName} ürünü "${arr[i].recieverName}"adlı personele  "${arr[i].delivererName}" tarafından ${Math.abs(arr[i].quantity)} adet stoğa eklendi. Tarih: (${arr[i].addedTime})`
+                        html += `${arr[i].productName} ürünü "${arr[i].recieverName}"adlı personelden ${Math.abs(arr[i].quantity)} adet stoğa eklendi. (İşlemi Yapan Personel: ${arr[i].delivererName}) Tarih: (${formatDate(arr[i].addedTime)})`
                         html += `</td></tr>`;
                     }
-
-
                 }
                 html += `</table>`;
                 $("#tabledetail").html(html);
             }
         });
     });
+    function formatDate(inputDate) {
+        const dateObj = new Date(inputDate);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+        return `${year}/${month}/${day} ${hours}:${minutes}`;
+    }
 </script>
 
 

@@ -11,6 +11,6 @@ namespace ERPProject.Business.Abstract
 {
     public interface IOfferService:IGenericService<Offer>
     {
-        Task<IEnumerable<Offer>> UpdateAllAsync(Offer Entity);
+        Task<ICollection<Offer>> UpdateAllAsync(Offer Entity);
     }
 }

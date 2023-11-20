@@ -34,13 +34,6 @@ namespace ERPProject.API.Controllers
         {
             Product product = _mapper.Map<Product>(productDTORequest);
 
-            var existingProduct = await _productService.GetAsync(x => x.Name == product.Name);
-
-            if (existingProduct != null)
-            {
-                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu ürün zaten var"));
-            }
-
             await _productService.AddAsync(product);
 
             ProductDTOResponse productDTOResponse = _mapper.Map<ProductDTOResponse>(product);
@@ -75,13 +68,6 @@ namespace ERPProject.API.Controllers
                 return NotFound(Sonuc<ProductDTOResponse>.SuccessNoDataFound());
             }
             product = _mapper.Map(productDTORequest,product);
-
-            var existingProduct = await _productService.GetAsync(x => x.Name == product.Name);
-
-            if (existingProduct != null)
-            {
-                return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu ürün zaten var"));
-            }
 
             await _productService.UpdateAsync(product);
 

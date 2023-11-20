@@ -1,7 +1,4 @@
 ﻿using ERPProject.Entity.DTO.DepartmentDTO;
-using ERPProject.Entity.Poco;
-using ERPProject.UI.Areas.Admin.Models;
-using ERPProject.UI.Areas.User.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers

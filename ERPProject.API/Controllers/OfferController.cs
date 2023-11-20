@@ -117,7 +117,7 @@ namespace ERPProject.API.Controllers
         [HttpPost("/UpdateAllOffer")]
         public async Task<IActionResult> UpdateAll(OfferDTORequest offerDTORequest)
         {
-            var request = await _requestService.GetAsync(e => e.Id == offerDTORequest.RequestId,"User","AcceptedUser");
+            var request = await _requestService.GetAsync(e => e.Id == offerDTORequest.RequestId, "User", "AcceptedUser","Product");
             request.RequestStatus = 2;
             await _requestService.UpdateAsync(request);
             var offer = _mapper.Map<Offer>(offerDTORequest);
@@ -140,25 +140,10 @@ namespace ERPProject.API.Controllers
             }
 
 
+            Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi }", offerDTOResponse1);
+            return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse1));
 
-            var response = await _offerService.UpdateAllAsync(offer);
-            List<OfferDTOResponse> offerDTOResponse = new();
-            foreach (var item in response)
-            {
 
-                offerDTOResponse.Add(_mapper.Map<OfferDTOResponse>(item));
-            }
-            Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse);
-
-            if (offerDTOResponse.Count <= 1)
-            {
-                Log.Information("Offers => {@offerDTOResponse} => { Teklifler Toplu Güncellendi. }", offerDTOResponse1);
-                return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse1));
-            }
-            else
-            {
-                return Ok(Sonuc<List<OfferDTOResponse>>.SuccessWithData(offerDTOResponse));
-            }
         }
 
         [HttpGet("/GetOffersByRequest/{requestId}")]
@@ -205,13 +190,13 @@ namespace ERPProject.API.Controllers
         {
 
             MailMessage mesaj = new MailMessage();
-            mesaj.From = new MailAddress("stokbilgilendirmeahl@hotmail.com");
+            mesaj.From = new MailAddress("teklifbilgilendirme@hotmail.com");
             mesaj.To.Add(mail);
             mesaj.Subject = "İstek Sonuçlandı";
             mesaj.Body = body;
 
             SmtpClient a = new SmtpClient();
-            a.Credentials = new System.Net.NetworkCredential("stokbilgilendirmeahl@hotmail.com", "HakanC19/");
+            a.Credentials = new System.Net.NetworkCredential("teklifbilgilendirme@hotmail.com", "Bilal123");
             a.Port = 587;
             a.Host = "smtp.office365.com";
             a.EnableSsl = true;

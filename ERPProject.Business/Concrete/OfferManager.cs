@@ -50,7 +50,7 @@ namespace ERPProject.Business.Concrete
             await _uow.OfferRepository.UpdateAsync(Entity);
             await _uow.SaveChangeAsync();
         }
-        public async Task<IEnumerable<Offer>> UpdateAllAsync(Offer Entity)
+        public async Task<ICollection<Offer>> UpdateAllAsync(Offer Entity)
         { 
             var updateofferList = await _uow.OfferRepository.GetAllAsync(e => e.RequestId == Entity.RequestId);
             Entity.Status = 4;
@@ -61,7 +61,7 @@ namespace ERPProject.Business.Concrete
             {
                 await _uow.SaveChangeAsync();
 
-                return updateofferList;
+                return updateofferList.ToList();
             }
             foreach (var val in updateofferList)
             {
@@ -74,7 +74,7 @@ namespace ERPProject.Business.Concrete
             }
             await _uow.SaveChangeAsync();
 
-            return updateofferList;
+            return updateofferList.ToList();
             //onay bekliyor 1
             //kabukl edildi 2
             //reddedildi 3

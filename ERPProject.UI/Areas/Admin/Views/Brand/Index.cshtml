@@ -107,7 +107,7 @@
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var CompanyId = button.data('id');
-        var MarkaAd = button.data('nameId');
+        var MarkaAd = button.data('name');
         $("#inputMarkaId").val(CompanyId);
         $("#inputMarkaAd").val(MarkaAd);
     });

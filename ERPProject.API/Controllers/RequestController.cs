@@ -61,7 +61,7 @@ namespace ERPProject.API.Controllers
         [ValidationFilter(typeof(RequestValidator))]
         public async Task<IActionResult> UpdateRequest(RequestDTORequest requestDTORequest)
         {
-            var request = await _requestService.GetAsync(e => e.Id == requestDTORequest.Id, "User");
+            var request = await _requestService.GetAsync(e => e.Id == requestDTORequest.Id, "User", "Product");
             if (request == null)
             {
                 return NotFound(Sonuc<RequestDTOResponse>.SuccessNoDataFound());
@@ -220,14 +220,14 @@ namespace ERPProject.API.Controllers
         {
 
             MailMessage mesaj = new MailMessage();
-            mesaj.From = new MailAddress("stokbilgilendirmeahl@hotmail.com");
+            mesaj.From = new MailAddress("teklifbilgilendirme@hotmail.com");
             mesaj.To.Add(mail);
             mesaj.Subject = "İstek Sonuçlandı";
             mesaj.Body = body;
             mesaj.IsBodyHtml = true;
             mesaj.BodyEncoding = Encoding.UTF8;
             SmtpClient a = new SmtpClient();
-            a.Credentials = new System.Net.NetworkCredential("stokbilgilendirmeahl@hotmail.com", "HakanC19/");
+            a.Credentials = new System.Net.NetworkCredential("teklifbilgilendirme@hotmail.com", "Bilal123");
             a.Port = 587;
             a.Host = "smtp.office365.com";
             a.EnableSsl = true;
@@ -261,26 +261,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
         }
-        private void SendMail(string mail, string body)
-        {
 
-            MailMessage mesaj = new MailMessage();
-            mesaj.From = new MailAddress("stokbilgilendirmeahl@hotmail.com");
-            mesaj.To.Add(mail);
-            mesaj.Subject = "İstek Sonuçlandı";
-            mesaj.Body = body;
-            mesaj.IsBodyHtml = true;
-            mesaj.BodyEncoding = Encoding.UTF8;
-            SmtpClient a = new SmtpClient();
-            a.Credentials = new System.Net.NetworkCredential("stokbilgilendirmeahl@hotmail.com", "HakanC19/");
-            a.Port = 587;
-            a.Host = "smtp.office365.com";
-            a.EnableSsl = true;
-            object userState = mesaj;
-
-
-            a.Send(mesaj);
-        }
 
         //[HttpGet("/RequestsByDepartment/{userId}")]
         //public async Task<IActionResult> GetRequestsByDepartment(long userId)

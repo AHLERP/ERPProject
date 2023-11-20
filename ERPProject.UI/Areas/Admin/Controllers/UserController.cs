@@ -128,43 +128,35 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/KullaniciGuncelle")]
         public async Task<IActionResult> Update(UserDTORequest p, IFormFile imageFile)
         {
-            var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Insan Kaynaklari" || dep == "Yonetim" || dep == "Admin")
+            if (imageFile != null && imageFile.Length > 0)
             {
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                var imagePath = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "UserImage", uniqueFileName);
 
-                if (imageFile != null && imageFile.Length > 0)
-
+                using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                    var imagePath = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "UserImage", uniqueFileName);
+                    System.IO.File.Delete("wwwroot/" + p.Image);
+                    await imageFile.CopyToAsync(stream);
 
-                    using (var stream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(stream);
-                    }
-                    p.Image = "UserImage/" + uniqueFileName;
-                    p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
-                    var val = await UpdateAsync(p, url + "UpdateUser");
-                    if (val.StatusCode == 401)
-                    {
-                        return RedirectToAction("Unauthorized", "Home");
-                    }
-                    else if (val.StatusCode == 403)
-                    {
-                        return RedirectToAction("Forbidden", "Home");
-                    }
-                    if (val == null)
-                    {
-                        return RedirectToAction("Forbidden", "Home");
-                    }
-                    if (val.Data != null)
-                    {
-                        return RedirectToAction("Kullanicilar", "Admin");
+                }
+                p.Image = "UserImage/" + uniqueFileName;
+                p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                var val = await UpdateAsync(p, url + "UpdateUser");
+                if (val.StatusCode == 200)
+                {
+                    return RedirectToAction("Kullanicilar", "Admin");
 
-                    }
                 }
             }
-            return RedirectToAction("Forbidden", "Home");
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            var val2 = await UpdateAsync(p, url + "UpdateUser");
+            if (val2.StatusCode == 200)
+            {
+                return RedirectToAction("Kullanicilar", "Admin");
+
+            }
+
+            return RedirectToAction("Index", "Home");
         }
         [HttpGet("/Admin/KullaniciSil/{id}")]
         public async Task<IActionResult> Delete(Int64 id)

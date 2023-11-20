@@ -76,18 +76,31 @@ namespace ERPProject.API.Controllers
 
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
-            User user = await _userService.GetAsync(x=>x.Id == userDTORequest.Id);
+            User user = await _userService.GetAsync(x => x.Id == userDTORequest.Id); // güncellenecek kişi
+            var userlist = await _userService.GetAllAsync(); // güncellenecek kişi
             if (user == null)
             {
                 return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
             }
-            var existingUser = await _userService.GetAsync(x => x.Email == user.Email);
+            else if (user.Email == userDTORequest.Email)
+            {
+                user = _mapper.Map(userDTORequest, user);
+                //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
+                await _userService.UpdateAsync(user);
 
-            if (existingUser != null)
+                UserDTOResponse userDTOResponse2 = _mapper.Map<UserDTOResponse>(user);
+
+                Log.Information("Users => {@userDTOResponse} => { Kullanıcı Güncellendi. }", userDTOResponse2);
+
+                return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse2));
+            }
+
+            else if (userlist.Any(x => x.Email == userDTORequest.Email))
             {
                 return BadRequest(Sonuc<UserDTOResponse>.ExistingError("Bu kullanıcı zaten var"));
             }
-            user = _mapper.Map(userDTORequest,user);
+
+            user = _mapper.Map(userDTORequest, user);
             //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
             await _userService.UpdateAsync(user);
 
@@ -95,7 +108,7 @@ namespace ERPProject.API.Controllers
 
             Log.Information("Users => {@userDTOResponse} => { Kullanıcı Güncellendi. }", userDTOResponse);
 
-            return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse)) ;
+            return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
 
         [HttpGet("/GetUser/{userId}")]

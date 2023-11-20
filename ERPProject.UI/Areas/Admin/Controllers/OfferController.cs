@@ -193,7 +193,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 {
                     return RedirectToAction("Forbidden", "Home");
                 }
-                if (val.Data != null)
+                if (val != null)
                 {
                     return RedirectToAction("Index", "Offer");
 

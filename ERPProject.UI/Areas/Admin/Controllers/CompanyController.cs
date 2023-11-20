@@ -1,11 +1,9 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using DocumentFormat.OpenXml.Vml;
 using ERPProject.Entity.DTO.CompanyDTO;
 using ERPProject.Entity.DTO.DepartmentDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
-using System.Net;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -13,15 +11,28 @@ namespace ERPProject.UI.Areas.Admin.Controllers
     public class CompanyController : BaseController
     {
         private readonly string url = "https://localhost:7075/";
-        public CompanyController(HttpClient httpClient) : base(httpClient)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public CompanyController(HttpClient httpClient, IWebHostEnvironment hostingEnvironment) : base(httpClient)
         {
-
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet("/Admin/Sirketler")]
         public async Task<IActionResult> Index()
         {
             var val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+            var id = HttpContext.Session.GetString("User");
+            if (HttpContext.Session.GetString("Role") == "Admin" || HttpContext.Session.GetString("Role") == "Genel Müdür" || HttpContext.Session.GetString("Role") == "Yönetim Kurulu Başkanı")
+            {
+                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
+
+            }
+            else
+            {
+                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/" + id);
+
+            }
+
             var val2 = await GetAllAsync<DepartmentDTOResponse>(url + "GetDepartments");
             if (val.StatusCode == 401)
             {
@@ -31,103 +42,91 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            if (val == null)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            var id = HttpContext.Session.GetString("User");
-            var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Admin" || dep == "Yonetim")
-            {
-                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompanies");
-            }
-            else
-            {
-                val = await GetAllAsync<CompanyDTOResponse>(url + "GetCompaniesByUser/" + id);
-            }
+
+
             CompanyVM companyVM = new CompanyVM()
+
             {
                 Companies = val.Data,
                 Departments = val2.Data,
             };
+
             return View(companyVM);
         }
         [HttpGet("/Admin/Sirket")]
         public async Task<IActionResult> Get(long id)
         {
             var val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
-            if (val == null)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            if (val.StatusCode == 401)
-            {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            var dep = HttpContext.Session.GetString("DepartmanName");
-            if (dep == "Admin" || dep == "Yönetim")
-            {
-                val = await GetAsync<CompanyDTOResponse>(url + "GetCompany/" + id);
-            }
-            else
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
+
             return View(val);
         }
         [HttpPost("/Admin/SirketEkle")]
-        public async Task<IActionResult> AddCompany(CompanyDTORequest p)
+        public async Task<IActionResult> AddCompany(CompanyDTORequest p, IFormFile compImage)
         {
-            p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
-            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
-            var val = await AddAsync(p, url + "AddCompany");
-            if (val == null)
+            if (compImage != null && compImage.Length > 0)
             {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            if (val.Data != null)
-            {
-                return RedirectToAction("Index", "Company");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + compImage.FileName;
+                var imagePath = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "CompanyImage", uniqueFileName);
 
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await compImage.CopyToAsync(stream);
+
+                }
+                p.Image = "CompanyImage/" + uniqueFileName;
+                p.AddedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                var val = await AddAsync(p, url + "AddCompany");
+                if (val.Data != null)
+                {
+                    return RedirectToAction("Index", "Company");
+
+                }
             }
-            if (val.StatusCode == 401)
-            {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            return RedirectToAction("Index", "Company");
+            return RedirectToAction("Index", "Home");
 
         }
         [HttpPost("/Admin/SirketGuncelle")]
-        public async Task<IActionResult> Update(CompanyDTORequest p)
+        public async Task<IActionResult> Update(CompanyDTORequest p, IFormFile imageFile)
         {
-            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
-            var val = await UpdateAsync(p, url + "UpdateCompany");
-            if (val == null)
+            if (imageFile != null && imageFile.Length > 0)
             {
-                return RedirectToAction("Forbidden", "Home");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                var imagePath = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "CompanyImage", uniqueFileName);
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    System.IO.File.Delete("wwwroot/" + p.Image);
+                    await imageFile.CopyToAsync(stream);
+
+                }
+                p.Image = "CompanyImage/" + uniqueFileName;
+                p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                var val = await UpdateAsync(p, url + "UpdateCompany");
+                if (val.StatusCode == 200)
+                {
+                    return RedirectToAction("Sirketler", "Admin");
+
+                }
             }
-            if (val.Data != null)
+            p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            var val2 = await UpdateAsync(p, url + "UpdateCompany");
+            if (val2.StatusCode == 200)
             {
                 return RedirectToAction("Sirketler", "Admin");
 
             }
-            if (val.StatusCode == 401)
-            {
-                return RedirectToAction("Unauthorized", "Home");
-            }
-            else if (val.StatusCode == 403)
-            {
-                return RedirectToAction("Forbidden", "Home");
-            }
-            return RedirectToAction("Index", "Company");
+
+            return RedirectToAction("Index", "Home");
+            //p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+            //var val = await UpdateAsync(p, url + "UpdateCompany");
+            //if (val.StatusCode == 200)
+            //{
+            //    return RedirectToAction("Sirketler", "Admin");
+
+            //}
+
+            //return RedirectToAction("Index", "Home");
 
         }
         [HttpGet("/Admin/SirketSil/{id}")]
