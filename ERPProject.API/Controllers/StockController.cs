@@ -67,6 +67,16 @@ namespace ERPProject.API.Controllers
         [ValidationFilter(typeof(StockValidator))]
         public async Task<IActionResult> AddStock(StockDTORequest stockDTORequest)
         {
+            var innerstock = await _stockService.GetAsync(x=>x.CompanyId==stockDTORequest.CompanyId &&x.ProductId==stockDTORequest.ProductId);
+
+            if (innerstock != null) 
+            {
+                innerstock.Quantity += stockDTORequest.Quantity;
+                await _stockService.UpdateAsync(innerstock);
+                StockDTOResponse innerStockDTOResponse = _mapper.Map<StockDTOResponse>(innerstock);
+                Log.Information("Stocks => {@stockDTOResponse} => { Stok Eklendi. }", innerStockDTOResponse);
+                return Ok(Sonuc<StockDTOResponse>.SuccessWithData(innerStockDTOResponse));
+            }
             var stock = _mapper.Map<Stock>(stockDTORequest);
             await _stockService.AddAsync(stock);
             StockDTOResponse stockDTOResponse = _mapper.Map<StockDTOResponse>(stock);

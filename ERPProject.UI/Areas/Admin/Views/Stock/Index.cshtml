@@ -185,6 +185,7 @@
             <form action="/Admin/StokGuncelle" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
+                        <input id="inputId" hidden="hidden" name="Id" />
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <select class="form-control" id="inputCompanyId1" name="CompanyId" aria-describedby="basic-addon1" required>
                             <option value="">Şirket Seçiniz...</option>
@@ -312,7 +313,7 @@
         var Description = button.data('description');
         var Quantity = button.data('quantity');
         var Quantityunit = button.data('quantityunit');
-        $("#inputMarkaId").val(Id);
+        $("#inputId").val(Id);
         $("#inputCompanyId1").val(Company);
         $("#inputProductId1").val(Product);
         $("#inputDescription1").val(Description);
