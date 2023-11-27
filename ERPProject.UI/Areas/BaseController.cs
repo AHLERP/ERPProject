@@ -49,7 +49,10 @@ namespace ERPProject.UI.Areas
                 _httpClient.DefaultRequestHeaders.Remove("Authorization");
                 return value;
             }
-            return null;
+            var jsonDataw2 = await responseMessage.Content.ReadAsStringAsync();
+            var value2 = JsonConvert.DeserializeObject<ApiResponse<T>>(jsonDataw2);
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            return value2;
         }
         protected async Task<bool> DeleteAsync(string url)
         {

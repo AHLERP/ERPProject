@@ -43,7 +43,7 @@ namespace ERPProject.API.Controllers
             }
             else
             {
-                return NotFound("Stokta Yeterli Ürün Yok!!");
+                return BadRequest(Sonuc<StockDetailDTOResponse>.SuccessWithoutData());
             }
         }
 

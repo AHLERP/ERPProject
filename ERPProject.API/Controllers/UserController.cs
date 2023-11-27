@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [Authorize]
+    //[Authorize]
 
     public class UserController : Controller
     {
@@ -32,7 +32,7 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _userRoleService = userRoleService;
         }
-        [Authorize(Roles = "Admin,Kullanıcı İşlemleri")]
+        //[Authorize(Roles = "Admin,Kullanıcı İşlemleri")]
         [HttpPost("/AddUser")]
         [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> AddUser(UserDTORequest userDTORequest)

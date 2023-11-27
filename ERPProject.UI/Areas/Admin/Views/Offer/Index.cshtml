@@ -398,24 +398,24 @@
             <div class="modal-body col gap-4 d-flex justify-content-start" style="overflow-x:hidden !important;">
                 <div class="">
                     <input autocomplete="off" hidden="hidden" class="form-control" id="inputRequestIdDetay1" name="RequestId" aria-describedby="basic-addon1" required>
-                    <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId2" name="Id" aria-describedby="basic-addon1" required>
+                    <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId21" name="Id" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
-                        <input readonly="readonly" class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
+                        <input readonly="readonly" class="form-control" id="inputUserId21" name="UserId" aria-describedby="basic-addon1" required>
 
 
                     </div>
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd2" name="Title" aria-describedby="basic-addon1" required>
+                        <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd21" name="Title" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input readonly="readonly" class="form-control" id="inputProduct2" name="ProductId" aria-describedby="basic-addon1" required>
+                        <input readonly="readonly" class="form-control" id="inputProduct21" name="ProductId" aria-describedby="basic-addon1" required>
 
 
-                        <select readonly="readonly" class="form-control" id="inputBirim5" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                        <select readonly="readonly" class="form-control" id="inputBirim51" name="QuantityUnit" aria-describedby="basic-addon1" required>
                             <option value="">Birim Seçiniz...</option>
                             <option value="1">Metre</option>
                             <option value="2">Kilometre</option>
@@ -432,11 +432,11 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="Miktar..." id="inputMiktar2" name="Quantity" aria-describedby="basic-addon1" required>
+                        <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="Miktar..." id="inputMiktar21" name="Quantity" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-<textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama21" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
                 <div class="col" id="doldur1">
@@ -796,14 +796,14 @@
         var miktar = button.data('miktar1');
         var status = button.data('status1');
         $("#inputRequestIdDetay1").val(id);
-        $("#inputId2").val(id);
-        $("#inputTalepAd2").val(title);
-        $("#inputAciklama2").val(description);
-        $("#inputUserId2").val(username);
-        $("#inputProduct2").val(product);
-        $("#inputBirim5").val(brim);
-        $("#inputMiktar2").val(miktar);
-        $("#inputStatus2").val(status);
+        $("#inputId21").val(id);
+        $("#inputTalepAd21").val(title);
+        $("#inputAciklama21").val(description);
+        $("#inputUserId21").val(username);
+        $("#inputProduct21").val(product);
+        $("#inputBirim51").val(brim);
+        $("#inputMiktar21").val(miktar);
+        $("#inputStatus21").val(status);
     });
     $('#staticTeklifEkle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);

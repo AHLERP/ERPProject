@@ -8,6 +8,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     var name1 = TempData["stok"] as string;
 }
+<div class="text-danger"><strong>@name1</strong> </div>
  <div class="container-table100" style="border-radius:8px;">
         <div class="wrap-table100">
             <div class="table100 ver5 m-b-110">
@@ -16,10 +17,10 @@
                         <thead>
                             <tr class="row100 head bg-secondary bg-opacity-75">
                             <th class="cell100 column2 text-light" style="padding-left:5px;">Şirket Adı</th>
-                            <th class="cell100 column3 text-light">Ürün Adı</th>
-                            <th class="cell100 column4 text-light">Ürün Açıklaması</th>
-                            <th class="cell100 column5 text-light">Miktar</th>
-                                <th class="cell100 column8 text-light">İşlemler</th>
+                            <th class="cell100 column2 text-light">Ürün Adı</th>
+                            <th class="cell100 column2 text-light">Ürün Açıklaması</th>
+                            <th class="cell100 column2 text-light">Miktar</th>
+                            <th class="cell100 column2 text-light">İşlemler</th>
                             </tr>
                         </thead>
                     </table>
@@ -36,45 +37,45 @@
                                 <td class="cell100 column2">@item.Description</td>
                                 @if (@item.QuantityUnit == 1)
                                 {
-                                    <td> @item.Quantity Metre</td>
+                                    <td class="cell100 column2"> @item.Quantity Metre</td>
                                 }
                                 else if (@item.QuantityUnit == 2)
                                 {
-                                    <td>@item.Quantity Kilometre</td>
+                                    <td class="cell100 column2">@item.Quantity Kilometre</td>
                                 }
                                 else if (@item.QuantityUnit == 3)
                                 {
-                                    <td>@item.Quantity Mililitre</td>
+                                    <td class="cell100 column2">@item.Quantity Mililitre</td>
                                 }
                                 else if (@item.QuantityUnit == 4)
                                 {
-                                    <td>@item.Quantity Litre</td>
+                                    <td class="cell100 column2">@item.Quantity Litre</td>
                                 }
                                 else if (@item.QuantityUnit == 5)
                                 {
-                                    <td>@item.Quantity Kilogram</td>
+                                    <td class="cell100 column2">@item.Quantity Kilogram</td>
                                 }
                                 else if (@item.QuantityUnit == 6)
                                 {
-                                    <td>@item.Quantity Ton</td>
+                                    <td class="cell100 column2">@item.Quantity Ton</td>
                                 }
                                 else if (@item.QuantityUnit == 7)
                                 {
-                                    <td>@item.Quantity Adet</td>
+                                    <td class="cell100 column2">@item.Quantity Adet</td>
                                 }
                                 else if (@item.QuantityUnit == 8)
                                 {
-                                    <td> @item.Quantity Koli</td>
+                                    <td class="cell100 column2"> @item.Quantity Koli</td>
                                 }
                                 else if (@item.QuantityUnit == 9)
                                 {
-                                    <td>@item.Quantity m²</td>
+                                    <td class="cell100 column2">@item.Quantity m²</td>
                                 }
                                 else if (@item.QuantityUnit == 10)
                                 {
-                                    <td>@item.Quantity m³</td>
+                                    <td class="cell100 column2">@item.Quantity m³</td>
                                 }
-                                    <td>
+                                <td class="cell100 column2">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             İşlemler

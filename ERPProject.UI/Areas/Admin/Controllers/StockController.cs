@@ -116,6 +116,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokGuncelle")]
         public async Task<IActionResult> Update(StockDTORequest p)
         {
+            
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateStock");
             if (val.StatusCode == 401)
