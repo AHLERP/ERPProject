@@ -37,11 +37,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
+            if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin")
             {
                 var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
                 var val4 = await GetAllAsync<OfferDTOResponse>(url + "GetOffersByRequest/" + id);
-                if (dep == "Yonetim" || dep == "Satın Alma")
+                if (dep == "Yönetim" || dep == "Satın Alma")
                 {
 
                     var val3 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
@@ -96,7 +96,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             decimal usd = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
             decimal eur = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "EUR")).InnerText.Replace('.', ','));
             decimal jpy = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "JPY")).InnerText.Replace('.', ','));
-            
+
+
             if (p.PriceStatus=="1")
             {
                 p.Rate = eur;
@@ -117,7 +118,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var dep = HttpContext.Session.GetString("DepartmentName");
             var val = await AddAsync(p, url + "AddOffer");
-            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
+            if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin")
             {
                 if (val == null)
                 {
@@ -146,7 +147,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateOffer");
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
+            if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin")
             {
                 if (val == null)
                 {
@@ -187,7 +188,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateAllOffer");
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Satın Alma" || dep == "Yonetim" || dep == "Admin")
+            if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin")
             {
                 if (val == null)
                 {

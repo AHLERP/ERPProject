@@ -87,7 +87,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(UserDTORequest p, IFormFile imageFile)
         {
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Insan Kaynaklari" || dep == "Yonetim" || dep == "Admin")
+            if (dep == "Insan Kaynaklari" || dep == "Yönetim" || dep == "Admin")
             {
 
                 if (imageFile != null && imageFile.Length > 0)
@@ -163,7 +163,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await DeleteAsync(url + "RemoveUser/" + id);
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Insan Kaynaklari" || dep != "Yonetim" || dep != "Admin"))
+            if (!(dep != "Insan Kaynaklari" || dep != "Yönetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
