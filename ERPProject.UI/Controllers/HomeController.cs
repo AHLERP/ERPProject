@@ -16,5 +16,9 @@ namespace ERPProject.UI.Controllers
         {
             return View();
         }
+        public IActionResult SifreSifirlama()
+        {
+            return View();
+        }
     }
 }

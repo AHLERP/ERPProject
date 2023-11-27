@@ -14,14 +14,14 @@
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body style="background-color:#dce9fa">
+<body>
     <header>
         <input id="token" type="hidden" value="@Accessor.HttpContext.Session.GetString("Token")">
-        <nav class="navbar navbar-expand-sm fixed-top navbar-toggleable-sm" style="background-color:#0f6bae;">
+        <nav class="navbar navbar-expand-sm fixed-top navbar-toggleable-sm" style="background-color:#0f6bae;" id="navBar">
             <div class="container-fluid">
                 <button class="btn text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
-                    <i class="bi bi-list fs-3 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
-                    <strong style="font-size:xx-large">Logo Tasarla!!</strong>
+                    <i class="bi bi-list fs-3 text-light" id="listbutton" style="display:none;" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
+                    <strong style="font-size:xx-large;" id="logo"><img src="~/admin/img/logos.png" width="100" height="50"/></strong>
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex position-absolute top-50 start-50 translate-middle text-white">
@@ -59,8 +59,6 @@
                             <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Anasayfa</span>
                         </a>
                     </li>
-
-
                     if (((dep == "Yönetim") || (dep == "Admin")))
                     {
                         <li class="nav-item">
@@ -95,7 +93,6 @@
                             </a>
                         </li>
                     }
-
                     if ((dep == "Insan Kaynaklari" || dep == "Bilgi İşlem" || dep == "Admin" || dep == "Yönetim"))
                     {
                         <li>
@@ -110,7 +107,6 @@
                             <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">İstekler</span>
                         </a>
                     </li>
-
                     if (((dep == "Satın Alma") || (dep == "Yönetim") || (dep == "Admin")))
                     {
                         <li>
@@ -177,7 +173,22 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-<style></style>
+<style>
+    body {
+
+        background-size: cover;
+        background-repeat: no-repeat;
+        background:image("~/admin/img/bg.png");
+    }
+
+    tr:nth-child(even) {
+        background-color: #c6cdff !important;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #83b8ff !important;
+    }
+</style>
 <script>
     let mybutton = document.getElementById("myBtn");
     window.onscroll = function () { scrollFunction() };
@@ -192,6 +203,9 @@
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+    $('.modal').on('shown.bs.modal', function () {
+        $(this).find('[autofocus]').focus();
+    });
     $(document).ready(function () {
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();

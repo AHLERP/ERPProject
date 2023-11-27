@@ -35,7 +35,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Forbidden", "Home");
             }
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            if (!(dep != "Muhasebe" || dep != "Yönetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -51,7 +51,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await GetAsync<InvoiceDTOResponse>(url + "GetInvoice/" + id);
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            if (!(dep != "Muhasebe" || dep != "Yönetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -77,7 +77,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Add(IFormFile FileUpload)
         {
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            if (!(dep != "Muhasebe" || dep != "Yönetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -265,7 +265,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Update(InvoiceDTORequest p)
         {
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            if (!(dep != "Muhasebe" || dep != "Yönetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -296,7 +296,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var val = await DeleteAsync(url + "RemoveInvoice/" + id);
             var dep = HttpContext.Session.GetString("DepartmentName");
-            if (!(dep != "Muhasebe" || dep != "Yonetim" || dep != "Admin"))
+            if (!(dep != "Muhasebe" || dep != "Yönetim" || dep != "Admin"))
             {
                 return RedirectToAction("Forbidden", "Home");
             }
@@ -315,7 +315,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Report(DateTime startDate, DateTime endDate)
         {
             string dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yonetim")
+            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yönetim")
             {
                 var val = await GetAllAsync<InvoiceDTOResponse>(url + "GetInvoices");
                 var val2 = await GetAllAsync<InvoiceDetailDTOResponse>(url + "GetInvoiceDetails");
@@ -342,7 +342,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Report(string datefilter)
         {
             string dep = HttpContext.Session.GetString("DepartmentName");
-            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yonetim")
+            if (dep == "Muhasebe" || dep == "Admin" || dep == "Yönetim")
             {
                 if (datefilter == null)
                 {
