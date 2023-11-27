@@ -12,9 +12,9 @@ public partial class User : BaseEntity
 
     public virtual Department Department { get; set; } = null!;
 
-    public int RoleId { get; set; }//gelecek
+    //public int RoleId { get; set; }//gelecek
 
-    public virtual Role Role { get; set; } = null!;
+    //public virtual Role Role { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 
@@ -35,6 +35,7 @@ public partial class User : BaseEntity
     public virtual ICollection<Offer> Offers { get; set; } = new List<Offer>();
 
     public virtual ICollection<StockDetail> StockDetailRecievers { get; set; } = new List<StockDetail>();
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
-    
+
 }

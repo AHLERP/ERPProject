@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPProject.DataAccess.Migrations
 {
     [DbContext(typeof(ERPContext))]
-    [Migration("20231117051332_mhakan0")]
-    partial class mhakan0
+    [Migration("20231121064326_mEnes")]
+    partial class mEnes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,6 +139,10 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.Property<long?>("AddedUser")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
@@ -803,9 +807,6 @@ namespace ERPProject.DataAccess.Migrations
                         .HasColumnType("char(10)")
                         .IsFixedLength();
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UpdatedIPV4Address")
                         .HasMaxLength(15)
                         .IsUnicode(false)
@@ -823,9 +824,61 @@ namespace ERPProject.DataAccess.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("ERPProject.Entity.Poco.UserRole", b =>
+                {
+                    b.Property<long>("UserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserRoleId"));
+
+                    b.Property<string>("AddedIPV4Address")
+                        .HasMaxLength(15)
+                        .IsUnicode(false)
+                        .HasColumnType("char(15)")
+                        .HasColumnName("AddedIP4VAdress")
+                        .IsFixedLength();
+
+                    b.Property<DateTime?>("AddedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<long?>("AddedUser")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
+
+                    b.Property<string>("UpdatedIPV4Address")
+                        .HasMaxLength(15)
+                        .IsUnicode(false)
+                        .HasColumnType("char(15)")
+                        .HasColumnName("UpdatedIP4VAdress")
+                        .IsFixedLength();
+
+                    b.Property<DateTime?>("UpdatedTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<long?>("UpdatedUser")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("UserRoleId");
+
                     b.HasIndex("RoleId");
 
-                    b.ToTable("User", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Department", b =>
@@ -964,15 +1017,26 @@ namespace ERPProject.DataAccess.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_User_Department");
 
-                    b.HasOne("ERPProject.Entity.Poco.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .IsRequired()
-                        .HasConstraintName("FK_User_Role");
-
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("ERPProject.Entity.Poco.UserRole", b =>
+                {
+                    b.HasOne("ERPProject.Entity.Poco.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ERPProject.Entity.Poco.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Brand", b =>
@@ -1014,7 +1078,7 @@ namespace ERPProject.DataAccess.Migrations
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Role", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("ERPProject.Entity.Poco.Stock", b =>
@@ -1033,6 +1097,8 @@ namespace ERPProject.DataAccess.Migrations
                     b.Navigation("StockDetailDeliverers");
 
                     b.Navigation("StockDetailRecievers");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

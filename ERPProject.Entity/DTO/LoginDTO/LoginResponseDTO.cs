@@ -13,7 +13,7 @@ namespace ERPProject.Entity.DTO.LoginDTO
         public string Sifre { get; set; }
 
         public string Token { get; set; }
-        public string RoleName { get; set; }
+        public List<string> RoleName { get; set; }
         public long UserId { get; set; }
         public int CompanyId { get; set; }
         public int DepartmentId { get; set; }

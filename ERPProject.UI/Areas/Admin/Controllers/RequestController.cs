@@ -18,11 +18,11 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpGet("/Admin/Talepler")]
         public async Task<IActionResult> Index()
         {
-            string rol = HttpContext.Session.GetString("Role");
+            var roles = SessionRole.RoleName;
             string dep = HttpContext.Session.GetString("DepartmentName");
             var id = HttpContext.Session.GetString("User");
 
-            if (rol == "Personel")
+            if (roles.Any(roles => roles.Contains("Personel")))
             {
                 var val5 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
                 var val6 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByUser/" + id);
@@ -38,12 +38,12 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             var val = await GetAllAsync<RequestDTOResponse>(url + "Requests");
 
-            if (rol == "Departman Müdürü")
+            if (roles.Any(roles => roles.Contains("Departman Müdürü")))
             {
                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByDepartment/" + id);
 
             }
-            else if (rol == "Şirket Müdürü")
+            else if (roles.Any(roles => roles.Contains("Şirket Müdürü")))
             {
                 val = await GetAllAsync<RequestDTOResponse>(url + "RequestsByCompany/" + id);
 

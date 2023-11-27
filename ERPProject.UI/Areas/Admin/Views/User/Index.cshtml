@@ -1,10 +1,12 @@
 @using ERPProject.UI.Areas.Admin.Models;
 @model UserVM
+@inject IHttpContextAccessor Accessor
 @{
     ViewData["Title"] = "Personel";
     ViewData["baslik"] = "Personeller";
     ViewData["buttonismi"] = "Personel Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    
 }
 <script>
     $(document).ready(function () {
@@ -86,7 +88,13 @@
                                     <td class="cell100 column2">@user.LastName</td>
                                     <td class="cell100 column2">@user.Email</td>
                                     <td class="cell100 column2">@user.Phone</td>
-                                    <td class="cell100 column2">@user.RoleName</td>
+                                    <td class="cell100 column2" id="roledoldur">
+                                    @foreach (var item in user.RoleName)
+                                    {
+                                            @item <br>
+                                    }
+
+                                    </td>
                                     <td class="cell100 column2">@user.DepartmentName</td>
                                     <td class="cell100 column2">@user.CompanyName</td>
                                     <td>
@@ -95,7 +103,36 @@
                                                 İşlemler
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-id="@user.Id" data-name="@user.Name" data-lastname="@user.LastName" data-email="@user.Email" data-phone="@user.Phone" data-password="@user.Password" data-rol="@user.RoleId" data-departman="@user.DepartmentId" data-addeduser="@user.AddedUser" data-image="@user.Image">Düzenle</li>
+                                                <li 
+                                                    class="dropdown-item"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop1"
+                                                    data-id="@user.Id"
+                                                    data-companyid="@user.CompanyId"
+                                                    data-name="@user.Name"
+                                                    data-lastname="@user.LastName"
+                                                    data-email="@user.Email"
+                                                    data-phone="@user.Phone"
+                                                    data-password="@user.Password"
+                                                    data-departman="@user.DepartmentId"
+                                                    data-addeduser="@user.AddedUser"
+                                                    data-image="@user.Image"
+                                                    onclick="Departman()">Düzenle</li>
+                                                <li 
+                                                    class="dropdown-item"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdropRolEkle"
+                                                    data-rolekleid="@user.Id">
+                                                    Yetki Ekle
+                                                </li>
+                                                <li 
+                                                    class="dropdown-item"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdropRolSil"
+                                                    data-userid="@user.Id"
+                                                    onclick="Doldur()">
+                                                    Yetki Sil
+                                                </li>
                                                 <hr>
                                                 <li class="dropdown-item text-danger" onclick="confirmUserDelete(@user.Id)">Sil</li>
                                             </ul>
@@ -199,7 +236,8 @@
             </div>
             <form enctype="multipart/form-data" action="/Admin/KullaniciGuncelle" method="post">
                 <div class="modal-body">
-                    <input autocomplete="off" id="inputUserId" name="Id" class="form-control" type="hidden">
+                    <input autocomplete="off" id="inputUserId" name="Id" class="form-control" hidden="hidden">
+                    <input id="inputCompanyId" class="form-control" hidden="hidden">
                     <input autocomplete="off" id="inputAddedUser" name="AddedUser" class="form-control" type="hidden">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
@@ -222,36 +260,13 @@
                         <input autocomplete="off" type="password" class="form-control" placeholder="Şifre..." id="inputSifre1" name="Password" aria-describedby="basic-addon1" required>
                         <button id="togglePassword1" class="btn btn-light" type="button"><i class="bi bi-eye-slash"></i><i class="bi bi-eye"></i></button>
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>
-                        </div>
-                        <select class="custom-select col col-md-9" id="inputYetki1" name="RoleId" required>
-                            @foreach (var item in Model.Roles)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputDeparman"><i class="bi bi-building"></i></label>
-                        </div>
-                        <select class="custom-select col col-md-9" id="inputCompany1" name="CompanyId" required>
-                            <option selected>Şirket Seç...</option>
-                            @foreach (var company in Model.Companies)
-                            {
-                                <option value="@company.Id">@company.Name</option>
-                            }
-
-                        </select>
-                    </div>
+                    
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputDepartman"><i class="bi bi-building"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputDepartman1" name="DepartmentId" required>
-                            <option selected>Departman Seç...</option>
+                            <option value="" selected>Departman Seç...</option>
                         </select>
                     </div>
                     <div class="input-group mb-3">
@@ -270,7 +285,65 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="staticBackdropRolEkle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Yetki Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form enctype="multipart/form-data" action="/Admin/KullaniciRolEkle" method="post">
+                <div class="modal-body">
+                    <input autocomplete="off" id="RolEkleId" name="UserId" class="form-control" hidden="hidden">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputYetki1" name="RoleId" required>
+                            @foreach (var item in Model.Roles)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
 
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdropRolSil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Yetki Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form enctype="multipart/form-data" action="/Admin/KullaniciRolSil" method="get">
+                <div class="modal-body">
+                    <input autocomplete="off" id="inputUserIdRolSil" name="UserId" class="form-control" type="text">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>
+                        </div>
+                        <select class="custom-select col col-md-9" id="inputYetkiRolSil" name="RoleId" required>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Sil</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     var token = $("#token").val();
     $('.js-pscroll').each(function () {
@@ -292,6 +365,7 @@
     $('#staticBackdrop1').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id');
+        var cid = button.data('companyid');
         var name = button.data('name');
         var lastname = button.data('lastname');
         var email = button.data('email');
@@ -301,7 +375,9 @@
         var dep = button.data('departman');
         var added = button.data('addeduser');
         var image = button.data('image');
+        
         $("#inputUserId").val(id);
+        $("#inputCompanyId").val(cid);
         $("#inputUserAd").val(name);
         $("#inputUserSoyad").val(lastname);
         $("#inputEmail").val(email);
@@ -311,6 +387,16 @@
         $("#inputDeparman1").val(dep);
         $("#inputAddedUser").val(added);
         $("#inputImage").val(image);
+    });
+    $('#staticBackdropRolEkle').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('rolekleid');
+        $("#RolEkleId").val(id);
+    });
+    $('#staticBackdropRolSil').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('userid');
+        $("#inputUserIdRolSil").val(id);
     });
     function confirmUserDelete(id) {
         var result = confirm("Bu personeli silmek istediğinizden emin misiniz?");
@@ -337,22 +423,38 @@
             });
         });
         
-        $("#inputCompany1").change(function () {
-            var selectedCompanyId = $(this).val();
+    });
+    function Departman() {
+            var CompanyIds = $("#inputCompanyId").val();
             $.ajax({
-                url: "https://localhost:7075/GetDepartmentsByCompany/" + selectedCompanyId,
+                url: "https://localhost:7075/GetDepartmentsByCompany/" + CompanyIds,
                 type: "GET",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', `Bearer ${token}`);
                 },
                 success: function (data) {
-                    // Departman seçeneklerini güncelle
                     $("#inputDepartman1").empty();
                     $.each(data, function (index, item) {
                         $("#inputDepartman1").append("<option value='" + item.id + "'>" + item.name + "</option>");
                     });
                 }
             });
+    }
+    function Doldur() {//User Id ye göre Rolleri Getirecez
+
+        var selectedCompanyId = $("#inputUserIdRolSil").val();;
+        $.ajax({
+            url: "https://localhost:7075/GetUserRolesJs/" + selectedCompanyId,
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+            },
+            success: function (data) {
+                $("#inputYetkiRolSil").empty();
+                $.each(data, function (index, item) {
+                    $("#inputYetkiRolSil").append("<option value='" + item.roleId + "'>" + item.roleName + "</option>");
+                });
+            }
         });
-    });
+    }
 </script>

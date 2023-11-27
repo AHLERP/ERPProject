@@ -7,9 +7,27 @@
     ViewData["baslik"] = "Teklifler";
     ViewData["buttonismi"] = "Ara";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string sirket = "false";
+    string departman = "false";
+    string admin = "false";
+
+    if (SessionRole.RoleName.Any(roles => roles.Contains("Şirket Müdürü")))
+    {
+        sirket = "true";
+    }
+    if (SessionRole.RoleName.Any(roles => roles.Contains("Departman Müdürü")))
+    {
+        departman = "true";
+    }
+    if (SessionRole.RoleName.Any(roles => roles.Contains("Admin")))
+    {
+        admin = "true";
+    }
 }
+
 <div class="container" style="min-height:500px !important;">
-    <div class="wrap-table100"> 
+    <div class="wrap-table100">
         <div class="container col col-md-12 py-3">
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div id="example_filter" class="dataTables_filter">
@@ -197,9 +215,9 @@
                                                 else
                                                 {
 
-                                                    @foreach (var item in Model.Requests    )
+                                                    @foreach (var item in Model.Requests)
                                                     {
-                                                        if (item.RequestStatus == 4)
+                                                        if (item.RequestStatus == 2)
                                                         {
                                                             <tr>
                                                                 <td class="cell100 column2">@item.Title</td>
@@ -273,7 +291,7 @@
                                                                         </button>
                                                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                                             <li>
-                                                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdropEskiTalep"
                                                                                    data-id1="@item.Id"
                                                                                    data-title1="@item.Title"
                                                                                    data-description1="@item.Description"
@@ -281,7 +299,7 @@
                                                                                    data-product1="@item.ProductName"
                                                                                    data-brim1="@item.QuantityUnit"
                                                                                    data-miktar1="@item.Quantity"
-                                                                                   data-status1="@item.RequestStatus" onclick="Doldur()">Detay</a>
+                                                                                   data-status1="@item.RequestStatus" onclick="Doldur1()">Detaylar</a>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
@@ -356,15 +374,74 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
                 </div>
-                <div  id="doldur">
-                   
+                <div class="col" id="doldur">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdropEskiTalep" data-bs-backdrop="static2" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Eski Talep Detay</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body col gap-4 d-flex justify-content-start" style="overflow-x:hidden !important;">
+                <div class="">
+                    <input autocomplete="off" hidden="hidden" class="form-control" id="inputRequestIdDetay1" name="RequestId" aria-describedby="basic-addon1" required>
+                    <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId2" name="Id" aria-describedby="basic-addon1" required>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+                        <input readonly="readonly" class="form-control" id="inputUserId2" name="UserId" aria-describedby="basic-addon1" required>
+
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                        <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd2" name="Title" aria-describedby="basic-addon1" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                        <input readonly="readonly" class="form-control" id="inputProduct2" name="ProductId" aria-describedby="basic-addon1" required>
+
+
+                        <select readonly="readonly" class="form-control" id="inputBirim5" name="QuantityUnit" aria-describedby="basic-addon1" required>
+                            <option value="">Birim Seçiniz...</option>
+                            <option value="1">Metre</option>
+                            <option value="2">Kilometre</option>
+                            <option value="3">Mililitre</option>
+                            <option value="4">Litre</option>
+                            <option value="5">Kilogram</option>
+                            <option value="6">Ton</option>
+                            <option value="7">Adet</option>
+                            <option value="8">Koli</option>
+                            <option value="9">m²</option>
+                            <option value="10">m³</option>
+                        </select>
+
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
+                        <input readonly="readonly" autocomplete="off" type="text" class="form-control" placeholder="Miktar..." id="inputMiktar2" name="Quantity" aria-describedby="basic-addon1" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
+<textarea readonly="readonly" autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="İstek Açıklaması..." id="inputAciklama2" name="Description" aria-describedby="basic-addon1" required></textarea>
+                    </div>
                 </div>
                 <div class="col" id="doldur1">
                 </div>
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
@@ -407,7 +484,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-info-circle"></i></span>
-                        <textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Teklif Açıklaması..." id="inputOfferDescription" name="Description" aria-describedby="basic-addon1" required></textarea>
+<textarea autocomplete="off" style="min-height:150px; max-height:150px;" type="text" class="form-control" placeholder="Teklif Açıklaması..." id="inputOfferDescription" name="Description" aria-describedby="basic-addon1" required></textarea>
                     </div>
 
                     <div hidden="true" class="input-group mb-3">
@@ -455,146 +532,9 @@
             ps.update();
         })
     });
-    @{
-        string rol1 = Accessor.HttpContext.Session.GetString("Role");
-    }
-        function Doldur() {
+    function Doldur1() {
 
-            var selectedCompanyId = $("#inputRequestIdDetay").val();
-            $.ajax({
-                url: "https://localhost:7075/GetOfferByjs/" + selectedCompanyId,
-                type: "GET",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-                },
-                success: function (data) {
-                    $("#doldur").empty();
-                    var html = `
-                                        <div class="table100 ver5 m-b-110" style="align-content:start;">
-                                            <div class="table100-head">
-                                                <table>
-                                                    <thead>
-                                                        <tr class="row100 head">
-                                                            <th class="cell100 column1 text-light bg-secondary opacity-75">Firma</th>
-                                                            <th class="cell100 column1 text-light bg-secondary opacity-75">Teklif</th>
-                                                            <th class="cell100 column1 text-light bg-secondary opacity-75">Açıklama</th>
-                                                            <th class="cell100 column1 text-light bg-secondary opacity-75">Durum</th>
-                                                            <th class="cell100 column1 text-light bg-secondary opacity-75">İşlemler</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                                <div class="table100-body js-pscroll ps ps--active-y">
-                        <table id="example" style="min-height:350px;">
-                            <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
-                            `;
-
-                    var arr = data;
-                    for (var i = 0; i < arr.length; i++) {
-
-                        html += `<tbody><tr>`;
-                        html += `<td class="cell100 column1">${arr[i].supplierName}</td>`;
-                        if (arr[i].priceStatus == "0 ") {
-                            html += `<td class="cell100 column1">${arr[i].price} ₺</td>`;
-                        }
-                        else if (arr[i].priceStatus == "1 ") {
-                            html += `<td class="cell100 column1">${arr[i].price} $</td>`;
-                        }
-                        else if (arr[i].priceStatus == "2 ") {
-                            html += `<td class="cell100 column1">${arr[i].price} £</td>`;
-                        }
-                        else if (arr[i].priceStatus == "3 ") {
-                            html += `<td class="cell100 column1">${arr[i].price} ¥</td>`;
-                        }
-                        html += `<td class="cell100 column1">${arr[i].description}</td>`;
-                        if (arr[i].status == 1) {
-                            html += `<td class="cell100 column1">Onay Bekliyor...</td>`;
-                        }
-                        else if (arr[i].status == 2) {
-                            html += `<td class="cell100 column1">Kabul Edildi...</td>`;
-                        }
-                        else if (arr[i].status == 3) {
-                            html += `<td class="cell100 column1">Reddedildi...</td>`;
-                        }
-                        else if (arr[i].status == 4) {
-                            html += `<td class="cell100 column1">Onaylandı...</td>`;
-                        }
-                        html += ` <td>
-                        <div>
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        İşlemler
-                        </button>
-
-    @{
-        string rol = Accessor.HttpContext.Session.GetString("Role");
-                                <ul class="dropdown-menu">
-                                <li>
-                                <form method="post" action="/Admin/TeklifGuncelle">
-                                <input hidden="hidden" value="${arr[i].id}" name="Id">
-                                <input hidden="hidden" value="${arr[i].price}" name="Price">
-                                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
-                                <input hidden="hidden" value="${arr[i].description}" name="Description">
-                                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
-                                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
-                                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
-                                <input hidden="hidden" value="2" name="Status">
-                                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                <button class="dropdown-item" type="submit">Kabul Et</button>
-                                </form>
-                                </li>
-                                <li>
-                                <form method="post" action="/Admin/TeklifGuncelle">
-                                <input hidden="hidden" value="${arr[i].id}" name="Id">
-                                <input hidden="hidden" value="${arr[i].price}" name="Price">
-                                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
-                                <input hidden="hidden" value="${arr[i].description}" name="Description">
-                                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
-                                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
-                                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
-                                <input hidden="hidden" value="3" name="Status">
-                                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                <button class="dropdown-item" type="submit">Reddet</button>
-                                </form>
-                                </li>
-
-            @if (rol != "Personel")
-            {
-                                        <li>
-                                        <form method="post" action="/Admin/TeklifTopluGuncelle">
-                                        <input hidden="hidden" value="${arr[i].id}" name="Id">
-                                        <input hidden="hidden" value="${arr[i].price}" name="Price">
-                                        <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
-                                        <input hidden="hidden" value="${arr[i].description}" name="Description">
-                                        <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
-                                        <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
-                                        <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
-                                        <input hidden="hidden" value="4" name="Status">
-                                        <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
-                                        <button class="dropdown-item" type="submit">Onayla</button>
-                                        </form>
-                                        </li>
-
-            }</ul>
-
-    }
-
-                        </div>
-                        </td>`;
-                        html += `</tbody>`;
-                    }
-                    html += `</tr></table>`;
-                    $("#doldur").html(html);
-                },
-                error: function (xhr, status, error) {
-                    alert("Ajax error:", error + status);
-                }
-
-            });
-        }
-
-    function Doldur() {
-
-        var selectedCompanyId = $("#inputRequestIdDetay").val();
+        var selectedCompanyId = $("#inputRequestIdDetay1").val();
         $.ajax({
             url: "https://localhost:7075/GetOfferByjs/" + selectedCompanyId,
             type: "GET",
@@ -602,25 +542,25 @@
                 xhr.setRequestHeader('Authorization', `Bearer ${token}`);
             },
             success: function (data) {
-                $("#doldur").empty();
+                $("#doldur1").empty();
                 var html = `
-                                            <div class="table100 ver5 m-b-110" style="align-content:start;">
-                                                <div class="table100-head">
-                                                    <table>
-                                                        <thead>
-                                                            <tr class="row100 head">
-                                                                    <th class="cell100 column1 text-light bg-secondary opacity-75">Firma</th>
-                                                                <th class="cell100 column1 text-light bg-secondary opacity-75">Teklif</th>
-                                                                <th class="cell100 column1 text-light bg-secondary opacity-75">Açıklama</th>
-                                                                <th class="cell100 column1 text-light bg-secondary opacity-75">Durum</th>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
-                                                </div>
-                                                    <div class="table100-body js-pscroll ps ps--active-y">
-                            <table id="example" style="min-height:350px;">
-                                <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
-                                `;
+            <div class="table100 ver5 m-b-110" style="align-content:start;">
+            <div class="table100-head">
+            <table>
+            <thead>
+            <tr class="row100 head">
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Firma</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Teklif</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Açıklama</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Durum</th>
+            </tr>
+            </thead>
+            </table>
+            </div>
+            <div class="table100-body js-pscroll ps ps--active-y">
+            <table id="example" style="min-height:350px;">
+            <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
+            `;
 
                 var arr = data;
                 for (var i = 0; i < arr.length; i++) {
@@ -663,6 +603,168 @@
 
         });
     }
+    function Doldur() {
+
+        var selectedCompanyId = $("#inputRequestIdDetay").val();
+        $.ajax({
+            url: "https://localhost:7075/GetOfferByjs/" + selectedCompanyId,
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+            },
+            success: function (data) {
+                $("#doldur").empty();
+                var html = `
+            <div class="table100 ver5 m-b-110" style="align-content:start;">
+            <div class="table100-head">
+            <table>
+            <thead>
+            <tr class="row100 head">
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Firma</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Teklif</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Açıklama</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">Durum</th>
+            <th class="cell100 column1 text-light bg-secondary opacity-75">İşlemler</th>
+            </tr>
+            </thead>
+            </table>
+            </div>
+            <div class="table100-body js-pscroll ps ps--active-y">
+            <table id="example" style="min-height:350px;">
+            <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
+            `;
+
+                var arr = data;
+                for (var i = 0; i < arr.length; i++) {
+
+                    html += `<tbody><tr>`;
+                    html += `<td class="cell100 column1">${arr[i].supplierName}</td>`;
+                    if (arr[i].priceStatus == "0 ") {
+                        html += `<td class="cell100 column1">${arr[i].price} ₺</td>`;
+                    }
+                    else if (arr[i].priceStatus == "1 ") {
+                        html += `<td class="cell100 column1">${arr[i].price} $</td>`;
+                    }
+                    else if (arr[i].priceStatus == "2 ") {
+                        html += `<td class="cell100 column1">${arr[i].price} £</td>`;
+                    }
+                    else if (arr[i].priceStatus == "3 ") {
+                        html += `<td class="cell100 column1">${arr[i].price} ¥</td>`;
+                    }
+                    html += `<td class="cell100 column1">${arr[i].description}</td>`;
+                    if (arr[i].status == 1) {
+                        html += `<td class="cell100 column1">Onay Bekliyor...</td>`;
+                    }
+                    else if (arr[i].status == 2) {
+                        html += `<td class="cell100 column1">Kabul Edildi...</td>`;
+                    }
+                    else if (arr[i].status == 3) {
+                        html += `<td class="cell100 column1">Reddedildi...</td>`;
+                    }
+                    else if (arr[i].status == 4) {
+                        html += `<td class="cell100 column1">Onaylandı...</td>`;
+                    }
+                    html += ` <td>
+            <div>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            İşlemler
+            </button>
+
+
+            <ul class="dropdown-menu">
+            <li>
+            <form method="post" action="/Admin/TeklifGuncelle">
+            <input hidden="hidden" value="${arr[i].id}" name="Id">
+            <input hidden="hidden" value="${arr[i].price}" name="Price">
+            <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+            <input hidden="hidden" value="${arr[i].description}" name="Description">
+            <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+            <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+            <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+            <input hidden="hidden" value="2" name="Status">
+            <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+            <button class="dropdown-item" type="submit">Kabul Et</button>
+            </form>
+            </li>
+            <li>
+            <form method="post" action="/Admin/TeklifGuncelle">
+            <input hidden="hidden" value="${arr[i].id}" name="Id">
+            <input hidden="hidden" value="${arr[i].price}" name="Price">
+            <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+            <input hidden="hidden" value="${arr[i].description}" name="Description">
+            <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+            <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+            <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+            <input hidden="hidden" value="3" name="Status">
+            <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+            <button class="dropdown-item" type="submit">Reddet</button>
+            </form>
+            </li>
+
+            `;
+
+
+                    
+
+                    if (arr[i].price >= 500000 && (@sirket == true || @admin== true)) {
+
+
+                        html +=
+                            `
+                <li>
+                <form method="post" action="/Admin/TeklifTopluGuncelle">
+                <input hidden="hidden" value="${arr[i].id}" name="Id">
+                <input hidden="hidden" value="${arr[i].price}" name="Price">
+                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                <input hidden="hidden" value="${arr[i].description}" name="Description">
+                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                <input hidden="hidden" value="4" name="Status">
+                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                <button class="dropdown-item" type="submit">Onayla</button>
+                </form>
+                </li>`;
+                    }
+                    if (arr[i].price <= 500000 && (@departman == true || @admin==true) ) {
+
+
+                        html +=
+                            `
+                <li>
+                <form method="post" action="/Admin/TeklifTopluGuncelle">
+                <input hidden="hidden" value="${arr[i].id}" name="Id">
+                <input hidden="hidden" value="${arr[i].price}" name="Price">
+                <input hidden="hidden" value="${arr[i].priceStatus}" name="PriceStatus">
+                <input hidden="hidden" value="${arr[i].description}" name="Description">
+                <input hidden="hidden" value="${arr[i].supplierName}" name="SupplierName">
+                <input hidden="hidden" value="${arr[i].addedUser}" name="AddedUser">
+                <input hidden="hidden" value="${arr[i].requestId}" name="RequestId">
+                <input hidden="hidden" value="4" name="Status">
+                <input hidden="hidden" value="@Accessor.HttpContext.Session.GetString("User")" name="UserId">
+                <button class="dropdown-item" type="submit">Onayla</button>
+                </form>
+                </li>`;
+                    }
+                    html += `
+            </ul>
+
+
+            </div>
+            </td>`;
+                    html += `</tbody>`;
+                }
+                html += `</tr></table>`;
+                $("#doldur").html(html);
+            },
+            error: function (xhr, status, error) {
+                alert("Ajax error:", error + status);
+            }
+
+        });
+    }
+
+
     $('#staticBackdrop2').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id1');
@@ -674,6 +776,26 @@
         var miktar = button.data('miktar1');
         var status = button.data('status1');
         $("#inputRequestIdDetay").val(id);
+        $("#inputId2").val(id);
+        $("#inputTalepAd2").val(title);
+        $("#inputAciklama2").val(description);
+        $("#inputUserId2").val(username);
+        $("#inputProduct2").val(product);
+        $("#inputBirim5").val(brim);
+        $("#inputMiktar2").val(miktar);
+        $("#inputStatus2").val(status);
+    });
+    $('#staticBackdropEskiTalep').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id1');
+        var title = button.data('title1');
+        var description = button.data('description1');
+        var username = button.data('username1');
+        var product = button.data('product1');
+        var brim = button.data('brim1');
+        var miktar = button.data('miktar1');
+        var status = button.data('status1');
+        $("#inputRequestIdDetay1").val(id);
         $("#inputId2").val(id);
         $("#inputTalepAd2").val(title);
         $("#inputAciklama2").val(description);

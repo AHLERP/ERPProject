@@ -7,6 +7,16 @@
     ViewData["buttonismi"] = "Şirket Ekle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+    @{
+        if (Accessor.HttpContext.Session.GetString("DepartmentName") == "Yönetim")
+        {
+        <script>
+            document.getElementById('SearchBtn').style.display = 'none';
+        </script>
+        }
+    }
+
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @{
         int i = 0;

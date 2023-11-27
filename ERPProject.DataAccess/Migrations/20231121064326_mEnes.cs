@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ERPProject.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class mhakan0 : Migration
+    public partial class mEnes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,6 +58,7 @@ namespace ERPProject.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
@@ -247,7 +248,6 @@ namespace ERPProject.DataAccess.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -269,11 +269,6 @@ namespace ERPProject.DataAccess.Migrations
                         name: "FK_User_Department",
                         column: x => x.DepartmentId,
                         principalTable: "Department",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_User_Role",
-                        column: x => x.RoleId,
-                        principalTable: "Role",
                         principalColumn: "Id");
                 });
 
@@ -357,6 +352,37 @@ namespace ERPProject.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_StockDetail_User_UserId",
                         column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                columns: table => new
+                {
+                    UserRoleId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    role_id = table.Column<int>(type: "int", nullable: false),
+                    AddedTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    AddedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
+                    UpdatedIP4VAdress = table.Column<string>(type: "char(15)", unicode: false, fixedLength: true, maxLength: 15, nullable: true),
+                    AddedUser = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedUser = table.Column<long>(type: "bigint", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => x.UserRoleId);
+                    table.ForeignKey(
+                        name: "FK_UserRole_Role_role_id",
+                        column: x => x.role_id,
+                        principalTable: "Role",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserRole_User_user_id",
+                        column: x => x.user_id,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -474,9 +500,14 @@ namespace ERPProject.DataAccess.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_RoleId",
-                table: "User",
-                column: "RoleId");
+                name: "IX_UserRole_role_id",
+                table: "UserRole",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_user_id",
+                table: "UserRole",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -492,6 +523,9 @@ namespace ERPProject.DataAccess.Migrations
                 name: "StockDetail");
 
             migrationBuilder.DropTable(
+                name: "UserRole");
+
+            migrationBuilder.DropTable(
                 name: "Invoice");
 
             migrationBuilder.DropTable(
@@ -501,6 +535,9 @@ namespace ERPProject.DataAccess.Migrations
                 name: "Stock");
 
             migrationBuilder.DropTable(
+                name: "Role");
+
+            migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
@@ -508,9 +545,6 @@ namespace ERPProject.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Department");
-
-            migrationBuilder.DropTable(
-                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Brand");

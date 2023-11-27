@@ -9,7 +9,11 @@ namespace ERPProject.API.Mapper.RoleMap
         public RoleDTOResponseMapper()
         {
             CreateMap<Role,RoleDTOResponse>();
-            CreateMap<RoleDTOResponse, Role>();
+            CreateMap<RoleDTOResponse, Role>().
+                ForMember(dest => dest.UserRoles, opt =>
+                {
+                    opt.MapFrom(src => src.Name);
+                });
         }
     }
 }

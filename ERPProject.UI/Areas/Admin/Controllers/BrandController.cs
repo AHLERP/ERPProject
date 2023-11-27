@@ -1,13 +1,17 @@
 ﻿using ERPProject.Entity.DTO.BrandDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.UI.Areas.Admin.Models;
+using ERPProject.UI.Areas.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 using System.Runtime.Intrinsics.Arm;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthenticationFilter(Role = "Admin,Satın Alma İşlemleri,Ürün Görüntüleme")]
     public class BrandController : BaseController
     {
         private readonly string url = "https://localhost:7075/";

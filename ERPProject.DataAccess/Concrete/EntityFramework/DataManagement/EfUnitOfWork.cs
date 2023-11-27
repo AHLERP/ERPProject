@@ -36,6 +36,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
             StockDetailRepository = new EfStockDetailRepository(_context);
             UserRepository = new EfUserRepository(_context);
             InvoiceDetailRepository = new EfInvoiceDetailRepository(_context);
+            UserRoleRepository = new EfUserRoleRepository(_context);
         }
 
         public IBrandRepository BrandRepository { get; }
@@ -62,6 +63,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
 
         public IUserRepository UserRepository { get; }
         public IInvoiceDetailRepository InvoiceDetailRepository { get; }
+        public IUserRoleRepository UserRoleRepository { get; }
 
         public Task<int> SaveChangeAsync()
         {
@@ -88,6 +90,15 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.DataManagement
                     item.Entity.UpdatedUser = item.Entity.UpdatedUser;
                     item.Entity.UpdatedIPV4Address = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                 }
+
+                //else if (item.State == EntityState.Deleted)
+                //{
+
+                //    item.Entity.IsActive = false;
+                //    item.State = EntityState.Modified;
+                    
+                //}
+
             }
 
             return _context.SaveChangesAsync();

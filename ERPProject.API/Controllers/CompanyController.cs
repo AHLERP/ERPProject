@@ -31,7 +31,7 @@ namespace ERPProject.API.Controllers
             _departmentService = departmentService;
             _userService = userService;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("/AddCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
         //[Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
@@ -55,9 +55,8 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-        
-        [HttpDelete("/RemoveCompany/{id}")]
         [Authorize(Roles = "Admin")]
+        [HttpDelete("/RemoveCompany/{id}")]
         public async Task<IActionResult> RemoveCompany(int id)
         {
             Company company = await _companyService.GetAsync(x => x.Id == id);
@@ -73,10 +72,9 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithoutData());
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("/UpdateCompany")]
         [ValidationFilter(typeof(CompanyValidator))]
-        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü")]
         public async Task<IActionResult> UpdateCompany(CompanyDTORequest companyDTORequest)
         {
             Company company = await _companyService.GetAsync(x => x.Id == companyDTORequest.Id);
@@ -110,7 +108,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-
+        [AllowAnonymous]
         [HttpGet("/GetCompany/{id}")]
         public async Task<IActionResult> GetCompany(int id)
         {
@@ -126,7 +124,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<CompanyDTOResponse>.SuccessWithData(companyDTOResponse));
         }
-
+        [AllowAnonymous]
         [HttpGet("/GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
@@ -145,6 +143,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<CompanyDTOResponse>>.SuccessWithData(companyDTOResponseList));
         }
+        [AllowAnonymous]
         [HttpGet("/GetCompaniesByUser/{userId}")]
         public async Task<IActionResult> GetCompaniesByUser(long userId)
         {

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 @inject IHttpContextAccessor Accessor
 <head>
     <meta charset="utf-8">
@@ -52,14 +52,16 @@
         <div class="offcanvas-body px-0">
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
                 @{
-                    string rol = Accessor.HttpContext.Session.GetString("Role");
                     string dep = Accessor.HttpContext.Session.GetString("DepartmentName");
+
                     <li class="nav-item">
                         <a href="/Admin/Anasayfa" class="nav-link text-truncate">
                             <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Anasayfa</span>
                         </a>
                     </li>
-                    if ((dep == "Muhasebe") || (dep == "Yonetim") || (dep == "Admin"))
+
+
+                    if (((dep == "Yönetim") || (dep == "Admin")))
                     {
                         <li class="nav-item">
                             <a href="/Admin/Sirketler" class="nav-link text-truncate">
@@ -75,31 +77,26 @@
                             </a>
                         </li>
                     }
-                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
+                    if (((dep == "Satın Alma") || (dep == "Yönetim") || (dep == "Admin") || (dep == "Bilgi İşlem")))
                     {
                         <li>
                             <a href="/Admin/Urunler" class="nav-link text-truncate">
                                 <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Urunler</span>
                             </a>
                         </li>
-                    }
-                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
-                    {
                         <li>
                             <a href="/Admin/Kategoriler" class="nav-link text-truncate">
                                 <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Kategoriler</span>
                             </a>
                         </li>
-                    }
-                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
-                    {
                         <li>
                             <a href="/Admin/Markalar" class="nav-link text-truncate">
                                 <i class="fs-5 bi-grid"></i><span class="ms-1 d-none d-sm-inline">Markalar</span>
                             </a>
                         </li>
                     }
-                    if (rol != "Personel" || dep == "Insan Kaynaklari")
+
+                    if ((dep == "Insan Kaynaklari" || dep == "Bilgi İşlem" || dep == "Admin" || dep == "Yönetim"))
                     {
                         <li>
                             <a href="/Admin/Kullanicilar" class="nav-link text-truncate">
@@ -107,12 +104,14 @@
                             </a>
                         </li>
                     }
+
                     <li>
                         <a href="/Admin/Talepler" class="nav-link text-truncate">
                             <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">İstekler</span>
                         </a>
                     </li>
-                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
+
+                    if (((dep == "Satın Alma") || (dep == "Yönetim") || (dep == "Admin")))
                     {
                         <li>
                             <a href="/Admin/Stoklar" class="nav-link text-truncate">
@@ -120,7 +119,7 @@
                             </a>
                         </li>
                     }
-                    if ((dep == "Muhasebe") || (dep == "Yonetim") || (dep == "Admin"))
+                    if (((dep == "Muhasebe") || (dep == "Yönetim") || (dep == "Admin")))
                     {
                         <li>
                             <a href="/Admin/Faturalar" class="nav-link text-truncate">
@@ -128,7 +127,7 @@
                             </a>
                         </li>
                     }
-                    if ((dep == "Satın Alma") || (dep == "Yonetim") || (dep == "Admin"))
+                    if (((dep == "Satın Alma") || (dep == "Yönetim") || (dep == "Admin")) || (dep == "Bilgi İşlem"))
                     {
                         <li>
                             <a href="/Admin/Teklifler" class="nav-link text-truncate">
@@ -136,7 +135,7 @@
                             </a>
                         </li>
                     }
-                    if ((dep == "Muhasebe") || (dep == "Yonetim") || (dep == "Admin"))
+                    if (((dep == "Muhasebe") || (dep == "Yönetim") || (dep == "Admin")))
                     {
                         <li>
                             <a href="/Admin/Raporlama" class="nav-link text-truncate">
@@ -144,6 +143,7 @@
                             </a>
                         </li>
                     }
+                }
                 }
                 }
             </ul>

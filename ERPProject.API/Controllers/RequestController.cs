@@ -8,6 +8,7 @@ using ERPProject.Entity.Poco;
 using ERPProject.Entity.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Serilog;
 using System.Net.Mail;
 using System.Text;
@@ -164,6 +165,7 @@ namespace ERPProject.API.Controllers
 
 
         [HttpGet("/RequestsByCompany/{userId}")]
+        [Authorize(Roles = "Admin,Şirket Müdürü,Kullanıcı İşlemleri,Satın Alma İşlemleri")]
         public async Task<IActionResult> GetRequestsByCompany(long userId)
         {
             User user = await _userService.GetAsync(x => x.Id == userId);
@@ -190,7 +192,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<RequestDTOResponse>>.SuccessWithData(requestDTOResponseList));
 
         }
-
+        [Authorize(Roles = "Admin,Departman Müdürü")]
         [HttpGet("/RequestsByDepartment/{userId}")]
         public async Task<IActionResult> GetRequestsByDepartment(long userId)
         {
@@ -236,7 +238,7 @@ namespace ERPProject.API.Controllers
 
             a.Send(mesaj);
         }
-
+        [AllowAnonymous]
         [HttpGet("/RequestsByUser/{userId}")]
         public async Task<IActionResult> GetRequestsByUser(long userId)
         {

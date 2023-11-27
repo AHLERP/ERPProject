@@ -26,7 +26,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 DepartmentName=val.Data.DepartmentName,
                 Name=val.Data.Name,
                 LastName=val.Data.LastName,
-                RoleName=val.Data.RoleName,
+                RoleName=val.Data.RoleName.ToList(),
                 Email=val.Data.Email,
                 Phone=val.Data.Phone,
             };
