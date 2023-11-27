@@ -44,6 +44,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
         public virtual DbSet<StockDetail> StockDetails { get; set; }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -403,10 +404,32 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
                     .IsFixedLength()
                     .HasColumnName("UpdatedIP4VAdress");
                 entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
-                entity.HasOne(x => x.Role).WithMany(x => x.Users).HasForeignKey(x => x.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Role");
+                
             });
+
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.Property(e => e.UserRoleId).ValueGeneratedOnAdd();
+                entity.ToTable("UserRole");
+                entity.Property(e => e.AddedIPV4Address)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("AddedIP4VAdress");
+                entity.Property(e => e.AddedTime).HasColumnType("datetime"); 
+                entity.Property(e => e.UpdatedIPV4Address)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .IsFixedLength()
+                    .HasColumnName("UpdatedIP4VAdress");
+                entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
+                entity.Property(e=>e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.RoleId).HasColumnName("role_id");
+                entity.HasOne(e => e.Role).WithMany(e => e.UserRoles).HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.NoAction);
+                entity.HasOne(e => e.User).WithMany(e => e.UserRoles).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.NoAction);
+
+            });
+
 
 
             OnModelCreatingPartial(modelBuilder);

@@ -6,14 +6,6 @@ function flipCard(cardIndex) {
     var cards = document.querySelectorAll('.card');
     cards[cardIndex].style.transform = cards[cardIndex].style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
 }
-document.querySelector('.toggle-btn').addEventListener('click', function () {
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebar.style.left === '-250px' || sidebar.style.left === '') {
-        sidebar.style.left = '0';
-    } else {
-        sidebar.style.left = '-250px';
-    }
-});
 var BASE_API_URI = "https://localhost:7075";
 
 function Get(action, success) {

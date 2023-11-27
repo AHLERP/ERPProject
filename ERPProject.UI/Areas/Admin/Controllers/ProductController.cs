@@ -5,11 +5,13 @@ using ERPProject.Entity.DTO.OfferDTO;
 using ERPProject.Entity.DTO.ProductDTO;
 using ERPProject.Entity.Poco;
 using ERPProject.UI.Areas.Admin.Models;
+using ERPProject.UI.Areas.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthenticationFilter(Role = "Admin,Satın Alma İşlemleri,Ürün Görüntüleme")]
     public class ProductController : BaseController
     {
         private readonly string url = "https://localhost:7075/";

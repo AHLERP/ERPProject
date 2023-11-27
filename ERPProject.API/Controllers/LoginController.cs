@@ -22,25 +22,28 @@ namespace ERPProject.API.Controllers
     public class LoginController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IUserRoleService _userRoleService;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public LoginController(IConfiguration configuration, IUserService userService, IMapper mapper)
+        public LoginController(IConfiguration configuration, IUserService userService, IMapper mapper, IUserRoleService userRoleService)
         {
             _configuration = configuration;
             _userService = userService;
             _mapper = mapper;
+            _userRoleService = userRoleService;
         }
 
         [HttpPost("/Login")]
         public async Task<IActionResult> LoginAsync(LoginRequestDTO loginRequestDTO)
-          {
+        {
 
 
-            var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Role","Department");
+            var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Department", "UserRoles.Role");
+            //var roles = await _userRoleService.GetAllAsync(x => x.User.Id==user.Id,"Role");
             if (user == null)
             {
-                return Ok(Sonuc<LoginResponseDTO>.SuccessNoDataFound()); 
+                return Ok(Sonuc<LoginResponseDTO>.SuccessNoDataFound());
             }
 
 
@@ -51,9 +54,13 @@ namespace ERPProject.API.Controllers
                 new Claim(ClaimTypes.Name , user.Name),
                 new Claim(ClaimTypes.Surname , user.LastName),
                 new Claim(ClaimTypes.Email , user.Email),
-                new Claim(ClaimTypes.Role,user.Role.Name.ToString()),
-                new Claim("EmailForMW",user.Email)
+                new Claim("EmailForMW", user.Email)
                 };
+
+                foreach (var item in user.UserRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, item.Role.Name));
+                }
 
                 var secretKey = _configuration["JWT:Token"];
                 var issuer = _configuration["JWT:Issuer"];
@@ -75,14 +82,14 @@ namespace ERPProject.API.Controllers
 
                 LoginResponseDTO loginResponseDTO = new()
                 {
-                    AdSoyad = user.Name  +" "+ user.LastName,
+                    AdSoyad = user.Name + " " + user.LastName,
                     EPosta = user.Email,
                     Token = tokenHandler.WriteToken(token),
-                    RoleName = user.Role.Name.ToString(),
                     UserId = user.Id,
+                    RoleName = user.UserRoles.Select(e => e.Role.Name).ToList(),
                     CompanyId = user.Department.CompanyId,
-                    DepartmentId =user.DepartmentId,
-                    DepartmentName=user.Department.Name
+                    DepartmentId = user.DepartmentId,
+                    DepartmentName = user.Department.Name
                 };
 
                 Log.Information("LoginResponse => {@loginResponseDTO} => { Giriş Yapıldı. }", loginResponseDTO);
@@ -93,6 +100,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<LoginResponseDTO>.SuccessNoDataFound());
 
         }
+       
 
     }
 }

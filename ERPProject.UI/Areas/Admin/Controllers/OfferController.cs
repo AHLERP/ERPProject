@@ -2,6 +2,8 @@
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
+using ERPProject.UI.Areas.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Options;
 using Newtonsoft.Json;
@@ -13,6 +15,7 @@ using System.Xml;
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthenticationFilter(Role = "Admin,Satın Alma İşlemleri")]
     public class OfferController : BaseController
     {
         private readonly HttpClient _httpClient;
@@ -37,7 +40,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             {
                 return RedirectToAction("Forbidden", "Home");
             }
-            if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin")
+            if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin" || dep == "Bilgi İşlem")
             {
                 var val2 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
                 var val4 = await GetAllAsync<OfferDTOResponse>(url + "GetOffersByRequest/" + id);
@@ -54,7 +57,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                     };
                     return View(offerVM);
                 }
-                else if (dep == "Admin" )
+                else if (dep == "Admin" || dep=="Bilgi İşlem")
                 {
                     var val3 = await GetAllAsync<RequestDTOResponse>(url + "Requests");
                     OfferVM offerVM = new OfferVM()

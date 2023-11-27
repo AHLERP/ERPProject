@@ -16,7 +16,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [Authorize]
+    [Authorize(Roles = "Admin,Satın Alma İşlemleri,Ürün Görüntüleme")]
 
     public class StockController : Controller
     {

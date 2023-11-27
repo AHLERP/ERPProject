@@ -15,8 +15,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("[action]")]
     [ApiController]
-    [Authorize]
-
+    [Authorize(Roles = "Admin,Satın Alma İşlemleri,Ürün Görüntüleme")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -45,7 +44,7 @@ namespace ERPProject.API.Controllers
         [HttpDelete("/RemoveProduct/{productId}")]
         public async Task<IActionResult> RemoveProduct(int productId)
         {
-            Product product = await _productService.GetAsync(x=>x.Id == productId);
+            Product product = await _productService.GetAsync(x => x.Id == productId);
             if (product == null)
             {
                 return NotFound(Sonuc<ProductDTOResponse>.SuccessNoDataFound());
@@ -62,12 +61,12 @@ namespace ERPProject.API.Controllers
         [ValidationFilter(typeof(ProductValidator))]
         public async Task<IActionResult> UpdateProduct(ProductDTORequest productDTORequest)
         {
-            Product product = await _productService.GetAsync(x=>x.Id == productDTORequest.Id);
-            if(product == null)
+            Product product = await _productService.GetAsync(x => x.Id == productDTORequest.Id);
+            if (product == null)
             {
                 return NotFound(Sonuc<ProductDTOResponse>.SuccessNoDataFound());
             }
-            product = _mapper.Map(productDTORequest,product);
+            product = _mapper.Map(productDTORequest, product);
 
             await _productService.UpdateAsync(product);
 
@@ -79,6 +78,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpGet("/GetProduct/{productId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProduct(int productId)
         {
             Product product = await _productService.GetAsync(x => x.Id == productId);
@@ -93,11 +93,11 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<ProductDTOResponse>.SuccessWithData(productDTOResponse));
         }
-
+        [AllowAnonymous]
         [HttpGet("/GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _productService.GetAllAsync(x=>x.IsActive==true,"Category","Brand");
+            var products = await _productService.GetAllAsync(x => x.IsActive == true, "Category", "Brand");
             if (products == null)
             {
                 return NotFound(Sonuc<ProductDTOResponse>.SuccessNoDataFound());
@@ -135,7 +135,7 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetProductsByBrand(int brandId)
         {
             var products = await _productService.GetAllAsync(x => x.IsActive == true && x.BrandId == brandId, "Category", "Brand");
-            if(products == null)
+            if (products == null)
             {
                 return NotFound(Sonuc<ProductDTOResponse>.SuccessNoDataFound());
             }
@@ -146,6 +146,6 @@ namespace ERPProject.API.Controllers
             }
             Log.Information("Products => {@productDTOResponse} => { Markaya Göre Ürünler Getirildi. }", productDTOResponseList);
             return Ok(Sonuc<List<ProductDTOResponse>>.SuccessWithData(productDTOResponseList));
-        } 
+        }
     }
 }

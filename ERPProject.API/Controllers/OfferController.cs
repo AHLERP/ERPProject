@@ -16,7 +16,7 @@ namespace ERPProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin,Satın Alma İşlemleri")]
 
     public class OfferController : ControllerBase
     {
@@ -78,7 +78,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<OfferDTOResponse>.SuccessWithData(offerDTOResponse));
         }
-
         [HttpGet("/GetOffer/{offerId}")]
         public async Task<IActionResult> GetOffer(int offerId)
         {

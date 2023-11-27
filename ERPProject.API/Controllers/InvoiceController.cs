@@ -32,6 +32,7 @@ namespace ERPProject.API.Controllers
             _companyService = companyService;
         }
         [HttpPost("/AddInvoice")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri")]
         public async Task<IActionResult> AddInvoice(InvoiceDTORequest invoiceDTORequest)
         {
             Invoice invoice = _mapper.Map<Invoice>(invoiceDTORequest);
@@ -44,6 +45,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<InvoiceDTOResponse>.SuccessWithData(invoiceDTOResponse));
         }
         [HttpDelete("/RemoveInvoice/{invoiceId}")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri")]
         public async Task<IActionResult> RemoveInvoice(int invoiceId)
         {
             Invoice invoice = await _invoiceService.GetAsync(x => x.Id == invoiceId);
@@ -60,6 +62,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateInvoice")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri")]
         public async Task<IActionResult> UpdateInvoice(InvoiceDTORequest invoiceDTORequest)
         {
             Invoice invoice = await _invoiceService.GetAsync(x => x.Id == invoiceDTORequest.Id);
@@ -76,8 +79,9 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<Invoice>.SuccessWithData(invoice));
         }
-
+        
         [HttpGet("/GetInvoice/{invoiceId}")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri,Muhasebe Görüntüleme")]
         public async Task<IActionResult> GetInvoice(int invoiceId)
         {
             Invoice invoice = await _invoiceService.GetAsync(x => x.Id == invoiceId);
@@ -94,6 +98,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpGet("/GetInvoices")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri,Muhasebe Görüntüleme")]
         public async Task<IActionResult> GetInvoices()
         {
             var invoices = await _invoiceService.GetAllAsync(x => x.IsActive == true);
@@ -113,6 +118,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         }
         [HttpGet("/GetInvoicesByDate/{date}")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri,Muhasebe Görüntüleme")]
         public async Task<IActionResult> GetInvoicesByDate(string date)
         {
             string[] parcalar = date.Split('-');
@@ -154,6 +160,7 @@ namespace ERPProject.API.Controllers
         //    return Ok(Sonuc<List<InvoiceDTOResponse>>.SuccessWithData(invoiceDTOResponseList));
         //}
         [HttpGet("/GetInvoicesByCompany/{userId}")]
+        [Authorize(Roles = "Admin,Muhasebe İşlemleri,Muhasebe Görüntüleme")]
         public async Task<IActionResult> GetInvoicesByCompany(long userId)
         {
             User user = await _userService.GetAsync(x => x.Id == userId);

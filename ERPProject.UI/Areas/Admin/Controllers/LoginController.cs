@@ -1,8 +1,11 @@
 ﻿using ERPProject.Entity.DTO.UserLoginDTO;
 using ERPProject.Entity.Result;
+using ERPProject.UI.Areas.Admin.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
+
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
@@ -28,15 +31,24 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             request.AddBody(body, "application/json");
             RestResponse response = await client.ExecuteAsync(request);
             var responseObject = JsonConvert.DeserializeObject<ApiResponse<LoginDTO>>(response.Content);
+            
             if (responseObject.StatusCode == 200)
             {
                 HttpContext.Session.SetString("Token", responseObject.Data.Token);
-                HttpContext.Session.SetString("Role", responseObject.Data.RoleName);
                 HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
                 HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
                 HttpContext.Session.SetString("DepartmentName", responseObject.Data.DepartmentName);
                 HttpContext.Session.SetString("UserName", responseObject.Data.AdSoyad.ToString());
                 HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
+
+                //for (int i = 0; i < responseObject.Data.RoleName.Count; i++)
+                //{
+                //    HttpContext.Session.SetString("RoleName" + i, responseObject.Data.RoleName[i]);
+                //}
+                
+                
+                    SessionRole.RoleName=responseObject.Data.RoleName;
+                
 
             }
             else
@@ -61,6 +73,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
+            SessionRole.RoleName.Clear();
             return RedirectToAction("", "");
         }
     }

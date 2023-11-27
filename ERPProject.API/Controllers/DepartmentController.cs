@@ -29,7 +29,7 @@ namespace ERPProject.API.Controllers
         }
         [HttpPost("/AddDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
-        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = _mapper.Map<Department>(departmentDTORequest);
@@ -42,7 +42,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<DepartmentDTOResponse>.SuccessWithData(departmentDTOResponse));
         }
         [HttpDelete("/RemoveDepartment/{departmentId}")]
-        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RemoveDepartment(int departmentId)
         {
             Department department = await _departmentService.GetAsync(x=>x.Id == departmentId);
@@ -60,7 +60,7 @@ namespace ERPProject.API.Controllers
         }
         [HttpPost("/UpdateDepartment")]
         [ValidationFilter(typeof(DepartmentValidator))]
-        [Authorize(Roles = "Admin,Yönetim Kurulu Başkanı,Şirket Müdürü,Departman Müdürü")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateDepartment(DepartmentDTORequest departmentDTORequest)
         {
             Department department = await _departmentService.GetAsync(x=>x.Id == departmentDTORequest.Id);

@@ -26,19 +26,20 @@
                             <div class="col-lg-6 px-xl-10">
                                 <div class="d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
                                     <h3 class="h2 text-dark mb-0">@Model.Name @Model.LastName</h3>
-                                    <span class="text-dark">Pozisyon: @Model.RoleName</span>
+                                    <span class="text-dark">Pozisyon:
+                                        @for (int i = 0; i < 1; i++)
+                                        {
+                                            @Model.RoleName[i].ToString() <tab></tab>
+                                        }
+
+
+                                    </span>
                                 </div>
                                 <ul class="list-unstyled mb-1-9">
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Şirket:</span>@Model.CompanyName</li>
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Departman:</span> @Model.DepartmentName</li>
                                     <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email:</span> @Model.Email</li>
                                     <li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> 0 @Model.Phone</li>
-                                </ul>
-                                <ul class="social-icon-style1 list-unstyled mb-0 ps-0">
-                                    <li><a href="#!"><i class="bi-twitter"></i></a></li>
-                                    <li><a href="#!"><i class="bi-facebook"></i></a></li>
-                                    <li><a href="#!"><i class="bi-pinterest"></i></a></li>
-                                    <li><a href="#!"><i class="bi-instagram"></i></a></li>
                                 </ul>
                             </div>
                         </div>

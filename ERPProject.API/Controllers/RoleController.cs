@@ -16,7 +16,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    [Authorize]
+    [Authorize(Roles = "Admin,Kullanıcı İşlemleri")]
 
     public class RoleController : Controller
     {
@@ -31,9 +31,10 @@ namespace ERPProject.API.Controllers
 
 
         [HttpGet("/Roles")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetRoles()
         {
-            var roles = await _roleService.GetAllAsync();
+            var roles = await _roleService.GetAllAsync(x => x.IsActive == true);
 
             if (roles == null)
             {
@@ -50,7 +51,7 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<List<RoleDTOResponse>>.SuccessWithData(roleDTOResponses));
 
         }
-
+        [AllowAnonymous]
         [HttpGet("/Role/{roleId}")]
         public async Task<IActionResult> GetRole(int roleId)
         {
@@ -69,7 +70,6 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/AddRole")]
         [ValidationFilter(typeof(RoleValidator))]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole(RoleDTORequest roleDTORequest)
         {
 
@@ -90,7 +90,6 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
 
         }
-        [Authorize(Roles = "Admin")]
         [HttpPost("/UpdateRole")]
         [ValidationFilter(typeof(RoleValidator))]
         public async Task<IActionResult> UpdateRole(RoleDTORequest roleDTORequest)
@@ -119,7 +118,6 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<RoleDTOResponse>.SuccessWithData(roleDTOResponse));
         }
-        [Authorize(Roles = "Admin")]
         [HttpDelete("/RemoveRole/{roleId}")]
         public async Task<IActionResult> RemoveRole(int roleId)
         {

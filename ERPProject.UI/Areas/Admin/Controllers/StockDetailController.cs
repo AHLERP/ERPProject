@@ -2,11 +2,13 @@
 using ERPProject.Entity.DTO.StockDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
+using ERPProject.UI.Areas.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthenticationFilter(Role = "Admin,Satın Alma İşlemleri,Ürün Görüntüleme")]
     public class StockDetailController : BaseController
     {
         private readonly string url = "https://localhost:7075/";

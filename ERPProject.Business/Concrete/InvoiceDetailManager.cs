@@ -38,7 +38,8 @@ namespace ERPProject.Business.Concrete
 
         public async Task RemoveAsync(InvoiceDetail Entity)
         {
-            await _uow.InvoiceDetailRepository.RemoveAsync(Entity);
+            Entity.IsActive = false;
+            await _uow.InvoiceDetailRepository.UpdateAsync(Entity);
             await _uow.SaveChangeAsync();
         }
 
