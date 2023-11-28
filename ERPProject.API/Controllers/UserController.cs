@@ -80,7 +80,6 @@ namespace ERPProject.API.Controllers
             return Ok(Sonuc<UserDTOResponse>.SuccessWithoutData());
         }
 
-        [Authorize(Roles = "Admin,Kullanıcı İşlemleri")]
         [HttpPost("/UpdateUser")]
         [ValidationFilter(typeof(UserValidator))]
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
@@ -94,7 +93,7 @@ namespace ERPProject.API.Controllers
             else if (user.Email == userDTORequest.Email)
             {
                 user = _mapper.Map(userDTORequest, user);
-                //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
                 await _userService.UpdateAsync(user);
 
                 UserDTOResponse userDTOResponse2 = _mapper.Map<UserDTOResponse>(user);
@@ -110,7 +109,7 @@ namespace ERPProject.API.Controllers
             }
 
             user = _mapper.Map(userDTORequest, user);
-            //user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(userDTORequest.Password);
             await _userService.UpdateAsync(user);
 
             UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
@@ -201,7 +200,7 @@ namespace ERPProject.API.Controllers
         }
         [Authorize(Roles = "Kullanıcı İşlemleri,Personel")]
         [HttpGet("/GetUsersByCompany/{userId}")]
-        public async Task<IActionResult> GetUsersByCompany(int userId)
+        public async Task<IActionResult> GetUserGetUsersByCompany(int userId)
         {
             User user = await _userService.GetAsync(x => x.Id == userId);
             Department department = await _departmentService.GetAsync(x => x.Id == user.DepartmentId);
@@ -230,8 +229,21 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
+        [HttpGet("/GetUserByMail/{mail}")]
+        public async Task<IActionResult> GetUserByMail(string mail)
+        {
+            User user = await _userService.GetAsync(x => x.Email == mail && x.IsActive == true, "UserRoles.Role", "Department", "Department.Company");
+            if (user == null)
+            {
+                return NotFound(Sonuc<UserDTOResponse>.SuccessNoDataFound());
+            }
 
+            UserDTOResponse userDTOResponse = _mapper.Map<UserDTOResponse>(user);
 
+            Log.Information("Users => {@userDTOResponse} => { Kullanıcı Getirildi. }", userDTOResponse);
+
+            return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
+        }
     }
 
 
