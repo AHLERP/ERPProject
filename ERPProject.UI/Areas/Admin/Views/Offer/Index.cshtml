@@ -42,23 +42,23 @@
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
 
-                            <div class="wrap-table100 bg-secondary" style="max-width:1070px;">
+                            <div class="wrap-table100">
                                 <div class="table100 ver5 m-b-110">
                                     <div class="table100-head">
                                         <table>
                                             <thead>
                                                 <tr class="row100 head">
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Talep Adı</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Ürün</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Miktar</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Açıklama</th>
-                                                    <th class="cell100 column5 text-light bg-secondary opacity-75">İşlemler</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Talep Adı</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Ürün</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Miktar</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Açıklama</th>
+                                                    <th class="cell100 column5 text-light opacity-75">İşlemler</th>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
-                                    <div class="table100-body js-pscroll1 ps ps--active-y">
-                                        <table id="example" style="min-height:350px;">
+                                    <div class="table100-body">
+                                        <table id="example">
                                             <tbody>
                                                 @if (Model.Requests == null)
                                                 {
@@ -188,23 +188,23 @@
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
-                            <div class="wrap-table100" style="max-width:1070px;">
+                            <div class="wrap-table100">
                                 <div class="table100 ver5 m-b-110">
                                     <div class="table100-head">
                                         <table>
                                             <thead>
-                                                <tr class="row100 head bg-secondary bg-opacity-75">
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Talep Adı</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Ürün</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Miktar</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">Açıklama</th>
-                                                    <th class="cell100 column2 text-light bg-secondary opacity-75">İşlemler</th>
+                                                <tr class="row100 head bg-opacity-75">
+                                                    <th class="cell100 column2 text-light opacity-75">Talep Adı</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Ürün</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Miktar</th>
+                                                    <th class="cell100 column2 text-light opacity-75">Açıklama</th>
+                                                    <th class="cell100 column2 text-light opacity-75">İşlemler</th>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
-                                    <div class="table100-body js-pscroll1 ps ps--active-y">
-                                        <table id="example" style="min-height:350px;">
+                                    <div class="table100-body">
+                                        <table id="example">
                                             <tbody>
                                                 @if (Model.Requests == null)
                                                 {
@@ -463,7 +463,7 @@
                     <input autocomplete="off" hidden="hidden" class="form-control" placeholder="İstek..." id="inputRequestId" name="RequestId" aria-describedby="basic-addon1" required>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
-                        <input placeholder="Satıcı Firma" class="form-control" id="inputSupplierName" name="SupplierName" aria-describedby="basic-addon1" required>
+                        <input placeholder="Satıcı Firma" class="form-control" id="inputSupplierName" name="SupplierName" aria-describedby="basic-addon1" required autofocus>
                     </div>
 
 
@@ -549,16 +549,16 @@
             <table>
             <thead>
             <tr class="row100 head">
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Firma</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Teklif</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Açıklama</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Durum</th>
+            <th class="cell100 column2 text-light opacity-75">Firma</th>
+            <th class="cell100 column2 text-light opacity-75">Teklif</th>
+            <th class="cell100 column2 text-light opacity-75">Açıklama</th>
+            <th class="cell100 column2 text-light opacity-75">Durum</th>
             </tr>
             </thead>
             </table>
             </div>
-            <div class="table100-body js-pscroll ps ps--active-y">
-            <table id="example" style="min-height:350px;">
+            <div class="table100-body">
+            <table id="example">
             <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
             `;
 
@@ -566,31 +566,31 @@
                 for (var i = 0; i < arr.length; i++) {
 
                     html += `<tbody><tr>`;
-                    html += `<td class="cell100 column1">${arr[i].supplierName}</td>`;
+                    html += `<td class="cell100 column2">${arr[i].supplierName}</td>`;
                     if (arr[i].priceStatus == "0 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} ₺</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} ₺</td>`;
                     }
                     else if (arr[i].priceStatus == "1 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} $</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} $</td>`;
                     }
                     else if (arr[i].priceStatus == "2 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} £</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} £</td>`;
                     }
                     else if (arr[i].priceStatus == "3 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} ¥</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} ¥</td>`;
                     }
                     html += `<td class="cell100 column1">${arr[i].description}</td>`;
                     if (arr[i].status == 1) {
-                        html += `<td class="cell100 column1">Onay Bekliyor...</td>`;
+                        html += `<td class="cell100 column2">Onay Bekliyor...</td>`;
                     }
                     else if (arr[i].status == 2) {
-                        html += `<td class="cell100 column1">Kabul Edildi...</td>`;
+                        html += `<td class="cell100 column2">Kabul Edildi...</td>`;
                     }
                     else if (arr[i].status == 3) {
-                        html += `<td class="cell100 column1">Reddedildi...</td>`;
+                        html += `<td class="cell100 column2">Reddedildi...</td>`;
                     }
                     else if (arr[i].status == 4) {
-                        html += `<td class="cell100 column1">Onaylandı...</td>`;
+                        html += `<td class="cell100 column2">Onaylandı...</td>`;
                     }
                     html += `</tbody>`;
                 }
@@ -620,17 +620,17 @@
             <table>
             <thead>
             <tr class="row100 head">
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Firma</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Teklif</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Açıklama</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">Durum</th>
-            <th class="cell100 column1 text-light bg-secondary opacity-75">İşlemler</th>
+            <th class="cell100 column1 text-light opacity-75">Firma</th>
+            <th class="cell100 column1 text-light opacity-75">Teklif</th>
+            <th class="cell100 column1 text-light opacity-75">Açıklama</th>
+            <th class="cell100 column1 text-light opacity-75">Durum</th>
+            <th class="cell100 column1 text-light opacity-75">İşlemler</th>
             </tr>
             </thead>
             </table>
             </div>
-            <div class="table100-body js-pscroll ps ps--active-y">
-            <table id="example" style="min-height:350px;">
+            <div class="table100-body">
+            <table id="example">
             <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
             `;
 
@@ -638,33 +638,33 @@
                 for (var i = 0; i < arr.length; i++) {
 
                     html += `<tbody><tr>`;
-                    html += `<td class="cell100 column1">${arr[i].supplierName}</td>`;
+                    html += `<td class="cell100 column2">${arr[i].supplierName}</td>`;
                     if (arr[i].priceStatus == "0 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} ₺</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} ₺</td>`;
                     }
                     else if (arr[i].priceStatus == "1 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} $</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} $</td>`;
                     }
                     else if (arr[i].priceStatus == "2 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} £</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} £</td>`;
                     }
                     else if (arr[i].priceStatus == "3 ") {
-                        html += `<td class="cell100 column1">${arr[i].price} ¥</td>`;
+                        html += `<td class="cell100 column2">${arr[i].price} ¥</td>`;
                     }
-                    html += `<td class="cell100 column1">${arr[i].description}</td>`;
+                    html += `<td class="cell100 column2">${arr[i].description}</td>`;
                     if (arr[i].status == 1) {
-                        html += `<td class="cell100 column1">Onay Bekliyor...</td>`;
+                        html += `<td class="cell100 column2">Onay Bekliyor...</td>`;
                     }
                     else if (arr[i].status == 2) {
-                        html += `<td class="cell100 column1">Kabul Edildi...</td>`;
+                        html += `<td class="cell100 column2">Kabul Edildi...</td>`;
                     }
                     else if (arr[i].status == 3) {
-                        html += `<td class="cell100 column1">Reddedildi...</td>`;
+                        html += `<td class="cell100 column2">Reddedildi...</td>`;
                     }
                     else if (arr[i].status == 4) {
-                        html += `<td class="cell100 column1">Onaylandı...</td>`;
+                        html += `<td class="cell100 column2">Onaylandı...</td>`;
                     }
-                    html += ` <td>
+                    html += ` <td class="cell100 column2">
             <div>
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             İşlemler

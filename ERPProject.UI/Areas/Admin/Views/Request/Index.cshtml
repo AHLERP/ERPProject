@@ -15,7 +15,7 @@
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                <button class="accordion-button collapsed" style="cursor:zoom-in;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                     Onay Bekleyen Talepler
                 </button>
             </h2>
@@ -40,8 +40,8 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="table100-body js-pscroll ps ps--active-y">
-                                    <table id="example" style="min-height:350px;">
+                                <div class="table100-body">
+                                    <table id="example">
                                         <tbody>
                                             @if (Model.Requests == null)
                                             {
@@ -139,8 +139,28 @@
                                                             }
 
                                                             @{
-                                                                if (Accessor.HttpContext.Session.GetString("Role") == "Personel")
+                                                                if (@SessionRole.RoleName.Any(roles => roles.Contains("Personel")))
                                                                 {
+
+                                                                    <td class="cell100 column2">
+                                                                        <div class="dropdown">
+
+                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                                İşlemler
+                                                                            </button>
+                                                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                                <li>
+                                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+                                                                                       data-id="@item.Id"
+                                                                                       data-title="@item.Title"
+                                                                                       data-description="@item.Description"
+                                                                                       data-username="@item.UserId"
+                                                                                       data-product="@item.ProductId"
+                                                                                       data-brim="@item.QuantityUnit"
+                                                                                       data-miktar="@item.Quantity"
+                                                                                       data-status="@item.RequestStatus">Düzenle</a>
+                                                                                </li>
+                                                                    </td>
                                                                 }
                                                                 else
                                                                 {
@@ -221,7 +241,7 @@
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                <button class="accordion-button collapsed" style="cursor:zoom-in;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                     Onaylanmış Talepler
                 </button>
             </h2>
@@ -244,8 +264,8 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="table100-body js-pscroll1 ps ps--active-y">
-                                    <table id="example" style="min-height:350px;">
+                                <div class="table100-body">
+                                    <table id="example">
                                         <tbody>
                                             @if (Model.Requests == null)
                                             {
@@ -325,7 +345,7 @@
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                <button class="accordion-button collapsed" style="cursor:zoom-in;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                     Reddedilmiş Talepler
                 </button>
             </h2>
@@ -348,8 +368,8 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="table100-body js-pscroll ps ps--active-y">
-                                    <table id="example" style="min-height:350px;">
+                                <div class="table100-body">
+                                    <table id="example">
                                         <tbody>
                                             @if (Model.Requests == null)
                                             {
@@ -430,7 +450,7 @@
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingFour">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                <button class="accordion-button collapsed" style="cursor:zoom-in;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
                     Tamamlanan Talepler
                 </button>
             </h2>
@@ -453,8 +473,8 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="table100-body js-pscroll ps ps--active-y">
-                                    <table id="example" style="min-height:350px;">
+                                <div class="table100-body">
+                                    <table id="example">
                                         <tbody>
                                             @if (Model.Requests == null)
                                             {
@@ -550,7 +570,7 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd" name="Title" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd" name="Title" aria-describedby="basic-addon1" required autofocus>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
@@ -607,6 +627,7 @@
             <form action="/Admin/TalepGuncelle" method="post">
                 <div class="modal-body">
                     <input autocomplete="off" type="hidden" class="form-control" placeholder="İstek..." id="inputId1" name="Id" aria-describedby="basic-addon1" required>
+                    @if(SessionRole.RoleName.Any(roles=>roles.Contains("Admin"))){
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
                         <select class="form-control" id="inputUserId1" name="UserId" aria-describedby="basic-addon1" required>
@@ -619,10 +640,22 @@
 
                         </select>
                     </div>
+                    }else{
+                        <div class="input-group mb-3">
+                            <select class="form-control" hidden="hidden" id="inputUserId1" name="UserId" aria-describedby="basic-addon1" required>
+                                <option value="">Kullanıcı Seçiniz...</option>
 
+                                @foreach (var item in Model.Users)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+                            </select>
+                        </div>
+                    }
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd1" name="Title" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd1" name="Title" aria-describedby="basic-addon1" required autofocus>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
@@ -701,7 +734,7 @@
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                    <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd2" name="Title" aria-describedby="basic-addon1" required>
+                    <input autocomplete="off" type="text" class="form-control" placeholder="İstek..." id="inputTalepAd2" name="Title" aria-describedby="basic-addon1" required autofocus>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
