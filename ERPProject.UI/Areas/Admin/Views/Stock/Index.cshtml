@@ -15,7 +15,7 @@
                 <div class="table100-head">
                     <table>
                         <thead>
-                            <tr class="row100 head bg-secondary bg-opacity-75">
+                            <tr class="row100 head bg-opacity-75">
                             <th class="cell100 column2 text-light" style="padding-left:5px;">Şirket Adı</th>
                             <th class="cell100 column2 text-light">Ürün Adı</th>
                             <th class="cell100 column2 text-light">Ürün Açıklaması</th>
@@ -25,8 +25,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="table100-body js-pscroll ps ps--active-y">
-                <table id="example" style="min-height:350px;">
+                <div class="table100-body">
+                <table id="example">
                         <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
                         <tbody>
                         @foreach (var item in Model.Stocks)

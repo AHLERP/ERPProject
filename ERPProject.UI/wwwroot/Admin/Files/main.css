@@ -67,72 +67,23 @@ iframe {
     border: none !important
 }
 
-.js-pscroll {
-    position: relative;
-    overflow: hidden
-}
-
-.table100 .ps__rail-y {
-    width: 9px;
-    background-color: transparent;
-    opacity: 1 !important;
-    right: 5px;
-}
-
-    .table100 .ps__rail-y::before {
-        content: "";
-        display: block;
-        position: absolute;
-        background-color: black;
-        border-radius: 5px;
-        width: 100%;
-        height: calc(100% - 30px);
-        left: 0;
-        top: 15px
-    }
-
-    .table100 .ps__rail-y .ps__thumb-y {
-        width: 100%;
-        right: 0;
-        background-color: transparent;
-        opacity: 1 !important
-    }
-
-        .table100 .ps__rail-y .ps__thumb-y::before {
-            content: "";
-            display: block;
-            position: absolute;
-            background-color: #ccc;
-            border-radius: 5px;
-            width: 100%;
-            height: calc(100% - 30px);
-            left: 0;
-            top: 15px
-        }
-
-.limiter {
-    width: 100%;
-    margin: 0 auto
-}
-
 .container-table100 {
     width: 100%;
-    min-height: 350px;
     background: #fff;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
     display: -ms-flexbox;
-    display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 .wrap-table100 {
-    width: 100%
+    width: 100%;
 }
-
+.wrap-table80 {
+    width: 80%;
+}
 .table100 {
     background-color: #fff
 }
@@ -143,20 +94,20 @@ table {
 
 th, td {
     font-weight: unset;
-    padding-right: 10px
 }
 
 .column1 {
-    width: 33%;
-    padding-left: 40px
+    width: 11%;
 }
 
 .column2 {
-    width: 13%
+    width: 13%;
+    padding-left:3px;
+    
 }
 
 .column3 {
-    width: 22%
+    width: 15%
 }
 
 .column4 {
@@ -166,15 +117,19 @@ th, td {
 .column5 {
     width: 13%
 }
+/*.columnson{ burayý düzenle
+    position:absolute;
+    right:0;
+}*/
 
 .table100-head th {
-    padding-top: 18px;
-    padding-bottom: 18px
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .table100-body td {
-    padding-top: 16px;
-    padding-bottom: 16px
+    padding-top: 15px;
+    padding-bottom: 15px
 }
 
 .table100 {
@@ -188,19 +143,6 @@ th, td {
     top: 0;
     left: 0
 }
-
-.table100-body {
-    max-height: 400px;
-    overflow: auto
-}
-.table100.ver5 {
-    margin-right: -30px
-}
-
-    .table100.ver5 .table100-head {
-        padding-right: 30px
-    }
-
     .table100.ver5 th {
         font-family: Lato-Bold;
         font-size: 14px;
@@ -217,11 +159,7 @@ th, td {
         line-height: 1.4;
     }
 
-    .table100.ver5 .table100-body tr {
-        overflow: hidden;
-        border-bottom: 10px solid #fff;
-        border-radius: 10px
-    }
+    
 
     .table100.ver5 .table100-body table {
         border-collapse: separate;
@@ -248,31 +186,13 @@ th, td {
         }
 
     .table100.ver5 tr:hover td {
-        background-color: #ebebeb;
-        cursor: pointer
+        background-color: #a5a8c2;
+        cursor: grab
     }
-
     .table100.ver5 .table100-head th {
         padding-top: 25px;
-        padding-bottom: 25px
+        padding-bottom: 25px;
+        padding-left:3px;
     }
 
-.table100.ver5 {
-    overflow: hidden
-}
 
-    .table100.ver5 .table100-body {
-        padding-right: 30px
-    }
-
-    .table100.ver5 .ps__rail-y {
-        right: 0
-    }
-
-        .table100.ver5 .ps__rail-y::before {
-            background-color: #fff
-        }
-
-        .table100.ver5 .ps__rail-y .ps__thumb-y::before {
-            background-color: #000
-        }

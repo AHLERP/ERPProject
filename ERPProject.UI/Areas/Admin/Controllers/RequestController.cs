@@ -2,6 +2,7 @@
 using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.UI.Areas.Admin.Models;
+using ERPProject.UI.Areas.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -24,12 +25,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
 
             if (roles.Any(roles => roles.Contains("Personel")))
             {
+                var val7 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
                 var val5 = await GetAllAsync<ProductDTOResponse>(url + "GetProducts");
                 var val6 = await GetAllAsync<RequestDTOResponse>(url + "RequestsByUser/" + id);
 
                 RequestVM requestVM2 = new RequestVM()
 
                 {
+                    Users= val7.Data,
                     Requests = val6.Data,
                     Products = val5.Data,
 

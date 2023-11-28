@@ -14,7 +14,7 @@ namespace ERPProject.API.Controllers
 {
     [ApiController]
     [Route("[action]")]
-    //[Authorize]
+    [Authorize]
 
     public class UserController : Controller
     {
@@ -119,6 +119,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<UserDTOResponse>.SuccessWithData(userDTOResponse));
         }
+        [AllowAnonymous]
         [HttpGet("/GetUser/{userId}")]
         public async Task<IActionResult> GetUser(long userId)
         {
@@ -198,7 +199,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
-        [Authorize(Roles = "Kullanıcı İşlemleri,")]
+        [Authorize(Roles = "Kullanıcı İşlemleri,Personel")]
         [HttpGet("/GetUsersByCompany/{userId}")]
         public async Task<IActionResult> GetUsersByCompany(int userId)
         {

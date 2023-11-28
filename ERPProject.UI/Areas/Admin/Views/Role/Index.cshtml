@@ -14,19 +14,20 @@
                 <table>
                     <thead>
                         <tr class="row100 head">
-                            <th class="cell100 column1 text-light opacity-75" style="background-color:#83b8ff;"><strong>YETKİ</strong></th>
+                            <th class="cell100 column2 text-light opacity-75"><strong>YETKİ</strong></th>
+                            <th class="cell100 column2 text-light opacity-75"><strong>İŞLEMLER</strong></th>
                         </tr>
                     </thead>
                 </table>
             </div>
-            <div class="table100-body js-pscroll ps ps--active-y">
-            <table id="example" style="min-height:350px;">
+            <div class="table100-body">
+            <table id="example">
                     <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
                     <tbody>
                         @foreach (var item in Model.Data)
                         {
                             <tr class="row100 body">
-                                <td class="cell100 column1">@item.Name</td>
+                                <td class="cell100 column2">@item.Name</td>
                                 <td class="cell100 column2">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,7 +60,7 @@
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Yetki İsmi</span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputRolAd" name="Name" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputRolAd" name="Name" aria-describedby="basic-addon1" required autofocus>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -85,7 +86,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Yetki İsmi</span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputRolName" name="Name" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputRolName" name="Name" aria-describedby="basic-addon1" required autofocus>
                     </div>
 
                 </div>

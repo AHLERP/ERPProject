@@ -56,37 +56,37 @@
 </script>
     <div class="container-table100" style="border-radius:8px;">
         <div class="wrap-table100">
-            <div class="table100 ver4 m-b-110">
+            <div class="table100 ver5 m-b-110">
                 <div class="table100-head">
                     <table>
                         <thead>
                             <tr class="row100 head bg-secondary bg-opacity-75">
-                                <th class="cell100 column2 text-light"> </th>
-                            <th class="cell100 column2 text-light" style="padding-left:5px;">Ad</th>
+                                <th class="cell100 column1 text-light"> </th>
+                            <th class="cell100 column2 text-light">Ad</th>
                                 <th class="cell100 column2 text-light">Soyad</th>
-                                <th class="cell100 column2 text-light">Email</th>
+                                <th class="cell100 column3 text-light">Email</th>
                                 <th class="cell100 column2 text-light">Telefon</th>
                                 <th class="cell100 column2 text-light">Yetki</th>
                                 <th class="cell100 column2 text-light">Departman</th>
-                                <th class="cell100 column2 text-light">Şirket</th>
-                                <th class="cell100 column8 text-light">İşlemler</th>
+                                <th class="cell100 column2 text-light" >Şirket</th>
+                                <th class="cell100 column2 text-light" style="padding-right:3px;">İşlemler</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
                 <div class="table100-body js-pscroll ps ps--active-y">
-                <table id="example" style="min-height:350px;">
+                <table id="example">
                         <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
                         <tbody>
                             @foreach (var user in Model.Users)
                             {
                                 <tr class="row100 body">
-                                    <td class="cell100 column2">
+                                    <td class="cell100 column2" style="padding-left:3px;">
                                         <img src="~/@user.Image" style="max-height:80px; max-width:80px;" alt="...">
                                     </td>
                                     <td class="cell100 column2" style="padding-left:5px;">@user.Name</td>
                                     <td class="cell100 column2">@user.LastName</td>
-                                    <td class="cell100 column2">@user.Email</td>
+                                    <td class="cell100 column2" style="overflow:auto;">@user.Email</td>
                                     <td class="cell100 column2">@user.Phone</td>
                                     <td class="cell100 column2" id="roledoldur">
                                     @foreach (var item in user.RoleName)
@@ -142,7 +142,6 @@
                             }
                         </tbody>
                     </table>
-                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;"></div></div>
                 </div>
             </div>
         </div>
@@ -160,7 +159,7 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputAds" name="Name" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputAds" name="Name" aria-describedby="basic-addon1" required autofocus>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
@@ -241,7 +240,7 @@
                     <input autocomplete="off" id="inputAddedUser" name="AddedUser" class="form-control" type="hidden">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputUserAd" name="Name" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Ad..." id="inputUserAd" name="Name" aria-describedby="basic-addon1" required autofocus>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-circle"></i></span>
@@ -300,6 +299,7 @@
                             <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>
                         </div>
                         <select class="custom-select col col-md-9" id="inputYetki1" name="RoleId" required>
+                            <option value="">Yetki Şeçiniz...</option>
                             @foreach (var item in Model.Roles)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -325,7 +325,7 @@
             </div>
             <form enctype="multipart/form-data" action="/Admin/KullaniciRolSil" method="get">
                 <div class="modal-body">
-                    <input autocomplete="off" id="inputUserIdRolSil" name="UserId" class="form-control" type="text">
+                    <input autocomplete="off" hidden="hidden" id="inputUserIdRolSil" name="UserId" class="form-control" type="text">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputYetki"><i class="bi bi-person-gear"></i></label>

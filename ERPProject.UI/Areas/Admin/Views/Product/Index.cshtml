@@ -12,35 +12,35 @@
                 <div class="table100-head">
                     <table>
                         <thead>
-                            <tr class="row100 head bg-secondary bg-opacity-75">
-                                <th class="cell100 column1 text-light">Ürün Adı</th>
+                            <tr class="row100 head bg-opacity-75">
+                                <th class="cell100 column2 text-light">Ürün Adı</th>
                                 <th class="cell100 column2 text-light">Kategori</th>
-                                <th class="cell100 column3 text-light">Marka</th>
-                                <th class="cell100 column4 text-light">Açıklama</th>
-                                <th class="cell100 column4 text-light">İşlemler</th>
+                                <th class="cell100 column2 text-light">Marka</th>
+                                <th class="cell100 column2 text-light">Açıklama</th>
+                                <th class="cell100 column2 text-light">İşlemler</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
-                <div class="table100-body js-pscroll ps ps--active-y">
-                <table id="example" style="min-height:350px;">
+                <div class="table100-body">
+                <table id="example">
                         <div id="notFoundMessage" class="text-danger" style="display: none; padding-top:5px;">Sonuç bulunamadı...</div>
                         <tbody>
                             @foreach (var item in Model.Products)
             {
                             <tr class="row100 body">
-                                    <td class="cell100 column1">@item.Name</td>
+                                    <td class="cell100 column2">@item.Name</td>
                                     <td class="cell100 column2">@item.CategoryName</td>
-                                    <td class="cell100 column3">@item.BrandName</td>
+                                    <td class="cell100 column2">@item.BrandName</td>
                                 @if(item.Description == null)
                                 {
-                                    <td class="cell100 column4"> Açıklama Yok...</td>
+                                    <td class="cell100 column2"> Açıklama Yok...</td>
                                 }
                                 else{
 
-                                    <td class="cell100 column4">@item.Description</td>
+                                    <td class="cell100 column2">@item.Description</td>
                                     }
-                                    <td>
+                                <td class="cell100 column2">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 İşlemler
@@ -56,7 +56,6 @@
             }
                         </tbody>
                     </table>
-                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 585px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 295px;"></div></div>
                 </div>
             </div>
         </div>
@@ -72,7 +71,7 @@
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Urun İsmi..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1" required>
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Ürün İsmi..." id="inputUrunAd" name="Name" aria-describedby="basic-addon1" required autofocus>
                     </div>
 
                     <div class="input-group mb-3">
@@ -128,7 +127,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-cart"></i></span>
-                        <input autocomplete="off" type="text" class="form-control" placeholder="Yetki İsmi..." id="inputKategoriAd" name="Name" aria-describedby="basic-addon1">
+                        <input autocomplete="off" type="text" class="form-control" placeholder="Ürün İsmi..." id="inputKategoriAd" name="Name" aria-describedby="basic-addon1" required autofocus>
                     </div>
 
                     <div class="input-group mb-3">
