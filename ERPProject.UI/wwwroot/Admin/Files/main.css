@@ -103,6 +103,7 @@ th, td {
 .column2 {
     width: 13%;
     padding-left:3px;
+    justify-content:space-between;
     
 }
 
@@ -115,14 +116,14 @@ th, td {
 }
 
 .column5 {
-    width: 13%
+    width: 0%;
+    
+    justify-content:space-between;
 }
-/*.columnson{ burayý düzenle
-    position:absolute;
-    right:0;
-}*/
-
-.table100-head th {
+.colum2:first-child {
+    padding-right: 3px;
+}
+    .table100-head th {
     padding-top: 15px;
     padding-bottom: 15px;
 }
