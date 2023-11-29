@@ -82,6 +82,7 @@ namespace ERPProject.API.Controllers
 
         [HttpPost("/UpdateUser")]
         [ValidationFilter(typeof(UserValidator))]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
         {
             User user = await _userService.GetAsync(x => x.Id == userDTORequest.Id); // güncellenecek kişi
@@ -229,6 +230,7 @@ namespace ERPProject.API.Controllers
 
             return Ok(Sonuc<List<UserDTOResponse>>.SuccessWithData(userDTOResponseList));
         }
+        [AllowAnonymous]
         [HttpGet("/GetUserByMail/{mail}")]
         public async Task<IActionResult> GetUserByMail(string mail)
         {
