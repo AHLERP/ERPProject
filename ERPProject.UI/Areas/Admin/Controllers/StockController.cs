@@ -31,6 +31,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var val3 = await GetAllAsync<StockDetailDTOResponse>(url + "StockDetails");
             var val4 = await GetAllAsync<UserDTOResponse>(url + "GetUsers");
 
+            if (!SessionRole.RoleName.Any(x => x.Contains("Admin")))
+            {
+                val = await GetAllAsync<StockDTOResponse>(url + "StocksByCompany/" + HttpContext.Session.GetString("Company"));
+            }
             if (val.StatusCode == 401)
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -53,8 +57,8 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 Companies = val2.Data,
                 Products = val1.Data,
                 Stocks = val.Data,
-                StockDetails=val3.Data,
-                Users=val4.Data
+                StockDetails = val3.Data,
+                Users = val4.Data
             };
 
             return View(stockVM);
@@ -116,7 +120,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         [HttpPost("/Admin/StokGuncelle")]
         public async Task<IActionResult> Update(StockDTORequest p)
         {
-            
+
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await UpdateAsync(p, url + "UpdateStock");
             if (val.StatusCode == 401)

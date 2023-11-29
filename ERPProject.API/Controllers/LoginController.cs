@@ -39,7 +39,7 @@ namespace ERPProject.API.Controllers
         {
 
 
-            var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Department", "UserRoles.Role");
+            var user = await _userService.GetAsync(x => x.Email == loginRequestDTO.KullaniciAdi, "Department.Company", "UserRoles.Role");
             //var roles = await _userRoleService.GetAllAsync(x => x.User.Id==user.Id,"Role");
             if (user == null)
             {
@@ -89,7 +89,9 @@ namespace ERPProject.API.Controllers
                     RoleName = user.UserRoles.Select(e => e.Role.Name).ToList(),
                     CompanyId = user.Department.CompanyId,
                     DepartmentId = user.DepartmentId,
-                    DepartmentName = user.Department.Name
+                    DepartmentName = user.Department.Name,
+                    CompanyName=user.Department.Company.Name
+
                 };
 
                 Log.Information("LoginResponse => {@loginResponseDTO} => { Giriş Yapıldı. }", loginResponseDTO);

@@ -58,36 +58,78 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Invoices)
+                @if (Accessor.HttpContext.Session.GetString("CompanyName") == "Admin")
                 {
-                    <tr>
-                        <td>@item.InvoiceDate.ToShortDateString()</td>
-                        <td>@item.SupplierName</td>
-                        <td>@item.CompanyName</td>
-                        @if (item.PriceStatus == "1")
-                        {
-                            var money = item.TotalPrice * item.Rate;
-                            money = Math.Round(money, 2);
-                            <td>@item.TotalPrice $ (@money ₺)</td>
-                        }
-                        @if (item.PriceStatus == "2")
-                        {
-                            var money = item.TotalPrice * item.Rate;
-                            money = Math.Round(money, 2);
-                            <td>@item.TotalPrice £ (@money ₺)</td>
-                        }
-                        @if (item.PriceStatus == "3")
-                        {
-                            var money = item.TotalPrice * item.Rate;
-                            money = Math.Round(money, 2);
-                            <td>@item.TotalPrice ¥ (@money ₺)</td>
-                        }
-                        @if (item.PriceStatus == "0")
-                        {
-                            <td>@item.TotalPrice ₺</td>
-                        }
-                    </tr>
+                    @foreach (var item in Model.Invoices)
+                    {
+
+                        <tr>
+                            <td>@item.InvoiceDate.ToShortDateString()</td>
+                            <td>@item.SupplierName</td>
+                            <td>@item.CompanyName</td>
+                            @if (item.PriceStatus == "1")
+                            {
+                                var money = item.TotalPrice * item.Rate;
+                                money = Math.Round(money, 2);
+                                <td>@item.TotalPrice $ (@money ₺)</td>
+                            }
+                            @if (item.PriceStatus == "2")
+                            {
+                                var money = item.TotalPrice * item.Rate;
+                                money = Math.Round(money, 2);
+                                <td>@item.TotalPrice £ (@money ₺)</td>
+                            }
+                            @if (item.PriceStatus == "3")
+                            {
+                                var money = item.TotalPrice * item.Rate;
+                                money = Math.Round(money, 2);
+                                <td>@item.TotalPrice ¥ (@money ₺)</td>
+                            }
+                            @if (item.PriceStatus == "0")
+                            {
+                                <td>@item.TotalPrice ₺</td>
+                            }
+                        </tr>
+
+                    }
                 }
+                else
+                {
+                    @foreach (var item in Model.Invoices)
+                    {
+                        if (@item.CompanyName == Accessor.HttpContext.Session.GetString("CompanyName"))
+                        {
+                            <tr>
+                                <td>@item.InvoiceDate.ToShortDateString()</td>
+                                <td>@item.SupplierName</td>
+                                <td>@item.CompanyName</td>
+                                @if (item.PriceStatus == "1")
+                                {
+                                    var money = item.TotalPrice * item.Rate;
+                                    money = Math.Round(money, 2);
+                                    <td>@item.TotalPrice $ (@money ₺)</td>
+                                }
+                                @if (item.PriceStatus == "2")
+                                {
+                                    var money = item.TotalPrice * item.Rate;
+                                    money = Math.Round(money, 2);
+                                    <td>@item.TotalPrice £ (@money ₺)</td>
+                                }
+                                @if (item.PriceStatus == "3")
+                                {
+                                    var money = item.TotalPrice * item.Rate;
+                                    money = Math.Round(money, 2);
+                                    <td>@item.TotalPrice ¥ (@money ₺)</td>
+                                }
+                                @if (item.PriceStatus == "0")
+                                {
+                                    <td>@item.TotalPrice ₺</td>
+                                }
+                            </tr>
+                        }
+                    }
+                }
+
                 <tr style="background-color:white;">
                     <td>Toplam Adet---> </td>
                     <td>@($"{totalItemCount}") </td>

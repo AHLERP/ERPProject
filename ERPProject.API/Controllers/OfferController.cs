@@ -178,8 +178,6 @@ namespace ERPProject.API.Controllers
                 offerDTOResponseList.Add(_mapper.Map<OfferDTOResponse>(offer));
             }
 
-
-
             Log.Information("Offers => {@offerDTOResponse} => { Teklif Getirildi. }", offerDTOResponseList);
             //Log.Information($"Offers => {offerDTOResponse} =>  Teklif Getirildi.");
 
@@ -195,7 +193,7 @@ namespace ERPProject.API.Controllers
             mesaj.Body = body;
 
             SmtpClient a = new SmtpClient();
-            a.Credentials = new System.Net.NetworkCredential("teklifbilgilendirme@hotmail.com", "Bilal123");
+            a.Credentials = new System.Net.NetworkCredential("teklifbilgilendirme@hotmail.com", "Hakanceylan123");
             a.Port = 587;
             a.Host = "smtp.office365.com";
             a.EnableSsl = true;

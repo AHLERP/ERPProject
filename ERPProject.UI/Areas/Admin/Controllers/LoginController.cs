@@ -37,6 +37,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 HttpContext.Session.SetString("Token", responseObject.Data.Token);
                 HttpContext.Session.SetString("Company", responseObject.Data.CompanyId.ToString());
                 HttpContext.Session.SetString("Department", responseObject.Data.DepartmentId.ToString());
+                HttpContext.Session.SetString("CompanyName", responseObject.Data.CompanyName);
                 HttpContext.Session.SetString("DepartmentName", responseObject.Data.DepartmentName);
                 HttpContext.Session.SetString("UserName", responseObject.Data.AdSoyad.ToString());
                 HttpContext.Session.SetString("User", responseObject.Data.UserId.ToString());
