@@ -5,6 +5,7 @@ using ERPProject.Entity.DTO.RequestDTO;
 using ERPProject.Entity.DTO.RoleDTO;
 using ERPProject.Entity.DTO.UserDTO;
 using ERPProject.Entity.DTO.UserRoleDTO;
+using ERPProject.Entity.Poco;
 using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
@@ -163,6 +164,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 }
                 p.Image = "UserImage/" + uniqueFileName;
                 p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
+                
                 var val = await UpdateAsync(p, url + "UpdateUser");
                 if (val.StatusCode == 200)
                 {

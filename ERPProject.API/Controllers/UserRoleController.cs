@@ -14,17 +14,26 @@ namespace ERPProject.API.Controllers
     public class UserRoleController : Controller
     {
         private readonly IUserRoleService _userRoleService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserRoleController(IMapper mapper, IUserRoleService userRoleService)
+        public UserRoleController(IMapper mapper, IUserRoleService userRoleService, IUserService userService)
         {
             _mapper = mapper;
             _userRoleService = userRoleService;
+            _userService = userService;
         }
 
         [HttpPost("/AddUserRole")]
         public async Task<IActionResult> AddUserRole(UserRoleDTORequest userRoleDTORequest)
         {
+            User user = await _userService.GetAsync(x=>x.Id == userRoleDTORequest.UserId);
+            var userRoles = await _userRoleService.GetAsync(x=>x.UserId == user.Id && x.RoleId==userRoleDTORequest.RoleId);
+            if (userRoles != null)
+            {
+                return BadRequest(Sonuc<UserRoleDTOResponse>.AlreadyExistError());
+            }
+
             var userRole = _mapper.Map<UserRole>(userRoleDTORequest);
             await _userRoleService.AddAsync(userRole);
 

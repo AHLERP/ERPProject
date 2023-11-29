@@ -74,5 +74,10 @@ namespace ERPProject.Entity.Result
             return new Sonuc<T>(message, statusCode, HataBilgisi.Error());
         }
 
+        public static Sonuc<T> AlreadyExistError(string message = "Aynı yetkiden birden fazla eklenemez.", int statusCode = (int)HttpStatusCode.BadRequest)
+        {
+            return new Sonuc<T>(message, statusCode, HataBilgisi.Error());
+        }
+
     }
 }
