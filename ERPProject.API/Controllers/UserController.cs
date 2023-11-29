@@ -233,7 +233,6 @@ namespace ERPProject.API.Controllers
         }
         [AllowAnonymous]
         [HttpGet("/GetUserByMail/{mail}")]
-        [AllowAnonymous]
 
         public async Task<IActionResult> GetUserByMail(string mail)
         {
