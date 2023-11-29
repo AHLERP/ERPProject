@@ -193,7 +193,7 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             var dep = HttpContext.Session.GetString("DepartmentName");
             if (dep == "Satın Alma" || dep == "Yönetim" || dep == "Admin")
             {
-                if (val == null)
+                if (val==null)
                 {
                     return RedirectToAction("Forbidden", "Home");
                 }

@@ -81,6 +81,7 @@ namespace ERPProject.API.Controllers
         }
 
         [HttpPost("/UpdateUser")]
+        [AllowAnonymous]
         [ValidationFilter(typeof(UserValidator))]
         [AllowAnonymous]
         public async Task<IActionResult> UpdateUser(UserDTORequest userDTORequest)
@@ -232,6 +233,8 @@ namespace ERPProject.API.Controllers
         }
         [AllowAnonymous]
         [HttpGet("/GetUserByMail/{mail}")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> GetUserByMail(string mail)
         {
             User user = await _userService.GetAsync(x => x.Email == mail && x.IsActive == true, "UserRoles.Role", "Department", "Department.Company");

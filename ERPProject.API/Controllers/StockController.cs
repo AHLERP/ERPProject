@@ -127,7 +127,7 @@ namespace ERPProject.API.Controllers
         public async Task<IActionResult> GetStocksByCompany(int companyId)
         {
 
-            var stocks = await _stockService.GetAllAsync(x=>x.CompanyId == companyId);
+            var stocks = await _stockService.GetAllAsync(x=>x.CompanyId == companyId,"Company","Product");
             if (stocks == null)
             {
                 return NotFound(Sonuc<StockDTOResponse>.SuccessNoDataFound());
