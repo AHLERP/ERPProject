@@ -48,7 +48,36 @@
             </div>
         </div>
     </div>
+    
 </section>
-<style>
+<button type="button" class="btn text-light" style=" background-color:#248bd6;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Şifre Güncelle</button>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Şifre Güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form enctype="multipart/form-data" class= action="/Admin/KullaniciGuncelle" method="post">
+                <div class="modal-body">
+                        <input autocomplete="off" hidden="hidden" value="@Model.Name" id="inputAds" name="Name" required >
+                        <input autocomplete="off" hidden="hidden" value="@Model.Id" id="inputAds" name="Id" required >
+                        <input autocomplete="off" hidden="hidden" value="@Model.LastName" id="inputAds" name="LastName" required >
+                        <input autocomplete="off" hidden="hidden" value="@Model.Email" id="inputAds" name="Email" required >
+                        <input autocomplete="off" hidden="hidden" value="@Model.DepartmentId" id="inputAds" name="DepartmentId" required >
+                        <input autocomplete="off" hidden="hidden" value="@Model.Image" id="inputAds" name="Image" required >
+                        <input autocomplete="off" hidden="hidden" value="@Model.Phone" id="inputAds" name="Phone" required >
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-incognito"></i></span>
+                            <input autocomplete="off" type="text" class="form-control" placeholder="Sifre..."  id="inputPassword" name="Password" aria-describedby="basic-addon1" required autofocus>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
 
-</style>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

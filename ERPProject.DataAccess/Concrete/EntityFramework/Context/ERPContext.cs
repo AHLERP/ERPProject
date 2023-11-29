@@ -49,7 +49,7 @@ namespace ERPProject.DataAccess.Concrete.EntityFramework.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\BILAL; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3\\SQLEXPRESS; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Hakan
         //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-R04PVQ3; Initial Catalog=ErpDB; Integrated Security=true; TrustServerCertificate=True");//Ege
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

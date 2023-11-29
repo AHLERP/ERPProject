@@ -174,9 +174,14 @@ namespace ERPProject.UI.Areas.Admin.Controllers
             }
             p.UpdatedUser = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val2 = await UpdateAsync(p, url + "UpdateUser");
-            if (val2.StatusCode == 200)
+            if (val2.StatusCode == 200 && val2.Data.Id.ToString() == HttpContext.Session.GetString("User"))
             {
-                return RedirectToAction("Kullanicilar", "Admin");
+
+                return RedirectToAction("Profile", "User");
+            }
+            else if (val2.StatusCode == 200 && val2.Data.Id.ToString() != HttpContext.Session.GetString("User"))
+            {
+                    return RedirectToAction("Kullanicilar", "Admin");
 
             }
 
