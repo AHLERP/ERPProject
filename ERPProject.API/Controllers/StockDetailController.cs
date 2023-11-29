@@ -136,7 +136,27 @@ namespace ERPProject.API.Controllers
 
             Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stoğa Göre Stok Detayları Getirildi. }", stockDetailDTOResponseList);
 
-            return Ok(stockDetailDTOResponseList);
-        }        
+            return Ok(Sonuc<List<StockDetailDTOResponse>>.SuccessWithData(stockDetailDTOResponseList));
+        }
+        [AllowAnonymous]
+        [HttpGet("/StockDetailsByUser/{userId}")]
+        public async Task<IActionResult> GetStockDetailsByUser(long userId)
+        {
+            var stockDetails = await _stockDetailService.GetAllAsync(x => x.IsActive == true && x.RecieverId == userId, "Stock.Product", "User");
+            if (stockDetails == null)
+            {
+                return NotFound(Sonuc<StockDetailDTOResponse>.SuccessNoDataFound());
+            }
+
+            List<StockDetailDTOResponse> stockDetailDTOResponseList = new();
+            foreach (var stockdetail in stockDetails)
+            {
+                stockDetailDTOResponseList.Add(_mapper.Map<StockDetailDTOResponse>(stockdetail));
+            }
+
+            Log.Information("StockDetails => {@stockDetailDTOResponse} => { Stoğa Göre Stok Detayları Getirildi. }", stockDetailDTOResponseList);
+
+            return Ok(Sonuc<List<StockDetailDTOResponse>>.SuccessWithData(stockDetailDTOResponseList));
+        }
     }
 }

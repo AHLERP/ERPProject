@@ -1,4 +1,7 @@
-﻿using ERPProject.Entity.DTO.UserDTO;
+﻿using ERPProject.Entity.DTO.RequestDTO;
+using ERPProject.Entity.DTO.StockDetailDTO;
+using ERPProject.Entity.DTO.UserDTO;
+using ERPProject.UI.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERPProject.UI.Areas.Admin.Controllers
@@ -16,19 +19,22 @@ namespace ERPProject.UI.Areas.Admin.Controllers
         {
             var userId = Convert.ToInt64(HttpContext.Session.GetString("User"));
             var val = await GetAsync<UserDTOResponse>(url+ "GetUser/"+userId);
+            var val1 = await GetAllAsync<RequestDTOResponse>(url+ "RequestsByUser/" + userId);
+            var val2 = await GetAllAsync<StockDetailDTOResponse>(url+ "StockDetailsByUser/" + userId);
 
-            UserDTOResponse userDTO = new()
+            UserInfoVM userDTO = new()
             {
-                Id=val.Data.Id,
-                CompanyId=val.Data.CompanyId,
                 CompanyName=val.Data.CompanyName,
-                DepartmentId=val.Data.DepartmentId,
                 DepartmentName=val.Data.DepartmentName,
                 Name=val.Data.Name,
                 LastName=val.Data.LastName,
+                Image=val.Data.Image,
+
                 RoleName=val.Data.RoleName.ToList(),
                 Email=val.Data.Email,
                 Phone=val.Data.Phone,
+                Requests=val1.Data,
+                StockDetail=val2.Data
             };
 
 
