@@ -29,6 +29,10 @@ namespace ERPProject.UI.Controllers
         {
             return View();
         }
+        public IActionResult BadRequest()
+        {
+            return View();
+        }
         public IActionResult Forbidden()
         {
             return View();

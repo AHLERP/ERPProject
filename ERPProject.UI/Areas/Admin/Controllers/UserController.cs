@@ -208,6 +208,10 @@ namespace ERPProject.UI.Areas.Admin.Controllers
                 return RedirectToAction("Kullanicilar", "Admin");
 
             }
+            if (val.StatusCode==400)
+            {
+                return RedirectToAction("BadRequest", "Home");
+            }
             return RedirectToAction("Forbidden", "Home");
 
         }
